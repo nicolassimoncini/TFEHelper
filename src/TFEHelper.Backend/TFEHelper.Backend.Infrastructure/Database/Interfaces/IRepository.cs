@@ -5,12 +5,13 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using TFEHelper.Backend.Domain.Classes.API.Specifications;
+using TFEHelper.Backend.Domain.Classes.Models;
 using TFEHelper.Backend.Domain.Interfaces;
 
 
 namespace TFEHelper.Backend.Infrastructure.Database.Interfaces
 {
-    public interface IBaseRepository<T> where T : ITFEHelperModel
+    public interface IRepository<T> where T : ITFEHelperModel
     {
         Task CreateAsync(T entity, CancellationToken cancellationToken = default);
 
@@ -22,8 +23,10 @@ namespace TFEHelper.Backend.Infrastructure.Database.Interfaces
 
         PaginatedList<T> GetAllPaginated(PaginationParameters parameters, Expression<Func<T, bool>>? filter = null, string? includedProperties = null);
 
+        Task<T> UpdateAsync(T publication, CancellationToken cancellationToken = default);
+
         Task RemoveAsync(T entity, CancellationToken cancellationToken = default);
 
-        Task SaveAsync(CancellationToken cancellationToken = default);
+        Task SaveAsync(CancellationToken cancellationToken = default);        
     }
 }

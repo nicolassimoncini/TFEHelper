@@ -16,12 +16,12 @@ namespace TFEHelper.Backend.API.Controllers
     public class PublicationController : ControllerBase
     {
         private readonly ILogger<PublicationController> _logger;
-        private readonly IPublicationRepository _repository;
+        private readonly IRepository<Publication> _repository;
         private readonly ITFEEngine _engine;
         private readonly IMapper _mapper;
         protected APIResponse _response;
 
-        public PublicationController(ILogger<PublicationController> logger, IPublicationRepository repository, ITFEEngine engine, IMapper mapper)
+        public PublicationController(ILogger<PublicationController> logger, IRepository<Publication> repository, ITFEEngine engine, IMapper mapper)
         {
             _logger = logger;
             _repository = repository;

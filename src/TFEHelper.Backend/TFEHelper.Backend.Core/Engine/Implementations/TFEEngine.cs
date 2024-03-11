@@ -14,12 +14,12 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
     {
         private List<Publication> _publications;
         private readonly ILogger<TFEEngine> _logger;
-        private readonly IPublicationRepository _repository;
+        private readonly IRepository<Publication> _repository;
         private readonly IMapper _mapper;
         private readonly BibTeXProcessor _bibTeXProcessor;
         private readonly CSVProcessor _csvProcessor;
 
-        public TFEEngine(ILogger<TFEEngine> logger, IPublicationRepository repository, IMapper mapper)
+        public TFEEngine(ILogger<TFEEngine> logger, IRepository<Publication> repository, IMapper mapper)
         {
             _logger = logger;
             _repository = repository;

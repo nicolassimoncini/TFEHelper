@@ -4,7 +4,9 @@ using Serilog;
 using TFEHelper.Backend.API.Configuration;
 using TFEHelper.Backend.Core.Engine.Implementations;
 using TFEHelper.Backend.Core.Engine.Interfaces;
+using TFEHelper.Backend.Domain.Classes.Models;
 using TFEHelper.Backend.Domain.Config;
+using TFEHelper.Backend.Domain.Interfaces;
 using TFEHelper.Backend.Infrastructure.Database.Implementations;
 using TFEHelper.Backend.Infrastructure.Database.Interfaces;
 using TFEHelper.Backend.Tools.Strings;
@@ -77,7 +79,7 @@ internal class Program
 
         builder.Services.AddAutoMapper(typeof(MappingConfig));
 
-        builder.Services.AddScoped<IPublicationRepository, PublicationRepository>();
+        builder.Services.AddScoped<IRepository<Publication>, Repository<Publication>>();
         builder.Services.AddScoped<ITFEEngine, TFEEngine>();
 
         var app = builder.Build();

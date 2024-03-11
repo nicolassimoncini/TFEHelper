@@ -3,18 +3,19 @@ using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System.Linq.Expressions;
 using TFEHelper.Backend.Domain.Classes.API.Specifications;
+using TFEHelper.Backend.Domain.Classes.Models;
 using TFEHelper.Backend.Domain.Interfaces;
 using TFEHelper.Backend.Infrastructure.Database.Interfaces;
 
 namespace TFEHelper.Backend.Infrastructure.Database.Implementations
 {
-    public abstract class BaseRepository<T> : IBaseRepository<T> where T : class, ITFEHelperModel
+    public class Repository<T> : IRepository<T> where T : class, ITFEHelperModel
     {
 
         private readonly ApplicationDbContext _dbContext;
         internal DbSet<T> dbSet;
 
-        public BaseRepository(ApplicationDbContext dbContext)
+        public Repository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
             this.dbSet = _dbContext.Set<T>();
@@ -100,6 +101,13 @@ namespace TFEHelper.Backend.Infrastructure.Database.Implementations
             }
 
             return PaginatedList<T>.ToPagedList(query, parameters.PageNumber, parameters.PageSize);
+        }
+
+        public async Task<T> UpdateAsync(T entity, CancellationToken cancellationToken = default)
+        {
+            dbSet.Update(entity);
+            await SaveAsync(cancellationToken);
+            return entity;
         }
 
         public async Task RemoveAsync(T entity, CancellationToken cancellationToken = default)
