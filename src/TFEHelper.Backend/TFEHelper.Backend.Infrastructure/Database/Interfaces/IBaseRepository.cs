@@ -5,11 +5,12 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using TFEHelper.Backend.Domain.Classes.API.Specifications;
+using TFEHelper.Backend.Domain.Interfaces;
 
 
 namespace TFEHelper.Backend.Infrastructure.Database.Interfaces
 {
-    public interface IBaseRepository<T> where T : class
+    public interface IBaseRepository<T> where T : ITFEHelperModel
     {
         Task CreateAsync(T entity, CancellationToken cancellationToken = default);
 

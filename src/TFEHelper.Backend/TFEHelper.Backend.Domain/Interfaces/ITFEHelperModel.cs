@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TFEHelper.Backend.Domain.Interfaces
 {
-    public interface IModel
+    public interface ITFEHelperModel
     {
     }
 }

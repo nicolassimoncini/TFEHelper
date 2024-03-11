@@ -12,7 +12,7 @@ using TFEHelper.Backend.Domain.Interfaces;
 
 namespace TFEHelper.Backend.Domain.Classes.Models
 {
-    public class Publication : IBibTeXRecord, IModel
+    public class Publication : IBibTeXRecord, ITFEHelperModel
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

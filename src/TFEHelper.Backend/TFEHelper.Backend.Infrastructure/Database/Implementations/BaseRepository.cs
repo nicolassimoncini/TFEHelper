@@ -3,11 +3,12 @@ using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System.Linq.Expressions;
 using TFEHelper.Backend.Domain.Classes.API.Specifications;
+using TFEHelper.Backend.Domain.Interfaces;
 using TFEHelper.Backend.Infrastructure.Database.Interfaces;
 
 namespace TFEHelper.Backend.Infrastructure.Database.Implementations
 {
-    public abstract class BaseRepository<T> : IBaseRepository<T> where T : class
+    public abstract class BaseRepository<T> : IBaseRepository<T> where T : class, ITFEHelperModel
     {
 
         private readonly ApplicationDbContext _dbContext;
