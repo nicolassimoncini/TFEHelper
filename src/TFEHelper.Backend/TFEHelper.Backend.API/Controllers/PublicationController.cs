@@ -10,7 +10,7 @@ using TFEHelper.Backend.Domain.Classes.Models;
 using TFEHelper.Backend.Domain.Enums;
 using TFEHelper.Backend.Infrastructure.Database.Interfaces;
 
-namespace TFEHelper.API.Controllers
+namespace TFEHelper.Backend.API.Controllers
 {
     [ApiController]
     public class PublicationController : ControllerBase
