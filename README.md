@@ -8,8 +8,8 @@ Documentation pending...
 
 ### TFEHelper.Backend
 
-[Readme](TFEHelper.Backend/README.md)
+[Readme](src/TFEHelper.Backend/README.md)
 
 ### TFEHelper.Frontend
 
-[Readme](TFEHelper.Frontend/README.md)
+[Readme](src/TFEHelper.Frontend/README.md)
