@@ -16,12 +16,17 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
         private readonly ILogger<TFEEngine> _logger;
         private readonly IPublicationRepository _repository;
         private readonly IMapper _mapper;
+        private readonly BibTeXProcessor _bibTeXProcessor;
+        private readonly CSVProcessor _csvProcessor;
 
         public TFEEngine(ILogger<TFEEngine> logger, IPublicationRepository repository, IMapper mapper)
         {
             _logger = logger;
             _repository = repository;
             _mapper = mapper;
+            _bibTeXProcessor = new BibTeXProcessor();
+            _csvProcessor = new CSVProcessor();
+
             _publications = new List<Publication>();
         }
 
@@ -30,10 +35,10 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
             switch (formatType)
             {
                 case FileFormatType.BibTeX:
-                    _publications = await BibTeXProcessor.ImportAsync(filePath, source, cancellationToken);
+                    _publications = await _bibTeXProcessor.ImportAsync(filePath, source, cancellationToken);
                     break;
                 case FileFormatType.CSV:
-                    _publications = await CSVProcessor.ImportAsync(filePath, source, cancellationToken);
+                    _publications = await _bibTeXProcessor.ImportAsync(filePath, source, cancellationToken);
                     break;
                 default:
                     break;
@@ -47,10 +52,10 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
             switch (formatType)
             {
                 case FileFormatType.BibTeX:
-                    await BibTeXProcessor.ExportAsync(publications, filePath, cancellationToken);
+                    await _csvProcessor.ExportAsync(publications, filePath, cancellationToken);
                     break;
                 case FileFormatType.CSV:
-                    await CSVProcessor.ExportAsync(publications, filePath, cancellationToken);
+                    await _csvProcessor.ExportAsync(publications, filePath, cancellationToken);
                     break;
                 default:
                     break;

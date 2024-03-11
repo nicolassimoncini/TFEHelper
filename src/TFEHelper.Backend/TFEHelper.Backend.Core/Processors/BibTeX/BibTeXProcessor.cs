@@ -10,7 +10,7 @@ using TFEHelper.Backend.Domain.Interfaces;
 
 namespace TFEHelper.Backend.Core.Processors.BibTeX
 {
-    internal static class BibTeXProcessor
+    internal class BibTeXProcessor
     {
         /// <summary>
         /// Importa el contenido de un archivo BibTeX (.bib) y lo retorna mapeado a una lista de <see cref="Publication"/>.
@@ -19,7 +19,7 @@ namespace TFEHelper.Backend.Core.Processors.BibTeX
         /// <param name="source"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public static async Task<List<Publication>> ImportAsync(string filePath, SearchSourceType source, CancellationToken cancellationToken = default)
+        public async Task<List<Publication>> ImportAsync(string filePath, SearchSourceType source, CancellationToken cancellationToken = default)
         {
             static string GetFieldValueAsString(Bib16Entry entry, string fieldName)
             {
@@ -65,7 +65,7 @@ namespace TFEHelper.Backend.Core.Processors.BibTeX
         /// <param name="filePath"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public static async Task ExportAsync<T>(List<T> list, string filePath, CancellationToken cancellationToken = default) where T : class, IBibTeXRecord
+        public async Task ExportAsync<T>(List<T> list, string filePath, CancellationToken cancellationToken = default) where T : class, IBibTeXRecord
         {
             string recordHeader = "@{0}{{{1}," + Environment.NewLine;
             string field = "{0} = {{{1}}}," + Environment.NewLine; ;

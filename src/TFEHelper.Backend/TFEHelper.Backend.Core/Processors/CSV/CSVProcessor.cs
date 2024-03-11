@@ -5,7 +5,7 @@ using TFEHelper.Backend.Domain.Enums;
 
 namespace TFEHelper.Backend.Core.Processors.CSV
 {
-    internal static class CSVProcessor
+    internal class CSVProcessor
     {
         /// <summary>
         /// Importa el contenido de un archivo csv y lo retorna mapeado a una lista de <see cref="Publication"/>.
@@ -13,7 +13,7 @@ namespace TFEHelper.Backend.Core.Processors.CSV
         /// <param name="filePath"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public static async Task<List<Publication>> ImportAsync(string filePath, SearchSourceType source, CancellationToken cancellationToken = default)
+        public async Task<List<Publication>> ImportAsync(string filePath, SearchSourceType source, CancellationToken cancellationToken = default)
         {
             List<Publication> result = new();
 
@@ -39,7 +39,7 @@ namespace TFEHelper.Backend.Core.Processors.CSV
         /// <param name="filePath"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public static async Task ExportAsync(List<Publication> list, string filePath, CancellationToken cancellationToken = default)
+        public async Task ExportAsync(List<Publication> list, string filePath, CancellationToken cancellationToken = default)
         {
             using (var writer = new StreamWriter(filePath))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
