@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFEHelper.Backend.Domain", "TFEHelper.Backend.Domain\TFEHelper.Backend.Domain.csproj", "{CFA083BF-6214-4E49-BB82-73D266E0F1C4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFEHelper.Backend.Test", "TFEHelper.Backend.Test\TFEHelper.Backend.Test.csproj", "{FC3C654A-C8B0-4F2B-9694-626F7B1F431C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFEHelper.Backend.Infrastructure", "TFEHelper.Backend.Infrastructure\TFEHelper.Backend.Infrastructure.csproj", "{3D4D97D3-CEEA-4C5E-8E3C-5D73FA034E93}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFEHelper.Backend.Core", "TFEHelper.Backend.Core\TFEHelper.Backend.Core.csproj", "{6AA60C79-7BB2-4B7A-B5D2-EA69DDAA6510}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFEHelper.Backend.API", "TFEHelper.Backend.API\TFEHelper.Backend.API.csproj", "{CFE20BB0-56F4-47E6-A772-D1E8C0C2BD6C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFEHelper.Backend.Tools", "TFEHelper.Backend.Tools\TFEHelper.Backend.Tools.csproj", "{4B399747-3CA2-4BDF-86BF-6F71AB0FF385}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CFA083BF-6214-4E49-BB82-73D266E0F1C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFA083BF-6214-4E49-BB82-73D266E0F1C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFA083BF-6214-4E49-BB82-73D266E0F1C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFA083BF-6214-4E49-BB82-73D266E0F1C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC3C654A-C8B0-4F2B-9694-626F7B1F431C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC3C654A-C8B0-4F2B-9694-626F7B1F431C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC3C654A-C8B0-4F2B-9694-626F7B1F431C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC3C654A-C8B0-4F2B-9694-626F7B1F431C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D4D97D3-CEEA-4C5E-8E3C-5D73FA034E93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D4D97D3-CEEA-4C5E-8E3C-5D73FA034E93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D4D97D3-CEEA-4C5E-8E3C-5D73FA034E93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D4D97D3-CEEA-4C5E-8E3C-5D73FA034E93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AA60C79-7BB2-4B7A-B5D2-EA69DDAA6510}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AA60C79-7BB2-4B7A-B5D2-EA69DDAA6510}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AA60C79-7BB2-4B7A-B5D2-EA69DDAA6510}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AA60C79-7BB2-4B7A-B5D2-EA69DDAA6510}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFE20BB0-56F4-47E6-A772-D1E8C0C2BD6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFE20BB0-56F4-47E6-A772-D1E8C0C2BD6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFE20BB0-56F4-47E6-A772-D1E8C0C2BD6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFE20BB0-56F4-47E6-A772-D1E8C0C2BD6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B399747-3CA2-4BDF-86BF-6F71AB0FF385}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B399747-3CA2-4BDF-86BF-6F71AB0FF385}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B399747-3CA2-4BDF-86BF-6F71AB0FF385}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B399747-3CA2-4BDF-86BF-6F71AB0FF385}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C0B3D73E-CF42-498C-97C5-06A8F7372B49}
+	EndGlobalSection
+EndGlobal
