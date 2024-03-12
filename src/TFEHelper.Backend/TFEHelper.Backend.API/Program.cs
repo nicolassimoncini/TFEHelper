@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using TFEHelper.Backend.API.Configuration;
+using TFEHelper.Backend.API.Middleware;
 using TFEHelper.Backend.Core.Engine.Implementations;
 using TFEHelper.Backend.Core.Engine.Interfaces;
 using TFEHelper.Backend.Domain.Config;
@@ -87,7 +89,8 @@ internal class Program
         app.UseSwaggerUI();
         app.UseHttpsRedirection();
         app.MapControllers();
-        app.ApplyDatabaseMigration();       
+        app.ApplyDatabaseMigration();
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
 
         return app;
     }
