@@ -1,5 +1,7 @@
 ﻿using System.Linq.Expressions;
+using System.Threading.Tasks;
 using TFEHelper.Backend.Domain.Classes.API.Specifications;
+using TFEHelper.Backend.Domain.Classes.Database.Specifications;
 using TFEHelper.Backend.Domain.Interfaces;
 
 
@@ -22,5 +24,7 @@ namespace TFEHelper.Backend.Infrastructure.Database.Interfaces
         Task RemoveAsync<T>(T entity, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel;
 
         Task SaveAsync<T>(CancellationToken cancellationToken = default) where T : class, ITFEHelperModel;
+
+        Task<List<T>> RunDatabaseQueryAsync<T>(string query, CancellationToken cancellationToken = default, params IDatabaseParameter[] parameters) where T : class, ITFEHelperModel;
     }
 }

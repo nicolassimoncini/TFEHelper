@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Data.Common;
 using System.Linq.Expressions;
 using TFEHelper.Backend.Domain.Classes.API.Specifications;
+using TFEHelper.Backend.Domain.Classes.Database.Specifications;
 using TFEHelper.Backend.Domain.Interfaces;
 using TFEHelper.Backend.Infrastructure.Database.Interfaces;
 
@@ -109,6 +111,14 @@ namespace TFEHelper.Backend.Infrastructure.Database.Implementations
         {
             _dbContext.Set<T>().Remove(entity);
             await SaveAsync<T>(cancellationToken);
+        }
+
+        public async Task<List<T>> RunDatabaseQueryAsync<T>(string query, CancellationToken cancellationToken = default, params IDatabaseParameter[] parameters) where T : class, ITFEHelperModel
+        {
+            List<DbParameter> _parameters = new();
+            parameters.ToList().ForEach(p => _parameters.Add(_dbContext.CreateDbParameter(p)));
+
+            return await _dbContext.Set<T>().FromSqlRaw(query, _parameters.ToArray()).ToListAsync(cancellationToken);
         }
     }
 }
