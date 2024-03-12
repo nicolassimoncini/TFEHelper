@@ -1,46 +1,41 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using Microsoft.EntityFrameworkCore.Metadata;
 using System.Linq.Expressions;
 using TFEHelper.Backend.Domain.Classes.API.Specifications;
-using TFEHelper.Backend.Domain.Classes.Models;
 using TFEHelper.Backend.Domain.Interfaces;
 using TFEHelper.Backend.Infrastructure.Database.Interfaces;
 
 namespace TFEHelper.Backend.Infrastructure.Database.Implementations
 {
-    public class Repository<T> : IRepository<T> where T : class, ITFEHelperModel
+    public class Repository : IRepository
     {
 
         private readonly ApplicationDbContext _dbContext;
-        internal DbSet<T> dbSet;
 
         public Repository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
-            this.dbSet = _dbContext.Set<T>();
         }
 
-        public async Task CreateAsync(T entity, CancellationToken cancellationToken = default)
+        public async Task CreateAsync<T>(T entity, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel
         {
-            await dbSet.AddAsync(entity, cancellationToken);
-            await SaveAsync(cancellationToken);
+            await _dbContext.Set<T>().AddAsync(entity, cancellationToken);
+            await SaveAsync<T>(cancellationToken);
         }
 
-        public async Task CreateRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
+        public async Task CreateRangeAsync<T>(IEnumerable<T> entities, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel
         {
-            await dbSet.AddRangeAsync(entities, cancellationToken);
-            await SaveAsync(cancellationToken);
+            await _dbContext.Set<T>().AddRangeAsync(entities, cancellationToken);
+            await SaveAsync<T>(cancellationToken);
         }
 
-        public async Task SaveAsync(CancellationToken cancellationToken = default)
+        public async Task SaveAsync<T>(CancellationToken cancellationToken = default) where T : class, ITFEHelperModel
         {
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<T?> GetAsync(Expression<Func<T, bool>>? filter = null, bool tracked = true, string? includedProperties = null, CancellationToken cancellationToken = default)
+        public async Task<T?> GetAsync<T>(Expression<Func<T, bool>>? filter = null, bool tracked = true, string? includedProperties = null, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel
         {
-            IQueryable<T> query = dbSet;
+            IQueryable<T> query = _dbContext.Set<T>();
 
             if (!tracked)
             {
@@ -63,9 +58,9 @@ namespace TFEHelper.Backend.Infrastructure.Database.Implementations
             return await query.FirstOrDefaultAsync(cancellationToken);
         }
 
-        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includedProperties = null, CancellationToken cancellationToken = default)
+        public async Task<List<T>> GetAllAsync<T>(Expression<Func<T, bool>>? filter = null, string? includedProperties = null, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel
         {
-            IQueryable<T> query = dbSet;
+            IQueryable<T> query = _dbContext.Set<T>();
 
             if (filter != null)
             {
@@ -83,9 +78,9 @@ namespace TFEHelper.Backend.Infrastructure.Database.Implementations
             return await query.ToListAsync(cancellationToken);
         }
 
-        public PaginatedList<T> GetAllPaginated(PaginationParameters parameters, Expression<Func<T, bool>>? filter = null, string? includedProperties = null)
+        public PaginatedList<T> GetAllPaginated<T>(PaginationParameters parameters, Expression<Func<T, bool>>? filter = null, string? includedProperties = null) where T : class, ITFEHelperModel
         {
-            IQueryable<T> query = dbSet;
+            IQueryable<T> query = _dbContext.Set<T>();
 
             if (filter != null)
             {
@@ -103,17 +98,17 @@ namespace TFEHelper.Backend.Infrastructure.Database.Implementations
             return PaginatedList<T>.ToPagedList(query, parameters.PageNumber, parameters.PageSize);
         }
 
-        public async Task<T> UpdateAsync(T entity, CancellationToken cancellationToken = default)
+        public async Task<T> UpdateAsync<T>(T entity, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel
         {
-            dbSet.Update(entity);
-            await SaveAsync(cancellationToken);
+            _dbContext.Set<T>().Update(entity);
+            await SaveAsync<T>(cancellationToken);
             return entity;
         }
 
-        public async Task RemoveAsync(T entity, CancellationToken cancellationToken = default)
+        public async Task RemoveAsync<T>(T entity, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel
         {
-            dbSet.Remove(entity);
-            await SaveAsync(cancellationToken);
+            _dbContext.Set<T>().Remove(entity);
+            await SaveAsync<T>(cancellationToken);
         }
     }
 }

@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using TFEHelper.Backend.Domain.Attributes;
 using TFEHelper.Backend.Domain.Enums;
+using TFEHelper.Backend.Domain.Interfaces;
 
 namespace TFEHelper.Backend.Domain.Classes.DTO
 {
-    public class PublicationDTO
+    public class PublicationDTO : ITFEHelperDTO
     {
         public int Id { get; set; }
         public BibTeXPublicationType Type { get; set; }

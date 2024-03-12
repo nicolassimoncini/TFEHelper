@@ -6,6 +6,7 @@ using TFEHelper.Backend.Core.Processors.CSV;
 using TFEHelper.Backend.Domain.Classes.Models;
 using TFEHelper.Backend.Domain.Enums;
 using TFEHelper.Backend.Domain.Extensions;
+using TFEHelper.Backend.Domain.Interfaces;
 using TFEHelper.Backend.Infrastructure.Database.Interfaces;
 
 namespace TFEHelper.Backend.Core.Engine.Implementations
@@ -14,12 +15,12 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
     {
         private List<Publication> _publications;
         private readonly ILogger<TFEEngine> _logger;
-        private readonly IRepository<Publication> _repository;
+        private readonly IRepository _repository;
         private readonly IMapper _mapper;
         private readonly BibTeXProcessor _bibTeXProcessor;
         private readonly CSVProcessor _csvProcessor;
 
-        public TFEEngine(ILogger<TFEEngine> logger, IRepository<Publication> repository, IMapper mapper)
+        public TFEEngine(ILogger<TFEEngine> logger, IRepository repository, IMapper mapper)
         {
             _logger = logger;
             _repository = repository;
@@ -29,6 +30,17 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
 
             _publications = new List<Publication>();
         }
+        
+        /*
+        public async Task<D> UpdateAsync<D, M>(M entity, CancellationToken cancellationToken = default)
+            where D : class, ITFEHelperDTO, new()
+            where M : class, ITFEHelperModel            
+        {
+            await _repository.UpdateAsync<M>(entity, cancellationToken);
+            await _repository.SaveAsync<M>(cancellationToken);
+            return _mapper.Map<D>(entity);
+        }
+        */
 
         public async Task ImportPublicationsAsync(string filePath, FileFormatType formatType, SearchSourceType source, CancellationToken cancellationToken = default)
         {
@@ -60,11 +72,6 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
                 default:
                     break;
             }
-        }
-
-        public void AddPublications(List<Publication> publications)
-        {
-            _publications.AddRange(publications);
         }
 
         /// <summary>
