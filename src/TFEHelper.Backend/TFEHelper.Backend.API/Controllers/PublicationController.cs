@@ -105,18 +105,12 @@ namespace TFEHelper.Backend.API.Controllers
 
         [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> RemovePublication(int id, CancellationToken cancellationToken = default)
         {
-            if (id == 0)
-            {
-                _response.IsSuccessful = false;
-                _response.StatusCode = HttpStatusCode.BadRequest;
-                return BadRequest(_response);
-            }
             var publication = await _repository.GetAsync<Publication>(v => v.Id == id, cancellationToken: cancellationToken);
+
             if (publication == null)
             {
                 _response.IsSuccessful = false;
