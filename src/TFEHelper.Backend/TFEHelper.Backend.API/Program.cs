@@ -80,7 +80,7 @@ internal class Program
         builder.Services.AddAutoMapper(typeof(MappingConfig));
 
         builder.Services.AddScoped<IRepository, Repository>();
-        builder.Services.AddScoped<ITFEEngine, TFEEngine>();
+        builder.Services.AddScoped<ITFEHelperEngine, TFEHelperEngine>();
 
         var app = builder.Build();
 

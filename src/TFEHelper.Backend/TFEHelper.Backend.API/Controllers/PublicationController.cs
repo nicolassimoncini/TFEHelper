@@ -17,11 +17,11 @@ namespace TFEHelper.Backend.API.Controllers
     {
         private readonly ILogger<PublicationController> _logger;
         private readonly IRepository _repository;
-        private readonly ITFEEngine _engine;
+        private readonly ITFEHelperEngine _engine;
         private readonly IMapper _mapper;
         protected APIResponse _response;
 
-        public PublicationController(ILogger<PublicationController> logger, IRepository repository, ITFEEngine engine, IMapper mapper)
+        public PublicationController(ILogger<PublicationController> logger, IRepository repository, ITFEHelperEngine engine, IMapper mapper)
         {
             _logger = logger;
             _repository = repository;
@@ -29,7 +29,7 @@ namespace TFEHelper.Backend.API.Controllers
             _mapper = mapper;
             _response = new();
         }
-
+#warning meter todos los "*._repository en TFEHelperEngine para abstraer el repositorio de la API...
         [HttpGet("GetPublications")]
         [ResponseCache(CacheProfileName = "Default30")]
         [ProducesResponseType(StatusCodes.Status200OK)]

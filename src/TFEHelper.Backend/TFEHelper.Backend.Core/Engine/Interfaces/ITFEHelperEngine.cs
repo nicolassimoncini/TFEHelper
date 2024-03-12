@@ -3,7 +3,7 @@ using TFEHelper.Backend.Domain.Enums;
 
 namespace TFEHelper.Backend.Core.Engine.Interfaces
 {
-    public interface ITFEEngine
+    public interface ITFEHelperEngine
     {
         Task ImportPublicationsAsync(string filePath, FileFormatType formatType, SearchSourceType source, CancellationToken cancellationToken = default);
 

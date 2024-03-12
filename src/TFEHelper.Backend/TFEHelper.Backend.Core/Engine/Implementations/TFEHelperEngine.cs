@@ -11,16 +11,16 @@ using TFEHelper.Backend.Infrastructure.Database.Interfaces;
 
 namespace TFEHelper.Backend.Core.Engine.Implementations
 {
-    public sealed class TFEEngine : ITFEEngine
+    public sealed class TFEHelperEngine : ITFEHelperEngine
     {
         private List<Publication> _publications;
-        private readonly ILogger<TFEEngine> _logger;
+        private readonly ILogger<TFEHelperEngine> _logger;
         private readonly IRepository _repository;
         private readonly IMapper _mapper;
         private readonly BibTeXProcessor _bibTeXProcessor;
         private readonly CSVProcessor _csvProcessor;
 
-        public TFEEngine(ILogger<TFEEngine> logger, IRepository repository, IMapper mapper)
+        public TFEHelperEngine(ILogger<TFEHelperEngine> logger, IRepository repository, IMapper mapper)
         {
             _logger = logger;
             _repository = repository;
