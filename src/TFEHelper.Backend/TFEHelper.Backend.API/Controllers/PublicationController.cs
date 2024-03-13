@@ -188,9 +188,9 @@ namespace TFEHelper.Backend.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIResponse>> ImportPublications(string filePath, FileFormatType formatType, SearchSourceType source, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<APIResponse>> ImportPublications(string filePath, FileFormatType formatType, SearchSourceType source, bool discardInvalidRecords = true, CancellationToken cancellationToken = default)
         {
-            await _engine.ImportPublicationsAsync(filePath, formatType, source, cancellationToken);
+            await _engine.ImportPublicationsAsync(filePath, formatType, source, discardInvalidRecords, cancellationToken);
 
             _response.IsSuccessful = true;
             _response.StatusCode = HttpStatusCode.Created;

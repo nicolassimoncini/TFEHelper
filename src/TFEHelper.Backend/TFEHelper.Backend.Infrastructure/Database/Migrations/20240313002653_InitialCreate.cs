@@ -27,7 +27,7 @@ namespace TFEHelper.Backend.Infrastructure.Database.Migrations
                     Year = table.Column<int>(type: "INTEGER", nullable: false),
                     ISBN = table.Column<string>(type: "TEXT", nullable: true),
                     ISSN = table.Column<string>(type: "TEXT", nullable: true),
-                    Abstract = table.Column<string>(type: "TEXT", nullable: false),
+                    Abstract = table.Column<string>(type: "TEXT", nullable: true),
                     Pages = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>

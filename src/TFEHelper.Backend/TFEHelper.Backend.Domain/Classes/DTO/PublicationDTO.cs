@@ -13,10 +13,13 @@ namespace TFEHelper.Backend.Domain.Classes.DTO
     public class PublicationDTO : ITFEHelperDTO
     {
         public int Id { get; set; }
+        [Required]
         public BibTeXPublicationType Type { get; set; }
         public string Key { get; set; }
+        [Required]
         public SearchSourceType Source { get; set; }
         public string URL { get; set; }
+        [Required]
         public string Title { get; set; }
         public string Authors { get; set; }
         public string Keywords { get; set; }

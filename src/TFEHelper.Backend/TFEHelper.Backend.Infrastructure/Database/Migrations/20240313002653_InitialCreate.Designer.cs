@@ -10,7 +10,7 @@ using TFEHelper.Backend.Infrastructure.Database.Implementations;
 namespace TFEHelper.Backend.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240309171308_InitialCreate")]
+    [Migration("20240313002653_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -26,7 +26,6 @@ namespace TFEHelper.Backend.Infrastructure.Database.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Abstract")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Authors")

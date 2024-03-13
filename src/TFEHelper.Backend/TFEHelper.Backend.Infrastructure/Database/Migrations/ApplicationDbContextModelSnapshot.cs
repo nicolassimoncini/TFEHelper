@@ -23,7 +23,6 @@ namespace TFEHelper.Backend.Infrastructure.Database.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Abstract")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Authors")

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Logging;
 using TFEHelper.Backend.Core.Engine.Interfaces;
 using TFEHelper.Backend.Core.Processors.BibTeX;
@@ -6,8 +7,8 @@ using TFEHelper.Backend.Core.Processors.CSV;
 using TFEHelper.Backend.Domain.Classes.Models;
 using TFEHelper.Backend.Domain.Enums;
 using TFEHelper.Backend.Domain.Extensions;
-using TFEHelper.Backend.Domain.Interfaces;
 using TFEHelper.Backend.Infrastructure.Database.Interfaces;
+using ModelValidator = TFEHelper.Backend.Tools.ComponentModel.ModelValidator;
 
 namespace TFEHelper.Backend.Core.Engine.Implementations
 {
@@ -42,7 +43,7 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
         }
         */
 
-        public async Task ImportPublicationsAsync(string filePath, FileFormatType formatType, SearchSourceType source, CancellationToken cancellationToken = default)
+        public async Task ImportPublicationsAsync(string filePath, FileFormatType formatType, SearchSourceType source, bool discardInvalidRecords = true, CancellationToken cancellationToken = default)
         {
             switch (formatType)
             {
@@ -50,10 +51,15 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
                     _publications = await _bibTeXProcessor.ImportAsync(filePath, source, cancellationToken);
                     break;
                 case FileFormatType.CSV:
-                    _publications = await _bibTeXProcessor.ImportAsync(filePath, source, cancellationToken);
+                    _publications = await _csvProcessor.ImportAsync(filePath, source, cancellationToken);
                     break;
                 default:
                     break;
+            }
+
+            if (discardInvalidRecords)
+            {
+                _publications.RemoveAll(p => !ModelValidator.IsModelValid(p));
             }
 
             await _repository.CreateRangeAsync(_publications, cancellationToken);
@@ -64,7 +70,7 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
             switch (formatType)
             {
                 case FileFormatType.BibTeX:
-                    await _csvProcessor.ExportAsync(publications, filePath, cancellationToken);
+                    await _bibTeXProcessor.ExportAsync(publications, filePath, cancellationToken);
                     break;
                 case FileFormatType.CSV:
                     await _csvProcessor.ExportAsync(publications, filePath, cancellationToken);

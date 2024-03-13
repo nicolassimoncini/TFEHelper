@@ -34,7 +34,6 @@ namespace TFEHelper.Backend.Domain.Classes.Models
         public int Year { get; set; }
         public string ISBN { get; set; }
         public string ISSN { get; set; }
-        [Required]
         public string Abstract { get; set; }
         public string Pages { get; set; }
     }
