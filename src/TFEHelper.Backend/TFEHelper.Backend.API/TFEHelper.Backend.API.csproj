@@ -29,7 +29,6 @@
   <ItemGroup>
     <ProjectReference Include="..\TFEHelper.Backend.Core\TFEHelper.Backend.Core.csproj" />
     <ProjectReference Include="..\TFEHelper.Backend.Domain\TFEHelper.Backend.Domain.csproj" />
-    <ProjectReference Include="..\TFEHelper.Backend.Infrastructure\TFEHelper.Backend.Infrastructure.csproj" />
     <ProjectReference Include="..\TFEHelper.Backend.Tools\TFEHelper.Backend.Tools.csproj" />
   </ItemGroup>
 

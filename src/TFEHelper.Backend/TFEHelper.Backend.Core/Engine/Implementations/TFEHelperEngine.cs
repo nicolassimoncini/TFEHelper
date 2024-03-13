@@ -16,15 +16,15 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
     {
         private List<Publication> _publications;
         private readonly ILogger<TFEHelperEngine> _logger;
-        private readonly IRepository _repository;
+        private readonly IEntitiesManager _entitiesManager;
         private readonly IMapper _mapper;
         private readonly BibTeXProcessor _bibTeXProcessor;
         private readonly CSVProcessor _csvProcessor;
 
-        public TFEHelperEngine(ILogger<TFEHelperEngine> logger, IRepository repository, IMapper mapper)
+        public TFEHelperEngine(ILogger<TFEHelperEngine> logger, IEntitiesManager entitiesManager, IMapper mapper)
         {
             _logger = logger;
-            _repository = repository;
+            _entitiesManager = entitiesManager;
             _mapper = mapper;
             _bibTeXProcessor = new BibTeXProcessor();
             _csvProcessor = new CSVProcessor();
@@ -33,6 +33,8 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
         }
         
         /*
+        // Ojo, esta capa no tiene que saber cómo dialogar con quien la invocó.  Por eso, no debería mapear hacia DTO.
+        // La capa exterior es la responsable de mapear entidades hacia adentro y no al revés...
         public async Task<D> UpdateAsync<D, M>(M entity, CancellationToken cancellationToken = default)
             where D : class, ITFEHelperDTO, new()
             where M : class, ITFEHelperModel            
@@ -62,7 +64,7 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
                 _publications.RemoveAll(p => !ModelValidator.IsModelValid(p));
             }
 
-            await _repository.CreateRangeAsync(_publications, cancellationToken);
+            await _entitiesManager.CreateRangeAsync(_publications, cancellationToken);
         }
 
         public async Task ExportPublicationsAsync(List<Publication> publications, string filePath, FileFormatType formatType, CancellationToken cancellationToken = default)

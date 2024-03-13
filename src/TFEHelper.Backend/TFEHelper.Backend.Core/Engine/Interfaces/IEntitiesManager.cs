@@ -1,13 +1,10 @@
 ﻿using System.Linq.Expressions;
-using System.Threading.Tasks;
 using TFEHelper.Backend.Domain.Classes.API.Specifications;
-using TFEHelper.Backend.Domain.Classes.Database.Specifications;
 using TFEHelper.Backend.Domain.Interfaces;
 
-
-namespace TFEHelper.Backend.Infrastructure.Database.Interfaces
+namespace TFEHelper.Backend.Core.Engine.Interfaces
 {
-    public interface IRepository
+    public interface IEntitiesManager
     {
         Task CreateAsync<T>(T entity, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel;
 
@@ -22,7 +19,5 @@ namespace TFEHelper.Backend.Infrastructure.Database.Interfaces
         Task<T> UpdateAsync<T>(T publication, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel;
 
         Task RemoveAsync<T>(T entity, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel;
-
-        Task<List<T>> RunDatabaseQueryAsync<T>(string query, CancellationToken cancellationToken = default, params IDatabaseParameter[] parameters) where T : class, ITFEHelperModel;
     }
 }

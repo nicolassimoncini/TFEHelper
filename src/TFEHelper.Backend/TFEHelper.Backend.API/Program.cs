@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -80,6 +79,7 @@ internal class Program
         builder.Services.AddAutoMapper(typeof(MappingConfig));
 
         builder.Services.AddScoped<IRepository, Repository>();
+        builder.Services.AddScoped<IEntitiesManager, EntitiesManager>();
         builder.Services.AddScoped<ITFEHelperEngine, TFEHelperEngine>();
 
         var app = builder.Build();

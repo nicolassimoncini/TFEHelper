@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using TFEHelper.Backend.Core.Engine.Implementations;
 using TFEHelper.Backend.Core.Engine.Interfaces;
 using TFEHelper.Backend.Domain.Classes.API;
 using TFEHelper.Backend.Domain.Classes.API.Specifications;
@@ -16,20 +17,20 @@ namespace TFEHelper.Backend.API.Controllers
     public class PublicationController : ControllerBase
     {
         private readonly ILogger<PublicationController> _logger;
-        private readonly IRepository _repository;
+        private readonly IEntitiesManager _entitiesManager;
         private readonly ITFEHelperEngine _engine;
         private readonly IMapper _mapper;
         protected APIResponse _response;
 
-        public PublicationController(ILogger<PublicationController> logger, IRepository repository, ITFEHelperEngine engine, IMapper mapper)
+        public PublicationController(ILogger<PublicationController> logger, IEntitiesManager entitiesManager, ITFEHelperEngine engine, IMapper mapper)
         {
             _logger = logger;
-            _repository = repository;
+            _entitiesManager = entitiesManager;
             _engine = engine;
             _mapper = mapper;
             _response = new();
         }
-#warning meter todos los "*._repository en TFEHelperEngine para abstraer el repositorio de la API...
+
         [HttpGet("GetPublications")]
         [ResponseCache(CacheProfileName = "Default30")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -38,7 +39,7 @@ namespace TFEHelper.Backend.API.Controllers
         {
             _logger.LogInformation("Obteniendo publicaciones...");
 
-            IEnumerable<Publication> publicationList = await _repository.GetAllAsync<Publication>(cancellationToken:cancellationToken);
+            IEnumerable<Publication> publicationList = await _entitiesManager.GetAllAsync<Publication>(cancellationToken:cancellationToken);
 
             _response.IsSuccessful = publicationList.Any();
             _response.Payload = _mapper.Map<IEnumerable<PublicationDTO>>(publicationList);
@@ -53,7 +54,7 @@ namespace TFEHelper.Backend.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<APIResponse> GetPublicationsPaginated([FromQuery] PaginationParameters parameters)
         {
-            var publicationList = _repository.GetAllPaginated<Publication>(parameters);
+            var publicationList = _entitiesManager.GetAllPaginated<Publication>(parameters);
 
             _response.IsSuccessful = publicationList.Any();
             _response.Payload = _mapper.Map<IEnumerable<PublicationDTO>>(publicationList);
@@ -69,7 +70,7 @@ namespace TFEHelper.Backend.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<APIResponse>> GetPublication(int id, CancellationToken cancellationToken = default)
         {
-            var publication = await _repository.GetAsync<Publication>(v => v.Id == id, cancellationToken: cancellationToken);
+            var publication = await _entitiesManager.GetAsync<Publication>(v => v.Id == id, cancellationToken: cancellationToken);
 
             if (publication == null)
             {
@@ -94,7 +95,7 @@ namespace TFEHelper.Backend.API.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             Publication model = _mapper.Map<Publication>(publication);
-            await _repository.CreateAsync(model, cancellationToken: cancellationToken);
+            await _entitiesManager.CreateAsync(model, cancellationToken: cancellationToken);
 
             _response.IsSuccessful = true;
             _response.Payload = publication;
@@ -109,7 +110,7 @@ namespace TFEHelper.Backend.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> RemovePublication(int id, CancellationToken cancellationToken = default)
         {
-            var publication = await _repository.GetAsync<Publication>(v => v.Id == id, cancellationToken: cancellationToken);
+            var publication = await _entitiesManager.GetAsync<Publication>(v => v.Id == id, cancellationToken: cancellationToken);
 
             if (publication == null)
             {
@@ -117,7 +118,7 @@ namespace TFEHelper.Backend.API.Controllers
                 _response.StatusCode = HttpStatusCode.NotFound;
                 return NotFound(_response);
             }
-            await _repository.RemoveAsync(publication, cancellationToken: cancellationToken);
+            await _entitiesManager.RemoveAsync(publication, cancellationToken: cancellationToken);
 
             _response.IsSuccessful = true;
             _response.Payload = _mapper.Map<PublicationDTO>(publication);
@@ -146,7 +147,7 @@ namespace TFEHelper.Backend.API.Controllers
 
             Publication model = _mapper.Map<Publication>(publication);
 
-            await _repository.UpdateAsync(model, cancellationToken: cancellationToken);
+            await _entitiesManager.UpdateAsync(model, cancellationToken: cancellationToken);
             
             _response.IsSuccessful = true;
             _response.Payload = publication;
@@ -161,7 +162,7 @@ namespace TFEHelper.Backend.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdatePartialPublication(int id, JsonPatchDocument<PublicationDTO> publication, CancellationToken cancellationToken = default)
         {
-            var _currentPublication = await _repository.GetAsync<Publication>(v => v.Id == id, tracked: false, cancellationToken: cancellationToken);
+            var _currentPublication = await _entitiesManager.GetAsync<Publication>(v => v.Id == id, tracked: false, cancellationToken: cancellationToken);
 
             if (_currentPublication == null) return NotFound();
 
@@ -176,7 +177,7 @@ namespace TFEHelper.Backend.API.Controllers
 
             Publication modelo = _mapper.Map<Publication>(_currentPublicationDTO);
 
-            await _repository.UpdateAsync(modelo, cancellationToken: cancellationToken);
+            await _entitiesManager.UpdateAsync(modelo, cancellationToken: cancellationToken);
             
             _response.IsSuccessful = true;
             _response.Payload = _currentPublicationDTO;
@@ -204,7 +205,7 @@ namespace TFEHelper.Backend.API.Controllers
         public async Task<ActionResult<APIResponse>> ExportPublications(string filePath, FileFormatType formatType, CancellationToken cancellationToken = default)
         {
 
-            await _engine.ExportPublicationsAsync(await _repository.GetAllAsync<Publication>(), filePath, formatType, cancellationToken);
+            await _engine.ExportPublicationsAsync(await _entitiesManager.GetAllAsync<Publication>(), filePath, formatType, cancellationToken);
 
             _response.IsSuccessful = true;
             _response.StatusCode = HttpStatusCode.OK;
