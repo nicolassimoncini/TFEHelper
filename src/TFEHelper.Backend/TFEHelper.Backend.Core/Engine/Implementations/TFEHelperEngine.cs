@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Logging;
+using System.Linq.Expressions;
 using TFEHelper.Backend.Core.Engine.Interfaces;
 using TFEHelper.Backend.Core.Processors.BibTeX;
 using TFEHelper.Backend.Core.Processors.CSV;
+using TFEHelper.Backend.Domain.Classes.API.Specifications;
 using TFEHelper.Backend.Domain.Classes.Models;
 using TFEHelper.Backend.Domain.Enums;
 using TFEHelper.Backend.Domain.Extensions;
+using TFEHelper.Backend.Domain.Interfaces;
 using TFEHelper.Backend.Infrastructure.Database.Interfaces;
 using ModelValidator = TFEHelper.Backend.Tools.ComponentModel.ModelValidator;
 
@@ -16,22 +18,22 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
     {
         private List<Publication> _publications;
         private readonly ILogger<TFEHelperEngine> _logger;
-        private readonly IEntitiesManager _entitiesManager;
+        private readonly IRepository _repository;
         private readonly IMapper _mapper;
         private readonly BibTeXProcessor _bibTeXProcessor;
         private readonly CSVProcessor _csvProcessor;
 
-        public TFEHelperEngine(ILogger<TFEHelperEngine> logger, IEntitiesManager entitiesManager, IMapper mapper)
+        public TFEHelperEngine(ILogger<TFEHelperEngine> logger, IRepository repository, IMapper mapper)
         {
             _logger = logger;
-            _entitiesManager = entitiesManager;
+            _repository = repository;
             _mapper = mapper;
             _bibTeXProcessor = new BibTeXProcessor();
             _csvProcessor = new CSVProcessor();
 
             _publications = new List<Publication>();
         }
-        
+
         /*
         // Ojo, esta capa no tiene que saber cómo dialogar con quien la invocó.  Por eso, no debería mapear hacia DTO.
         // La capa exterior es la responsable de mapear entidades hacia adentro y no al revés...
@@ -44,6 +46,41 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
             return _mapper.Map<D>(entity);
         }
         */
+
+        public async Task CreateAsync<T>(T entity, CancellationToken cancellationToken) where T : class, ITFEHelperModel
+        {
+            await _repository.CreateAsync(entity, cancellationToken);
+        }
+
+        public async Task CreateRangeAsync<T>(IEnumerable<T> entities, CancellationToken cancellationToken) where T : class, ITFEHelperModel
+        {
+            await _repository.CreateRangeAsync(entities, cancellationToken);
+        }
+
+        public async Task<List<T>> GetAllAsync<T>(Expression<Func<T, bool>>? filter, string? includedProperties, CancellationToken cancellationToken) where T : class, ITFEHelperModel
+        {
+            return await _repository.GetAllAsync(filter, includedProperties, cancellationToken);
+        }
+
+        public PaginatedList<T> GetAllPaginated<T>(PaginationParameters parameters, Expression<Func<T, bool>>? filter, string? includedProperties) where T : class, ITFEHelperModel
+        {
+            return _repository.GetAllPaginated(parameters, filter, includedProperties);
+        }
+
+        public async Task<T?> GetAsync<T>(Expression<Func<T, bool>>? filter, bool tracked, string? includedProperties, CancellationToken cancellationToken) where T : class, ITFEHelperModel
+        {
+            return await _repository.GetAsync(filter, tracked, includedProperties, cancellationToken);
+        }
+
+        public async Task RemoveAsync<T>(T entity, CancellationToken cancellationToken) where T : class, ITFEHelperModel
+        {
+            await _repository.RemoveAsync(entity, cancellationToken);
+        }
+
+        public async Task<T> UpdateAsync<T>(T publication, CancellationToken cancellationToken) where T : class, ITFEHelperModel
+        {
+            return await _repository.UpdateAsync(publication, cancellationToken);
+        }
 
         public async Task ImportPublicationsAsync(string filePath, FileFormatType formatType, SearchSourceType source, bool discardInvalidRecords = true, CancellationToken cancellationToken = default)
         {
@@ -64,7 +101,7 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
                 _publications.RemoveAll(p => !ModelValidator.IsModelValid(p));
             }
 
-            await _entitiesManager.CreateRangeAsync(_publications, cancellationToken);
+            await CreateRangeAsync(_publications, cancellationToken);
         }
 
         public async Task ExportPublicationsAsync(List<Publication> publications, string filePath, FileFormatType formatType, CancellationToken cancellationToken = default)
@@ -89,7 +126,6 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
         /// <returns></returns>
         public List<Publication> PerformRf1(List<Publication> publications)
         {
-#warning usar "contains" de Dynamic Linq Library (buscar en nuget / https://dynamic-linq.net/)
 #warning usar queries dinámicas con expression trees (https://code-maze.com/dynamic-queries-expression-trees-csharp/)
 
             var filtered = new List<Publication>();
