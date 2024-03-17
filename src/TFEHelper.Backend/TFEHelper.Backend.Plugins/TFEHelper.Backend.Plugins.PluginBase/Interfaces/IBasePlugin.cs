@@ -9,6 +9,7 @@ namespace TFEHelper.Backend.Plugins.PluginBase.Interfaces
     public interface IBasePlugin
     {
         public string Name { get; }
+        public Version Version { get; }
         public string Description { get; }
     }
 }

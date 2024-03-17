@@ -4,7 +4,7 @@ using TFEHelper.Backend.Domain.Classes.DTO;
 using BibTeXPublicationTypeFromPlugin = TFEHelper.Backend.Plugins.PluginBase.Enums.BibTeXPublicationType;
 using BibTeXPublicationTypeLocal = TFEHelper.Backend.Domain.Enums.BibTeXPublicationType;
 using PublicationFromPlugin = TFEHelper.Backend.Plugins.PluginBase.Classes.Publication;
-using PublicationLocal = TFEHelper.Backend.Domain.Classes.Models.Publication;
+using PublicationModel = TFEHelper.Backend.Domain.Classes.Models.Publication;
 
 namespace TFEHelper.Backend.Domain.Config
 {
@@ -12,11 +12,12 @@ namespace TFEHelper.Backend.Domain.Config
     {
         public MappingConfig()
         {
-            CreateMap<PublicationLocal, PublicationDTO>().ReverseMap();
-            CreateMap<PublicationLocal, PublicationFromPlugin>().ReverseMap();
+            CreateMap<PublicationModel, PublicationDTO>().ReverseMap();
+            CreateMap<PublicationModel, PublicationFromPlugin>().ReverseMap();
             CreateMap<BibTeXPublicationTypeLocal, BibTeXPublicationTypeFromPlugin>()
                 .ConvertUsingEnumMapping(opt => opt.MapByValue())
-                .ReverseMap();            
+                .ReverseMap(); 
+            CreateMap<PluginInfo, PluginInfoDTO>().ReverseMap();
         }
     }
 }

@@ -2,14 +2,18 @@
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using TFEHelper.Backend.Core.Engine.Interfaces;
+using TFEHelper.Backend.Core.Plugin.Implementations;
+using TFEHelper.Backend.Core.Plugin.Interfaces;
 using TFEHelper.Backend.Core.Processors.BibTeX;
 using TFEHelper.Backend.Core.Processors.CSV;
 using TFEHelper.Backend.Domain.Classes.API.Specifications;
+using TFEHelper.Backend.Domain.Classes.DTO;
 using TFEHelper.Backend.Domain.Classes.Models;
 using TFEHelper.Backend.Domain.Enums;
 using TFEHelper.Backend.Domain.Extensions;
 using TFEHelper.Backend.Domain.Interfaces;
 using TFEHelper.Backend.Infrastructure.Database.Interfaces;
+using TFEHelper.Backend.Plugins.PluginBase.Interfaces;
 using ModelValidator = TFEHelper.Backend.Tools.ComponentModel.ModelValidator;
 
 namespace TFEHelper.Backend.Core.Engine.Implementations
@@ -19,33 +23,22 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
         private List<Publication> _publications;
         private readonly ILogger<TFEHelperEngine> _logger;
         private readonly IRepository _repository;
+        private readonly IPluginManager _pluginManager;
         private readonly IMapper _mapper;
         private readonly BibTeXProcessor _bibTeXProcessor;
         private readonly CSVProcessor _csvProcessor;
 
-        public TFEHelperEngine(ILogger<TFEHelperEngine> logger, IRepository repository, IMapper mapper)
+        public TFEHelperEngine(ILogger<TFEHelperEngine> logger, IRepository repository, IPluginManager pluginManager, IMapper mapper)
         {
+            _publications = new List<Publication>();
+
             _logger = logger;
             _repository = repository;
+            _pluginManager = pluginManager;
             _mapper = mapper;
             _bibTeXProcessor = new BibTeXProcessor();
-            _csvProcessor = new CSVProcessor();
-
-            _publications = new List<Publication>();
+            _csvProcessor = new CSVProcessor();            
         }
-
-        /*
-        // Ojo, esta capa no tiene que saber cómo dialogar con quien la invocó.  Por eso, no debería mapear hacia DTO.
-        // La capa exterior es la responsable de mapear entidades hacia adentro y no al revés...
-        public async Task<D> UpdateAsync<D, M>(M entity, CancellationToken cancellationToken = default)
-            where D : class, ITFEHelperDTO, new()
-            where M : class, ITFEHelperModel            
-        {
-            await _repository.UpdateAsync<M>(entity, cancellationToken);
-            await _repository.SaveAsync<M>(cancellationToken);
-            return _mapper.Map<D>(entity);
-        }
-        */
 
         public async Task CreateAsync<T>(T entity, CancellationToken cancellationToken) where T : class, ITFEHelperModel
         {
@@ -117,6 +110,30 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
                 default:
                     break;
             }
+        }
+
+        public IEnumerable<PluginInfo> GetPublicationsCollectorPlugins()
+        {
+            return _pluginManager.GetPlugins<IPublicationsCollector>().Select(p => 
+                new PluginInfo() 
+                {  
+                    Name = p.Name,
+                    Description = p.Description,
+                    Type = PluginType.PublicationsCollector,
+                    Version = p.Version.ToString()
+                }).ToList();
+        }
+
+        public async Task<IEnumerable<Publication>> GetPublicationsFromPluginAsync(PluginInfo pluginInfo, string searchQuery, CancellationToken cancellationToken = default) 
+        {
+            IPublicationsCollector plugin = _pluginManager
+                .GetPlugins<IPublicationsCollector>()
+                .Where(p => p.Name == pluginInfo.Name && p.Version.ToString() == pluginInfo.Version).First()                 
+                
+                ?? throw new Exception($"Plugin {pluginInfo} does not exist in this context!");
+
+            var pluginPublications = await plugin.GetPublicationsAsync(searchQuery, cancellationToken);
+            return _mapper.Map<IEnumerable<Publication>>(pluginPublications);
         }
 
         /// <summary>

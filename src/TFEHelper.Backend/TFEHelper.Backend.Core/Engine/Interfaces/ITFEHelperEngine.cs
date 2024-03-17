@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using TFEHelper.Backend.Domain.Classes.API.Specifications;
+using TFEHelper.Backend.Domain.Classes.DTO;
 using TFEHelper.Backend.Domain.Classes.Models;
 using TFEHelper.Backend.Domain.Enums;
 using TFEHelper.Backend.Domain.Interfaces;
@@ -25,5 +26,9 @@ namespace TFEHelper.Backend.Core.Engine.Interfaces
         Task ImportPublicationsAsync(string filePath, FileFormatType formatType, SearchSourceType source, bool discardInvalidRecords = true, CancellationToken cancellationToken = default);
 
         Task ExportPublicationsAsync(List<Publication> publications, string filePath, FileFormatType formatType, CancellationToken cancellationToken = default);
+
+        IEnumerable<PluginInfo> GetPublicationsCollectorPlugins();
+
+        Task<IEnumerable<Publication>> GetPublicationsFromPluginAsync(PluginInfo pluginInfo, string searchQuery, CancellationToken cancellationToken = default);
     }
 }

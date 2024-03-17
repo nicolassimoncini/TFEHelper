@@ -5,6 +5,8 @@ using TFEHelper.Backend.API.Configuration;
 using TFEHelper.Backend.API.Middleware;
 using TFEHelper.Backend.Core.Engine.Implementations;
 using TFEHelper.Backend.Core.Engine.Interfaces;
+using TFEHelper.Backend.Core.Plugin.Implementations;
+using TFEHelper.Backend.Core.Plugin.Interfaces;
 using TFEHelper.Backend.Domain.Config;
 using TFEHelper.Backend.Infrastructure.Database.Implementations;
 using TFEHelper.Backend.Infrastructure.Database.Interfaces;
@@ -79,9 +81,12 @@ internal class Program
         builder.Services.AddAutoMapper(typeof(MappingConfig));
 
         builder.Services.AddScoped<IRepository, Repository>();
+        builder.Services.AddSingleton<IPluginManager, PluginManager>();    
         builder.Services.AddScoped<ITFEHelperEngine, TFEHelperEngine>();
 
         var app = builder.Build();
+
+        app.Services.GetService<IPluginManager>()?.Scan();      
 
         app.UseResponseCaching();
         app.UseSwagger();
