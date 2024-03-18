@@ -13,6 +13,7 @@ namespace TFEHelper.Backend.Tools.Assembly
             return assembly.GetTypes()
                 .Where(type => typeof(T).IsAssignableFrom(type)
                     && type.IsClass
+                    && type.IsPublic
                     && !type.IsAbstract
                     && !type.IsGenericType
                     && type.GetConstructor(new Type[0]) != null)

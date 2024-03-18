@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TFEHelper.Backend.Plugins",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFEHelper.Backend.Plugins.PluginBase", "TFEHelper.Backend.Plugins\TFEHelper.Backend.Plugins.PluginBase\TFEHelper.Backend.Plugins.PluginBase.csproj", "{BA3E5965-C11D-4410-83DF-58A425BFD490}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFEHelper.Backend.Plugins.Dummy", "TFEHelper.Backend.Plugins\TFEHelper.Backend.Plugins.Dummy\TFEHelper.Backend.Plugins.Dummy.csproj", "{BFD78D23-237D-472B-AD23-A1365F3FB53D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,12 +55,17 @@ Global
 		{BA3E5965-C11D-4410-83DF-58A425BFD490}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA3E5965-C11D-4410-83DF-58A425BFD490}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA3E5965-C11D-4410-83DF-58A425BFD490}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFD78D23-237D-472B-AD23-A1365F3FB53D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFD78D23-237D-472B-AD23-A1365F3FB53D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFD78D23-237D-472B-AD23-A1365F3FB53D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFD78D23-237D-472B-AD23-A1365F3FB53D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{BA3E5965-C11D-4410-83DF-58A425BFD490} = {1127FEB1-5E77-4242-93F2-9ABA2290B273}
+		{BFD78D23-237D-472B-AD23-A1365F3FB53D} = {1127FEB1-5E77-4242-93F2-9ABA2290B273}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C0B3D73E-CF42-498C-97C5-06A8F7372B49}

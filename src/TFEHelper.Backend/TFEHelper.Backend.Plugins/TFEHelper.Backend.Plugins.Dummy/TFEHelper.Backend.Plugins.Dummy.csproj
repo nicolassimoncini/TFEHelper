@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<!--<ImplicitUsings>enable</ImplicitUsings>-->
+		<!--<Nullable>enable</Nullable>-->
+		<EnableDynamicLoading>true</EnableDynamicLoading>
+		<BaseOutputPath>..\..\TFEHelper.Backend.API\bin</BaseOutputPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\TFEHelper.Backend.Plugins.PluginBase\TFEHelper.Backend.Plugins.PluginBase.csproj">
+		  <Private>false</Private>
+		  <ExcludeAssets>runtime</ExcludeAssets>
+		</ProjectReference>
+	</ItemGroup>
+
+</Project>

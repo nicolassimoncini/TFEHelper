@@ -115,22 +115,20 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
         public IEnumerable<PluginInfo> GetPublicationsCollectorPlugins()
         {
             return _pluginManager.GetPlugins<IPublicationsCollector>().Select(p => 
-                new PluginInfo() 
-                {  
-                    Name = p.Name,
-                    Description = p.Description,
-                    Type = PluginType.PublicationsCollector,
-                    Version = p.Version.ToString()
-                }).ToList();
+            new PluginInfo()
+            {
+                Name = p.Name,
+                Version = p.Version,
+                Description = p.Description,
+                Type = PluginType.PublicationsCollector
+            });
         }
 
         public async Task<IEnumerable<Publication>> GetPublicationsFromPluginAsync(PluginInfo pluginInfo, string searchQuery, CancellationToken cancellationToken = default) 
         {
-            IPublicationsCollector plugin = _pluginManager
-                .GetPlugins<IPublicationsCollector>()
-                .Where(p => p.Name == pluginInfo.Name && p.Version.ToString() == pluginInfo.Version).First()                 
-                
-                ?? throw new Exception($"Plugin {pluginInfo} does not exist in this context!");
+            var plugin = _pluginManager.GetPlugin<IPublicationsCollector>(pluginInfo);
+
+            if (plugin == null) throw new Exception($"Plugin {pluginInfo} does not exist in this context!");
 
             var pluginPublications = await plugin.GetPublicationsAsync(searchQuery, cancellationToken);
             return _mapper.Map<IEnumerable<Publication>>(pluginPublications);

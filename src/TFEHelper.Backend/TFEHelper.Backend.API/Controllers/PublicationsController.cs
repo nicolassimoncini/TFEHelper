@@ -2,26 +2,25 @@
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using TFEHelper.Backend.Core.Engine.Implementations;
 using TFEHelper.Backend.Core.Engine.Interfaces;
 using TFEHelper.Backend.Domain.Classes.API;
 using TFEHelper.Backend.Domain.Classes.API.Specifications;
 using TFEHelper.Backend.Domain.Classes.DTO;
 using TFEHelper.Backend.Domain.Classes.Models;
 using TFEHelper.Backend.Domain.Enums;
-using TFEHelper.Backend.Infrastructure.Database.Interfaces;
 
 namespace TFEHelper.Backend.API.Controllers
 {
     [ApiController]
-    public class PublicationController : ControllerBase
+    [Route("[controller]")]
+    public class PublicationsController : ControllerBase
     {
-        private readonly ILogger<PublicationController> _logger;
+        private readonly ILogger<PublicationsController> _logger;
         private readonly ITFEHelperEngine _engine;
         private readonly IMapper _mapper;
         protected APIResponse _response;
 
-        public PublicationController(ILogger<PublicationController> logger, ITFEHelperEngine engine, IMapper mapper)
+        public PublicationsController(ILogger<PublicationsController> logger, ITFEHelperEngine engine, IMapper mapper)
         {
             _logger = logger;
             _engine = engine;
@@ -29,7 +28,7 @@ namespace TFEHelper.Backend.API.Controllers
             _response = new();
         }
 
-        [HttpGet("GetPublications")]
+        [HttpGet]
         [ResponseCache(CacheProfileName = "Default30")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -46,7 +45,7 @@ namespace TFEHelper.Backend.API.Controllers
             return Ok(_response);
         }
 
-        [HttpGet("GetPublicationsPaginated")]
+        [HttpGet("Paginated")]
         [ResponseCache(CacheProfileName = "Default30", VaryByQueryKeys = ["parameters"])]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -84,19 +83,17 @@ namespace TFEHelper.Backend.API.Controllers
             return Ok(_response);
         }
 
-        [HttpPost("CreatePublication")]
+        [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<APIResponse>> CreatePublication([FromBody] PublicationDTO publication, CancellationToken cancellationToken = default)
         { 
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
             Publication model = _mapper.Map<Publication>(publication);
             await _engine.CreateAsync(model, cancellationToken: cancellationToken);
 
             _response.IsSuccessful = true;
-            _response.Payload = publication;
+            _response.Payload = _mapper.Map<PublicationDTO>(model);
             _response.StatusCode = HttpStatusCode.Created;
 
             return CreatedAtRoute("GetPublication", new { id = model.Id }, _response);
@@ -138,11 +135,6 @@ namespace TFEHelper.Backend.API.Controllers
                 return BadRequest(_response);
             }
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             Publication model = _mapper.Map<Publication>(publication);
 
             await _engine.UpdateAsync(model, cancellationToken: cancellationToken);
@@ -168,11 +160,6 @@ namespace TFEHelper.Backend.API.Controllers
 
             publication.ApplyTo(_currentPublicationDTO, ModelState);
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             Publication modelo = _mapper.Map<Publication>(_currentPublicationDTO);
 
             await _engine.UpdateAsync(modelo, cancellationToken: cancellationToken);
@@ -183,7 +170,7 @@ namespace TFEHelper.Backend.API.Controllers
             return Ok(_response);
         }
 
-        [HttpPost("ImportPublications")]
+        [HttpPost("Import")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -196,7 +183,7 @@ namespace TFEHelper.Backend.API.Controllers
             return Ok(_response);
         }
 
-        [HttpPost("ExportPublications")]
+        [HttpPost("Export")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

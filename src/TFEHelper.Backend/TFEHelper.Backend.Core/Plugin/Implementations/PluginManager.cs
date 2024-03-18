@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TFEHelper.Backend.Core.Plugin.Interfaces;
+using TFEHelper.Backend.Domain.Classes.Models;
+using TFEHelper.Backend.Domain.Enums;
 using TFEHelper.Backend.Plugins.PluginBase.Interfaces;
 using TFEHelper.Backend.Tools.Assembly;
 
@@ -33,11 +35,11 @@ namespace TFEHelper.Backend.Core.Plugin.Implementations
             {
                 return AssemblyHelper.GetAllImplementersOf<IBasePlugin>(LoadAssembly(pluginPath));
             }).ToList();
-
+  
             if (_plugins.Any())
             {
-                _logger.LogInformation("{0} plugins detected:", _plugins.Count());
-                _plugins.ToList().ForEach(p => _logger.LogInformation("--> {0} - v{1}", p.Name, p.Version.ToString()));
+                _logger.LogInformation($"{_plugins.Count()} plugin(s) detected:");
+                _plugins.ToList().ForEach(p => _logger.LogInformation($"--> {p.Name} - v{p.Version}"));
             }
             else _logger.LogInformation("No plugins detected.");
         }
@@ -50,7 +52,12 @@ namespace TFEHelper.Backend.Core.Plugin.Implementations
 
         public IEnumerable<T> GetPlugins<T>() where T : IBasePlugin
         {
-            return _plugins.OfType<T>();
+            return _plugins.OfType<T>().ToList();
+        }
+
+        public T GetPlugin<T>(PluginInfo pluginInfo) where T : IBasePlugin
+        {
+            return _plugins.OfType<T>().FirstOrDefault(p => p.Name == pluginInfo.Name && p.Version == pluginInfo.Version)!;
         }
     }
 }
