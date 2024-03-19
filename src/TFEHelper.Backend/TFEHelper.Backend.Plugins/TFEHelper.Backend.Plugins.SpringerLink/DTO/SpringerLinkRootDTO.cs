@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-
-namespace TFEHelper.Backend.Core.API.SpringerLink.DTO
+namespace TFEHelper.Backend.Plugins.SpringerLink.DTO
 {
-    public class SpringerLinkRootDTO
+    internal class SpringerLinkRootDTO
     {
         public string APIMessage { get; set; }
         public string Query { get; set; }
@@ -16,5 +14,3 @@ namespace TFEHelper.Backend.Core.API.SpringerLink.DTO
         public List<SpringerLinkFacetDTO> Facets { get; set; }
     }
 }
-
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

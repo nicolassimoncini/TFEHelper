@@ -1,13 +1,18 @@
 ﻿using RestSharp;
-using TFEHelper.Backend.Core.API.SpringerLink.DTO;
-using TFEHelper.Backend.Core.API.SpringerLink.Enums;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using TFEHelper.Backend.Plugins.SpringerLink.DTO;
+using TFEHelper.Backend.Plugins.SpringerLink.Enums;
 
-namespace TFEHelper.Backend.Core.API.SpringerLink.Classes
+namespace TFEHelper.Backend.Plugins.SpringerLink.Classes
 {
     /// <summary>
     /// Default SpringerLink API consumer.
     /// </summary>
-    public class SpringerLinkAPIWrapper : IAPIWrapper, IDisposable
+    internal class SpringerLinkAPIWrapper : IDisposable
     {
         private readonly RestClient _client;
         private readonly RestRequest _request;
@@ -46,14 +51,13 @@ namespace TFEHelper.Backend.Core.API.SpringerLink.Classes
             _client?.Dispose();
         }
 
-        public void Setup(string query, DateTime? publicationDateFrom, DateTime? publicationDateTo, string? subject, int pageSize = 100)
+        public void Setup(string query, DateTime publicationDateFrom, DateTime publicationDateTo, string subject, int pageSize = 100)
         {
             string q = query;
 
-            if (publicationDateFrom != null && publicationDateTo != null)
-                q = q + " onlinedatefrom:" + publicationDateFrom?.ToString("yyyy-MM-dd") + " onlinedateto:" + publicationDateTo?.ToString("yyyy-MM-dd");
+            q = q + " onlinedatefrom:" + publicationDateFrom.ToString("yyyy-MM-dd") + " onlinedateto:" + publicationDateTo.ToString("yyyy-MM-dd");
 
-            if (subject != null)
+            if (subject != null || subject != string.Empty)
                 q = q + " subject:" + '\u0022' + subject + '\u0022';
 
             _request.AddQueryParameter("q", q);

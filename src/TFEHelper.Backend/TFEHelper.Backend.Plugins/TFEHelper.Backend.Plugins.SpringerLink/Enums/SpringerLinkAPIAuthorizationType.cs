@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TFEHelper.Backend.Core.API.SpringerLink.Enums
+namespace TFEHelper.Backend.Plugins.SpringerLink.Enums
 {
-    public enum SpringerLinkAPIAuthorizationType
+    internal enum SpringerLinkAPIAuthorizationType
     {
         QueryParameter = 0,
         XAuthorization = 1,
