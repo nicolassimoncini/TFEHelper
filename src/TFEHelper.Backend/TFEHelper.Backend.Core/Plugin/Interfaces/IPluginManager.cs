@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TFEHelper.Backend.Domain.Classes.Models;
+﻿using TFEHelper.Backend.Domain.Classes.Models;
 using TFEHelper.Backend.Plugins.PluginBase.Interfaces;
 
 namespace TFEHelper.Backend.Core.Plugin.Interfaces
 {
     public interface IPluginManager
     {
-        void Scan();
+        Task ScanAsync();
+        T? GetPlugin<T>(int id) where T : IBasePlugin;
         IEnumerable<T> GetPlugins<T>() where T : IBasePlugin;
-        T GetPlugin<T>(PluginInfo pluginInfo) where T : IBasePlugin;
+        PluginContainer? GetPluginContainer(int id);
+        IEnumerable<PluginContainer> GetPluginContainers<T>() where T : IBasePlugin;
+        IEnumerable<PluginContainer> GetAllPluginContainers();
     }
 }

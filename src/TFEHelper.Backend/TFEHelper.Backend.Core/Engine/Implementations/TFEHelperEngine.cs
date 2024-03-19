@@ -2,12 +2,10 @@
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using TFEHelper.Backend.Core.Engine.Interfaces;
-using TFEHelper.Backend.Core.Plugin.Implementations;
 using TFEHelper.Backend.Core.Plugin.Interfaces;
 using TFEHelper.Backend.Core.Processors.BibTeX;
 using TFEHelper.Backend.Core.Processors.CSV;
 using TFEHelper.Backend.Domain.Classes.API.Specifications;
-using TFEHelper.Backend.Domain.Classes.DTO;
 using TFEHelper.Backend.Domain.Classes.Models;
 using TFEHelper.Backend.Domain.Enums;
 using TFEHelper.Backend.Domain.Extensions;
@@ -20,7 +18,6 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
 {
     public sealed class TFEHelperEngine : ITFEHelperEngine
     {
-        private List<Publication> _publications;
         private readonly ILogger<TFEHelperEngine> _logger;
         private readonly IRepository _repository;
         private readonly IPluginManager _pluginManager;
@@ -30,8 +27,6 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
 
         public TFEHelperEngine(ILogger<TFEHelperEngine> logger, IRepository repository, IPluginManager pluginManager, IMapper mapper)
         {
-            _publications = new List<Publication>();
-
             _logger = logger;
             _repository = repository;
             _pluginManager = pluginManager;
@@ -77,13 +72,15 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
 
         public async Task ImportPublicationsAsync(string filePath, FileFormatType formatType, SearchSourceType source, bool discardInvalidRecords = true, CancellationToken cancellationToken = default)
         {
+            List<Publication> publications = new List<Publication>();
+
             switch (formatType)
             {
                 case FileFormatType.BibTeX:
-                    _publications = await _bibTeXProcessor.ImportAsync(filePath, source, cancellationToken);
+                    publications = await _bibTeXProcessor.ImportAsync(filePath, source, cancellationToken);
                     break;
                 case FileFormatType.CSV:
-                    _publications = await _csvProcessor.ImportAsync(filePath, source, cancellationToken);
+                    publications = await _csvProcessor.ImportAsync(filePath, source, cancellationToken);
                     break;
                 default:
                     break;
@@ -91,10 +88,10 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
 
             if (discardInvalidRecords)
             {
-                _publications.RemoveAll(p => !ModelValidator.IsModelValid(p));
+                publications.RemoveAll(p => !ModelValidator.IsModelValid(p));
             }
 
-            await CreateRangeAsync(_publications, cancellationToken);
+            await CreateRangeAsync(publications, cancellationToken);
         }
 
         public async Task ExportPublicationsAsync(List<Publication> publications, string filePath, FileFormatType formatType, CancellationToken cancellationToken = default)
@@ -112,23 +109,25 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
             }
         }
 
-        public IEnumerable<PluginInfo> GetPublicationsCollectorPlugins()
+        public IEnumerable<PluginInfo> GetAllPlugins()
         {
-            return _pluginManager.GetPlugins<IPublicationsCollector>().Select(p => 
-            new PluginInfo()
-            {
-                Name = p.Name,
-                Version = p.Version,
-                Description = p.Description,
-                Type = PluginType.PublicationsCollector
-            });
+            return _pluginManager
+                .GetAllPluginContainers()
+                .Select(p => p.Info);
         }
 
-        public async Task<IEnumerable<Publication>> GetPublicationsFromPluginAsync(PluginInfo pluginInfo, string searchQuery, CancellationToken cancellationToken = default) 
+        public IEnumerable<PluginInfo> GetPublicationsCollectorPlugins()
         {
-            var plugin = _pluginManager.GetPlugin<IPublicationsCollector>(pluginInfo);
+            return _pluginManager
+                .GetPluginContainers<IPublicationsCollector>()
+                .Select(p => p.Info);
+        }
 
-            if (plugin == null) throw new Exception($"Plugin {pluginInfo} does not exist in this context!");
+        public async Task<IEnumerable<Publication>> GetPublicationsFromPluginAsync(int pluginId, string searchQuery, CancellationToken cancellationToken = default) 
+        {
+            var plugin = _pluginManager.GetPlugin<IPublicationsCollector>(pluginId);
+            
+            if (plugin == null) throw new Exception($"Plugin Id={pluginId} does not exist in this context!");
 
             var pluginPublications = await plugin.GetPublicationsAsync(searchQuery, cancellationToken);
             return _mapper.Map<IEnumerable<Publication>>(pluginPublications);
@@ -194,56 +193,6 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
                 ).ToList();
 
             return filtered2;
-        }
-
-        public void Dummy()
-        {
-            // Vamos a jugar un poco con los filtros...
-            var filtered = _publications.Where(x =>
-                x.Abstract is not null && x.Title is not null && x.Source == SearchSourceType.SEDICI
-                &&
-                (
-                    // Articulos que tienen en el título "software, development framework*" acompañado opcionalmente por "ontolog* y domain*"...
-
-                    x.Title.Contains("software", StringComparison.InvariantCultureIgnoreCase) &&
-                    x.Title.Contains("development", StringComparison.InvariantCultureIgnoreCase) &&
-                    (x.Title.Contains("framework", StringComparison.InvariantCultureIgnoreCase) || x.Title.Contains("frameworks", StringComparison.InvariantCultureIgnoreCase))
-                    ||
-                    x.Title.Contains("software", StringComparison.InvariantCultureIgnoreCase) &&
-                    x.Title.Contains("development", StringComparison.InvariantCultureIgnoreCase) &&
-                    (x.Title.Contains("framework", StringComparison.InvariantCultureIgnoreCase) || x.Title.Contains("frameworks", StringComparison.InvariantCultureIgnoreCase)) &&
-                    (x.Title.Contains("ontology", StringComparison.InvariantCultureIgnoreCase) || x.Title.Contains("ontologies", StringComparison.InvariantCultureIgnoreCase)) &&
-                    (x.Title.Contains("domain", StringComparison.InvariantCultureIgnoreCase) || x.Title.Contains("domains", StringComparison.InvariantCultureIgnoreCase))
-
-                    ||
-                    // Articulos que tienen en el abstract "software, development framework*" acompañado opcionalmente por "ontolog* y domain*"...
-
-                    x.Abstract.Contains("software", StringComparison.InvariantCultureIgnoreCase) &&
-                    x.Abstract.Contains("development", StringComparison.InvariantCultureIgnoreCase) &&
-                    x.Abstract.Contains("framework", StringComparison.InvariantCultureIgnoreCase) || x.Abstract.Contains("frameworks", StringComparison.InvariantCultureIgnoreCase)
-                    ||
-                    x.Abstract.Contains("software", StringComparison.InvariantCultureIgnoreCase) &&
-                    x.Abstract.Contains("development", StringComparison.InvariantCultureIgnoreCase) &&
-                    (x.Abstract.Contains("framework", StringComparison.InvariantCultureIgnoreCase) || x.Abstract.Contains("frameworks", StringComparison.InvariantCultureIgnoreCase)) &&
-                    (x.Abstract.Contains("ontology", StringComparison.InvariantCultureIgnoreCase) || x.Abstract.Contains("ontologies", StringComparison.InvariantCultureIgnoreCase)) &&
-                    (x.Abstract.Contains("domain", StringComparison.InvariantCultureIgnoreCase) || x.Abstract.Contains("domains", StringComparison.InvariantCultureIgnoreCase))
-
-                )
-            ).ToList();
-
-            // Aplicamos filtro NEAR/ONEAR en los abstract con una distancia máxima de 5 palabras...
-            var filtered2 = filtered.Where(x =>
-
-                x.Abstract.MinDistanceBetweenWords("software", "development").IsInRange(0, 5) &&
-                (x.Abstract.MinDistanceBetweenWords("development", "framework").IsInRange(0, 5) || x.Abstract.MinDistanceBetweenWords("development", "frameworks").IsInRange(0, 5)) &&
-                (x.Abstract.MinDistanceBetweenWords("software", "framework").IsInRange(0, 5) || x.Abstract.MinDistanceBetweenWords("software", "frameworks").IsInRange(0, 5))
-
-                ||
-
-                x.Abstract.MinDistanceBetweenWords("ontology", "domain").IsInRange(0, 5) || x.Abstract.MinDistanceBetweenWords("ontologies", "domain").IsInRange(0, 5) ||
-                x.Abstract.MinDistanceBetweenWords("ontology", "domains").IsInRange(0, 5) || x.Abstract.MinDistanceBetweenWords("ontologies", "domains").IsInRange(0, 5)
-
-                ).ToList();
         }
     }
 }

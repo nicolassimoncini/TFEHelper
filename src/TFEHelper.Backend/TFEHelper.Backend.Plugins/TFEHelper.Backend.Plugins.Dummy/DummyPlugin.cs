@@ -12,6 +12,7 @@ namespace TFEHelper.Backend.Plugins.Dummy
     {
         public string Name => "Dummy plugin"; 
         public Version Version => new Version(1,0,0);
+        public PluginType Type => PluginType.PublicationsCollector;
         public string Description => "Test plugin for IPublicationsCollector";
 
         public bool Configure()

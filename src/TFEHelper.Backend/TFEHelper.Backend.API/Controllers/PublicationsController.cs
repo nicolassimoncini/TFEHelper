@@ -12,7 +12,7 @@ using TFEHelper.Backend.Domain.Enums;
 namespace TFEHelper.Backend.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("/api/[controller]")]
     public class PublicationsController : ControllerBase
     {
         private readonly ILogger<PublicationsController> _logger;

@@ -21,7 +21,8 @@ internal class Program
         {
             Log.Information("Starting web application for TFEHelper.");
 
-            CreateWebApplication(args).Run();
+            var webApp = await CreateWebApplication(args);
+            webApp.Run();
 
             return 0;
         } 
@@ -53,7 +54,7 @@ internal class Program
             .CreateLogger();
     }
 
-    private static WebApplication CreateWebApplication(string[] args)
+    private static async Task<WebApplication> CreateWebApplication(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
@@ -86,7 +87,8 @@ internal class Program
 
         var app = builder.Build();
 
-        app.Services.GetService<IPluginManager>()?.Scan();      
+        var pluginManager = app.Services.GetService<IPluginManager>();
+        if (pluginManager != null) await pluginManager.ScanAsync();
 
         app.UseResponseCaching();
         app.UseSwagger();
