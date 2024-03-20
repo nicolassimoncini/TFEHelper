@@ -27,7 +27,7 @@ namespace TFEHelper.Backend.Plugins.SpringerLink
             return true;
         }
 
-        public Task<IEnumerable<Publication>> GetPublicationsAsync(string searchQuery, CancellationToken cancellationToken = default)
+        public Task<IEnumerable<Publication>> GetPublicationsAsync(SearchParameters searchParameters, CancellationToken cancellationToken = default)
         {
             return Task.Run<IEnumerable<Publication>>(() => { return new List<Publication>(); }, cancellationToken);
         }

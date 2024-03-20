@@ -11,6 +11,6 @@ namespace TFEHelper.Backend.Plugins.PluginBase.Interfaces
     {
         bool Configure();
         bool IsOnline();
-        Task<IEnumerable<Publication>> GetPublicationsAsync(string searchQuery, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Publication>> GetPublicationsAsync(SearchParameters searchParameters, CancellationToken cancellationToken = default);
     }
 }

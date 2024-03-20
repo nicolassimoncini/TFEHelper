@@ -43,9 +43,9 @@ namespace TFEHelper.Backend.API.Controllers
         [HttpPost("/api/[controller]/Collectors/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIResponse>> RunPublicationsCollectorPlugin(int id, string searchQuery, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<APIResponse>> RunPublicationsCollectorPlugin(int id, [FromBody] SearchParameters searchParameters, CancellationToken cancellationToken = default)
         {
-            IEnumerable<Publication> publications = await _orchestrator.GetPublicationsFromPluginAsync(id, searchQuery, cancellationToken);
+            IEnumerable<Publication> publications = await _orchestrator.GetPublicationsFromPluginAsync(id, searchParameters, cancellationToken);
 
             _response.IsSuccessful = publications.Any();
             _response.Payload = _mapper.Map<IEnumerable<PublicationDTO>>(publications);

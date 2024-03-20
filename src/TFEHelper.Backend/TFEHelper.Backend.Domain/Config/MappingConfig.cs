@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using AutoMapper.Extensions.EnumMapping;
 using TFEHelper.Backend.Domain.Classes.DTO;
-using TFEHelper.Backend.Domain.Classes.Models;
 using BibTeXPublicationTypeFromPlugin = TFEHelper.Backend.Plugins.PluginBase.Enums.BibTeXPublicationType;
 using BibTeXPublicationTypeLocal = TFEHelper.Backend.Domain.Enums.BibTeXPublicationType;
+using PublicationFromModel = TFEHelper.Backend.Domain.Classes.Models.Publication;
 using PublicationFromPlugin = TFEHelper.Backend.Plugins.PluginBase.Classes.Publication;
-using PublicationModel = TFEHelper.Backend.Domain.Classes.Models.Publication;
+using SearchParametersFromModel = TFEHelper.Backend.Domain.Classes.Models.SearchParameters;
+using SearchParametersFromPlugin = TFEHelper.Backend.Plugins.PluginBase.Classes.SearchParameters;
 
 namespace TFEHelper.Backend.Domain.Config
 {
@@ -13,11 +14,12 @@ namespace TFEHelper.Backend.Domain.Config
     {
         public MappingConfig()
         {
-            CreateMap<PublicationModel, PublicationDTO>().ReverseMap();
-            CreateMap<PublicationModel, PublicationFromPlugin>().ReverseMap();
+            CreateMap<PublicationFromModel, PublicationDTO>().ReverseMap();
+            CreateMap<PublicationFromModel, PublicationFromPlugin>().ReverseMap();
             CreateMap<BibTeXPublicationTypeLocal, BibTeXPublicationTypeFromPlugin>()
                 .ConvertUsingEnumMapping(opt => opt.MapByValue())
                 .ReverseMap(); 
+            CreateMap<SearchParametersFromModel, SearchParametersFromPlugin>().ReverseMap();
         }
     }
 }

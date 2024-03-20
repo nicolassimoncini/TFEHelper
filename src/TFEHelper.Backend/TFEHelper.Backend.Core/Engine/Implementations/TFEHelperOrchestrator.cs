@@ -14,6 +14,8 @@ using TFEHelper.Backend.Domain.Interfaces;
 using TFEHelper.Backend.Infrastructure.Database.Interfaces;
 using TFEHelper.Backend.Plugins.PluginBase.Interfaces;
 using ModelValidator = TFEHelper.Backend.Tools.ComponentModel.ModelValidator;
+using SearchParametersFromModel = TFEHelper.Backend.Domain.Classes.Models.SearchParameters;
+using SearchParametersFromPlugin = TFEHelper.Backend.Plugins.PluginBase.Classes.SearchParameters;
 
 namespace TFEHelper.Backend.Core.Engine.Implementations
 {
@@ -126,13 +128,13 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
                 .Select(p => p.Info);
         }
 
-        public async Task<IEnumerable<Publication>> GetPublicationsFromPluginAsync(int pluginId, string searchQuery, CancellationToken cancellationToken = default) 
+        public async Task<IEnumerable<Publication>> GetPublicationsFromPluginAsync(int pluginId, SearchParametersFromModel searchParameters, CancellationToken cancellationToken = default) 
         {
             var plugin = _pluginManager.GetPlugin<IPublicationsCollector>(pluginId);
             
             if (plugin == null) throw new Exception($"Plugin Id={pluginId} does not exist in this context!");
 
-            var pluginPublications = await plugin.GetPublicationsAsync(searchQuery, cancellationToken);
+            var pluginPublications = await plugin.GetPublicationsAsync(_mapper.Map<SearchParametersFromPlugin>(searchParameters), cancellationToken);
             return _mapper.Map<IEnumerable<Publication>>(pluginPublications);
         }
 

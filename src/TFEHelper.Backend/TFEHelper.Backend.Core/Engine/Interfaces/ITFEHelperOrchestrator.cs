@@ -30,7 +30,7 @@ namespace TFEHelper.Backend.Core.Engine.Interfaces
 
         IEnumerable<PluginInfo> GetPublicationsCollectorPlugins();
 
-        Task<IEnumerable<Publication>> GetPublicationsFromPluginAsync(int pluginId, string searchQuery, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Publication>> GetPublicationsFromPluginAsync(int pluginId, SearchParameters searchParameters, CancellationToken cancellationToken = default);
 
         IEnumerable<EnumerationTable> GetEnumerationTables();
     }
