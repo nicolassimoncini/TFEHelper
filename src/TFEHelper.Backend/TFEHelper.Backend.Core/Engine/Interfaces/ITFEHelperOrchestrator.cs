@@ -6,7 +6,7 @@ using TFEHelper.Backend.Domain.Interfaces;
 
 namespace TFEHelper.Backend.Core.Engine.Interfaces
 {
-    public interface ITFEHelperEngine
+    public interface ITFEHelperOrchestrator
     {
         Task CreateAsync<T>(T entity, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel;
 
@@ -31,5 +31,7 @@ namespace TFEHelper.Backend.Core.Engine.Interfaces
         IEnumerable<PluginInfo> GetPublicationsCollectorPlugins();
 
         Task<IEnumerable<Publication>> GetPublicationsFromPluginAsync(int pluginId, string searchQuery, CancellationToken cancellationToken = default);
+
+        IEnumerable<EnumerationTable> GetEnumerationTables();
     }
 }

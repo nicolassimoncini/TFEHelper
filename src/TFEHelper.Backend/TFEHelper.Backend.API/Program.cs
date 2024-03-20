@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using TFEHelper.Backend.API.Configuration;
 using TFEHelper.Backend.API.Middleware;
+using TFEHelper.Backend.Core.Configuration.Implementations;
+using TFEHelper.Backend.Core.Configuration.Interfaces;
 using TFEHelper.Backend.Core.Engine.Implementations;
 using TFEHelper.Backend.Core.Engine.Interfaces;
 using TFEHelper.Backend.Core.Plugin.Implementations;
@@ -82,8 +84,9 @@ internal class Program
         builder.Services.AddAutoMapper(typeof(MappingConfig));
 
         builder.Services.AddScoped<IRepository, Repository>();
-        builder.Services.AddSingleton<IPluginManager, PluginManager>();    
-        builder.Services.AddScoped<ITFEHelperEngine, TFEHelperEngine>();
+        builder.Services.AddSingleton<IPluginManager, PluginManager>();
+        builder.Services.AddSingleton<ITFEHelperConfigurationManager, TFEHelperConfigurationManager>();
+        builder.Services.AddScoped<ITFEHelperOrchestrator, TFEHelperOrchestrator>();
 
         var app = builder.Build();
 

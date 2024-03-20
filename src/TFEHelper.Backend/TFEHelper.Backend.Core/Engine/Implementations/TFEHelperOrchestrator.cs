@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
+using TFEHelper.Backend.Core.Configuration.Interfaces;
 using TFEHelper.Backend.Core.Engine.Interfaces;
 using TFEHelper.Backend.Core.Plugin.Interfaces;
 using TFEHelper.Backend.Core.Processors.BibTeX;
@@ -16,20 +17,22 @@ using ModelValidator = TFEHelper.Backend.Tools.ComponentModel.ModelValidator;
 
 namespace TFEHelper.Backend.Core.Engine.Implementations
 {
-    public sealed class TFEHelperEngine : ITFEHelperEngine
+    public sealed class TFEHelperOrchestrator : ITFEHelperOrchestrator
     {
-        private readonly ILogger<TFEHelperEngine> _logger;
+        private readonly ILogger<TFEHelperOrchestrator> _logger;
         private readonly IRepository _repository;
         private readonly IPluginManager _pluginManager;
+        private readonly ITFEHelperConfigurationManager _configurationManager;
         private readonly IMapper _mapper;
         private readonly BibTeXProcessor _bibTeXProcessor;
         private readonly CSVProcessor _csvProcessor;
 
-        public TFEHelperEngine(ILogger<TFEHelperEngine> logger, IRepository repository, IPluginManager pluginManager, IMapper mapper)
+        public TFEHelperOrchestrator(ILogger<TFEHelperOrchestrator> logger, IRepository repository, IPluginManager pluginManager, ITFEHelperConfigurationManager configurationManager, IMapper mapper)
         {
             _logger = logger;
             _repository = repository;
             _pluginManager = pluginManager;
+            _configurationManager = configurationManager;
             _mapper = mapper;
             _bibTeXProcessor = new BibTeXProcessor();
             _csvProcessor = new CSVProcessor();            
@@ -131,6 +134,11 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
 
             var pluginPublications = await plugin.GetPublicationsAsync(searchQuery, cancellationToken);
             return _mapper.Map<IEnumerable<Publication>>(pluginPublications);
+        }
+
+        public IEnumerable<EnumerationTable> GetEnumerationTables()
+        {
+            return _configurationManager.GetEnumerationTables();
         }
 
         /// <summary>

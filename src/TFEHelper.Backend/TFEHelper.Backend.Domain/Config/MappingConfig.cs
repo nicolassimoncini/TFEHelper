@@ -18,7 +18,6 @@ namespace TFEHelper.Backend.Domain.Config
             CreateMap<BibTeXPublicationTypeLocal, BibTeXPublicationTypeFromPlugin>()
                 .ConvertUsingEnumMapping(opt => opt.MapByValue())
                 .ReverseMap(); 
-            CreateMap<PluginInfo, PluginInfoDTO>().ReverseMap();
         }
     }
 }

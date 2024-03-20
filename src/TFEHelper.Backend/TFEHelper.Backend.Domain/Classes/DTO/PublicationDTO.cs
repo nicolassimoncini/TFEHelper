@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-using TFEHelper.Backend.Domain.Attributes;
+﻿using System.ComponentModel.DataAnnotations;
 using TFEHelper.Backend.Domain.Enums;
 using TFEHelper.Backend.Domain.Interfaces;
 

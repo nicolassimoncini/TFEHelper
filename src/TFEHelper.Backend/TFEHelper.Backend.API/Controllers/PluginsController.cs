@@ -13,14 +13,14 @@ namespace TFEHelper.Backend.API.Controllers
     public class PluginsController : ControllerBase
     {
         private readonly ILogger<PublicationsController> _logger;
-        private readonly ITFEHelperEngine _engine;
+        private readonly ITFEHelperOrchestrator _orchestrator;
         private readonly IMapper _mapper;
         protected APIResponse _response;
 
-        public PluginsController(ILogger<PublicationsController> logger, ITFEHelperEngine engine, IMapper mapper)
+        public PluginsController(ILogger<PublicationsController> logger, ITFEHelperOrchestrator orchestrator, IMapper mapper)
         {
             _logger = logger;
-            _engine = engine;
+            _orchestrator = orchestrator;
             _mapper = mapper;
             _response = new();
         }
@@ -31,10 +31,10 @@ namespace TFEHelper.Backend.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<APIResponse> GetAllPlugins()
         {
-            IEnumerable<PluginInfo> plugins = _engine.GetAllPlugins();
+            IEnumerable<PluginInfo> plugins = _orchestrator.GetAllPlugins();
 
             _response.IsSuccessful = plugins.Any();
-            _response.Payload = _mapper.Map<IEnumerable<PluginInfoDTO>>(plugins);
+            _response.Payload = plugins;
             _response.StatusCode = HttpStatusCode.OK;
 
             return Ok(_response);
@@ -45,7 +45,7 @@ namespace TFEHelper.Backend.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<APIResponse>> RunPublicationsCollectorPlugin(int id, string searchQuery, CancellationToken cancellationToken = default)
         {
-            IEnumerable<Publication> publications = await _engine.GetPublicationsFromPluginAsync(id, searchQuery, cancellationToken);
+            IEnumerable<Publication> publications = await _orchestrator.GetPublicationsFromPluginAsync(id, searchQuery, cancellationToken);
 
             _response.IsSuccessful = publications.Any();
             _response.Payload = _mapper.Map<IEnumerable<PublicationDTO>>(publications);
