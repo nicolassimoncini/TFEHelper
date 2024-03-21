@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TFEHelper.Backend.Plugins.SpringerLink.DTO
 {
-    internal class SpringerLinkResultDTO
+    public class SpringerLinkResultDTO
     {
         public int Total { get; set; }
         public int Start { get; set; }

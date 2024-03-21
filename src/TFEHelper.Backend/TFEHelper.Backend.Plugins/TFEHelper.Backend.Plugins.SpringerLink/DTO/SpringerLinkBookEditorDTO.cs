@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TFEHelper.Backend.Plugins.SpringerLink.DTO
 {
-    internal class SpringerLinkBookEditorDTO
+    public class SpringerLinkBookEditorDTO
     {
         public string BookEditor { get; set; }
     }

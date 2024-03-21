@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TFEHelper.Backend.Plugins.SpringerLink.DTO
 {
-    internal class SpringerLinkRecordDTO
+    public class SpringerLinkRecordDTO
     {
         public string ContentType { get; set; }
         public string Identifier { get; set; }

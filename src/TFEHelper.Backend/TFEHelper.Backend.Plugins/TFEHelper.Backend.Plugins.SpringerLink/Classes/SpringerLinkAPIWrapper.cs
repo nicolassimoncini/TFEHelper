@@ -16,7 +16,7 @@ namespace TFEHelper.Backend.Plugins.SpringerLink.Classes
     {
         private readonly RestClient _client;
         private readonly RestRequest _request;
-        private List<SpringerLinkRecordDTO> _records = new List<SpringerLinkRecordDTO>();
+        private int _returnQuantityLimit;
 
         /// <summary>
         /// Creates an APIConsumer.
@@ -51,52 +51,59 @@ namespace TFEHelper.Backend.Plugins.SpringerLink.Classes
             _client?.Dispose();
         }
 
-        public void Setup(string query, DateTime publicationDateFrom, DateTime publicationDateTo, string subject, int pageSize = 100)
+        public void Setup(string query, DateOnly publicationDateFrom, DateOnly publicationDateTo, string subject, int pageSize = 100, int returnQuantityLimit = 0)
         {
-            string q = query;
+            _returnQuantityLimit = (returnQuantityLimit > 0) ? returnQuantityLimit : 0;
 
+            string q = query; // [TODO] dar formato de acuerdo a https://dev.springernature.com/adding-constraints
             q = q + " onlinedatefrom:" + publicationDateFrom.ToString("yyyy-MM-dd") + " onlinedateto:" + publicationDateTo.ToString("yyyy-MM-dd");
 
-            if (subject != null || subject != string.Empty)
+            if (subject != string.Empty)
                 q = q + " subject:" + '\u0022' + subject + '\u0022';
 
+            if (pageSize < 0) pageSize = 10;
+            if (pageSize > 100) pageSize = 100;
+
+            if (_returnQuantityLimit != 0 && pageSize > _returnQuantityLimit)
+                pageSize = _returnQuantityLimit;
+
             _request.AddQueryParameter("q", q);
-            _client.AddDefaultParameter("p", pageSize.ToString());
+            _request.AddQueryParameter("p", pageSize.ToString());
+            //_client.AddDefaultParameter("p", pageSize.ToString());
         }
-
-
-        public async Task<List<SpringerLinkRecordDTO>> GetRecordsAsync(CancellationToken cancellationToken = default)
-        {
-            SpringerLinkRootDTO _response = await _client.GetAsync<SpringerLinkRootDTO>(_request, cancellationToken) ?? new SpringerLinkRootDTO();
-            SpringerLinkResultDTO _result = _response.Result.First();
-
-            _request.Parameters.RemoveParameter("s");
-            _request.AddQueryParameter("s", _result.Start + _result.PageLength);
-
-            Console.WriteLine($"Retrieved {_result.Start + _result.PageLength - 1} / {_result.Total}");
-
-            return _response.Records;
-        }
-
 
         public async Task<List<SpringerLinkRecordDTO>> GetAllRecordsAsync(CancellationToken cancellationToken = default)
         {
-            SpringerLinkRootDTO _response;
+            List<SpringerLinkRecordDTO> records = new List<SpringerLinkRecordDTO>();
+            SpringerLinkRootDTO response;
+            bool maxReached = false;
+            int remaining;
 
             do
             {
-                _response = await _client.GetAsync<SpringerLinkRootDTO>(_request, cancellationToken) ?? new SpringerLinkRootDTO();
-                _records.AddRange(_response.Records);
-                SpringerLinkResultDTO _result = _response.Result.First();
+                response = await _client.GetAsync<SpringerLinkRootDTO>(_request, cancellationToken) ?? new SpringerLinkRootDTO();
+                records.AddRange(response.Records);
+                SpringerLinkResultDTO result = response.Result.First();
 
-                _request.Parameters.RemoveParameter("s");
-                _request.AddQueryParameter("s", _result.Start + _result.PageLength);
+                Console.WriteLine($"Retrieved {records.Count()} / {result.Total}");
 
-                Console.WriteLine($"Retrieved {_records.Count()} / {_result.Total}");
+                remaining = _returnQuantityLimit - records.Count();
+                
+                if (remaining > 0)
+                {
+                    _request.Parameters.RemoveParameter("s");
+                    _request.AddQueryParameter("s", result.Start + result.PageLength);
 
-            } while (!string.IsNullOrEmpty(_response.NextPage));
+                    if (remaining < result.PageLength) 
+                    {
+                        _request.Parameters.RemoveParameter("p");
+                        _request.AddQueryParameter("p", remaining);
+                    }
+                } else maxReached = true;
 
-            return _records;
+            } while (!maxReached && !string.IsNullOrEmpty(response.NextPage));
+
+            return records;
         }
     }
 }

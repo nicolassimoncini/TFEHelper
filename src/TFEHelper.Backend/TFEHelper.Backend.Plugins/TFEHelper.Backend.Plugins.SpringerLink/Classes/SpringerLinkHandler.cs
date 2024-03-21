@@ -15,6 +15,7 @@ namespace TFEHelper.Backend.Plugins.SpringerLink.Classes
 {
     internal static class SpringerLinkHandler
     {
+        /*
         /// <summary>
         /// Obtiene los registros desde SpringerLink y guarda los resultados en un archivo .json
         /// </summary>
@@ -47,6 +48,7 @@ namespace TFEHelper.Backend.Plugins.SpringerLink.Classes
                 }
             };
         }
+        */
 
         public static async Task<List<Publication>> ImportAsync(string filePath, CancellationToken cancellationToken = default)
         {

@@ -2,7 +2,7 @@
 
 namespace TFEHelper.Backend.Plugins.SpringerLink.DTO
 {
-    internal class SpringerLinkRootDTO
+    public class SpringerLinkRootDTO
     {
         public string APIMessage { get; set; }
         public string Query { get; set; }

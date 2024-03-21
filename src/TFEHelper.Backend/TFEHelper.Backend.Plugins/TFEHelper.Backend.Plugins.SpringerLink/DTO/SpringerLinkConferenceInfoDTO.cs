@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TFEHelper.Backend.Plugins.SpringerLink.DTO
 {
-    internal class SpringerLinkConferenceInfoDTO
+    public class SpringerLinkConferenceInfoDTO
     {
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TFEHelper.Backend.Plugins.SpringerLink.DTO
 {
-    internal class SpringerLinkFacetDTO
+    public class SpringerLinkFacetDTO
     {
         public string Name { get; set; }
         public List<SpringerLinkFacetValueDTO> Values { get; set; }

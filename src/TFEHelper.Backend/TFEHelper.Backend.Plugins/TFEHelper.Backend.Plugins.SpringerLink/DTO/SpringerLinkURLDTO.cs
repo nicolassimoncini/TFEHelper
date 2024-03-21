@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TFEHelper.Backend.Plugins.SpringerLink.DTO
 {
-    internal class SpringerLinkURLDTO
+    public class SpringerLinkURLDTO
     {
         public string Format { get; set; }
         public string PlatForm { get; set; }
