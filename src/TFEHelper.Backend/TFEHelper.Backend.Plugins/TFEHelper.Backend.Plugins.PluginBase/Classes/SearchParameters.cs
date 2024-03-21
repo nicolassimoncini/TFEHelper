@@ -11,7 +11,9 @@ namespace TFEHelper.Backend.Plugins.PluginBase.Classes
     public class SearchParameters
     {
         [Required(AllowEmptyStrings = false)]
-        public string query { get; set; }
+        public string Query { get; set; }
+        public string SearchIn { get; set; }
+        public string Subject { get; set; }
         public DateOnly DateFrom { get; set; }
         public DateOnly DateTo { get; set; }
         [Range(0, int.MaxValue)]

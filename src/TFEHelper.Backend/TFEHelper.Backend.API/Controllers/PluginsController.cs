@@ -55,3 +55,5 @@ namespace TFEHelper.Backend.API.Controllers
         }
     }
 }
+
+#warning meter un mecanismo para que la API pueda pedir de forma genérica los datos paramétricos de los plugins (ejemplo SpringerLinkSubjectType y SpringerLinkSearchInElementType

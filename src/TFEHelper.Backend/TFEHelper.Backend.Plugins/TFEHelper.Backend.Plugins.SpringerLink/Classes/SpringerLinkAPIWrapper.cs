@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using TFEHelper.Backend.Plugins.PluginBase.Classes;
 using TFEHelper.Backend.Plugins.SpringerLink.DTO;
 using TFEHelper.Backend.Plugins.SpringerLink.Enums;
 
@@ -51,15 +52,11 @@ namespace TFEHelper.Backend.Plugins.SpringerLink.Classes
             _client?.Dispose();
         }
 
-        public void Setup(string query, DateOnly publicationDateFrom, DateOnly publicationDateTo, string subject, int pageSize = 100, int returnQuantityLimit = 0)
+        public void Setup(SearchParameters searchParameters, int pageSize = 100, int returnQuantityLimit = 0)
         {
             _returnQuantityLimit = (returnQuantityLimit > 0) ? returnQuantityLimit : 0;
 
-            string q = query; // [TODO] dar formato de acuerdo a https://dev.springernature.com/adding-constraints
-            q = q + " onlinedatefrom:" + publicationDateFrom.ToString("yyyy-MM-dd") + " onlinedateto:" + publicationDateTo.ToString("yyyy-MM-dd");
-
-            if (subject != string.Empty)
-                q = q + " subject:" + '\u0022' + subject + '\u0022';
+            string query = ParseQuery(searchParameters);
 
             if (pageSize < 0) pageSize = 10;
             if (pageSize > 100) pageSize = 100;
@@ -67,9 +64,24 @@ namespace TFEHelper.Backend.Plugins.SpringerLink.Classes
             if (_returnQuantityLimit != 0 && pageSize > _returnQuantityLimit)
                 pageSize = _returnQuantityLimit;
 
-            _request.AddQueryParameter("q", q);
+            _request.AddQueryParameter("q", query);
             _request.AddQueryParameter("p", pageSize.ToString());
-            //_client.AddDefaultParameter("p", pageSize.ToString());
+        }
+
+        private string ParseQuery(SearchParameters searchParameters)
+        {
+            string query = "";
+
+            if (searchParameters.SearchIn != string.Empty)
+                query += searchParameters.SearchIn + ":";
+
+            query += searchParameters.Query;
+            query += " onlinedatefrom:" + searchParameters.DateFrom.ToString("yyyy-MM-dd") + " onlinedateto:" + searchParameters.DateTo.ToString("yyyy-MM-dd");
+
+            if (searchParameters.Subject != string.Empty)
+                query += " subject:" + '\u0022' + searchParameters.Subject + '\u0022';
+
+            return query;
         }
 
         public async Task<List<SpringerLinkRecordDTO>> GetAllRecordsAsync(CancellationToken cancellationToken = default)

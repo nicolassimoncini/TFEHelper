@@ -38,15 +38,11 @@ namespace TFEHelper.Backend.Plugins.SpringerLink
             const string uri = "http://api.springernature.com/metadata";
             const string APIKey = "51cc9a793e0d7714a068c4f2a2cc7f19";
             const int defaultPageSize = 5;
-            const string defaultSubject = ""; // "Computer Science"
 
             using (var api = new SpringerLinkAPIWrapper(uri, APIKey, SpringerLinkAPIAuthorizationType.QueryParameter))
             {
                 api.Setup(
-                    searchParameters.query,
-                    searchParameters.DateFrom,
-                    searchParameters.DateTo,
-                    defaultSubject,
+                    searchParameters,
                     defaultPageSize,
                     searchParameters.ReturnQuantityLimit);
 
@@ -80,7 +76,7 @@ namespace TFEHelper.Backend.Plugins.SpringerLink
 }
 
 // Apuntes:
-// Documentación de la API: https://dev.springernature.com/
+// Documentación de la API: https://dev.springernature.com
 // http://api.springernature.com/meta/v2/json?q=software development framework ontology domain onlinedatefrom:2003-01-01%20onlinedateto:2023-12-31 subject:%22Computer Science%22&p=100&api_key=51cc9a793e0d7714a068c4f2a2cc7f19
 //const string uri = "http://api.springernature.com/meta/v2";
 //const string query = "software development framework ontology domain";
