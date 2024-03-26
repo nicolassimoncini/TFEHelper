@@ -187,11 +187,25 @@ namespace TFEHelper.Backend.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIResponse>> ExportPublications(string filePath, FileFormatType formatType, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<APIResponse>> ExportPublications(string filePath, FileFormatType formatType, [FromBody] List<Publication>? publications = null, CancellationToken cancellationToken = default)
         {
+            var pubs = (publications == null) ? await _orchestrator.GetListAsync<Publication>() : publications;
+            await _orchestrator.ExportPublicationsAsync(pubs, filePath, formatType, cancellationToken);
 
-            await _orchestrator.ExportPublicationsAsync(await _orchestrator.GetListAsync<Publication>(), filePath, formatType, cancellationToken);
+            _response.IsSuccessful = true;
+            _response.StatusCode = HttpStatusCode.OK;
+            return Ok(_response);
+        }
 
+        [HttpPost("Dummy")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<APIResponse>> Dummy(CancellationToken cancellationToken = default)
+        {
+            var pubs = await _orchestrator.GetListAsync<Publication>("SELECT * FROM Publications WHERE Title LIKE \"%framework%\"");
+
+            _response.Payload = pubs;
             _response.IsSuccessful = true;
             _response.StatusCode = HttpStatusCode.OK;
             return Ok(_response);

@@ -40,6 +40,8 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
             _csvProcessor = new CSVProcessor();            
         }
 
+        #region DataAccess
+
         public async Task CreateAsync<T>(T entity, CancellationToken cancellationToken) where T : class, ITFEHelperModel
         {
             await _repository.CreateAsync(entity, cancellationToken);
@@ -50,19 +52,24 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
             await _repository.CreateRangeAsync(entities, cancellationToken);
         }
 
-        public async Task<List<T>> GetListAsync<T>(Expression<Func<T, bool>>? filter, string? includedProperties, CancellationToken cancellationToken) where T : class, ITFEHelperModel
+        public async Task<List<T>> GetListAsync<T>(Expression<Func<T, bool>>? filter = null, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] navigationProperties) where T : class, ITFEHelperModel
         {
-            return await _repository.GetListAsync(filter, includedProperties, cancellationToken);
+            return await _repository.GetListAsync(filter, cancellationToken, navigationProperties);
         }
 
-        public PaginatedList<T> GetListPaginated<T>(PaginationParameters parameters, Expression<Func<T, bool>>? filter, string? includedProperties) where T : class, ITFEHelperModel
+        public async Task<List<T>> GetListAsync<T>(string filter, string? includedProperties = null, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel
         {
-            return _repository.GetListPaginated(parameters, filter, includedProperties);
+            return await _repository.RunDatabaseQueryAsync<T>(filter, includedProperties, cancellationToken);
         }
 
-        public async Task<T?> GetAsync<T>(Expression<Func<T, bool>>? filter, bool tracked, string? includedProperties, CancellationToken cancellationToken) where T : class, ITFEHelperModel
+        public PaginatedList<T> GetListPaginated<T>(PaginationParameters parameters, Expression<Func<T, bool>>? filter = null, params Expression<Func<T, object>>[] navigationProperties) where T : class, ITFEHelperModel
         {
-            return await _repository.GetAsync(filter, tracked, includedProperties, cancellationToken);
+            return _repository.GetListPaginated(parameters, filter, navigationProperties);
+        }
+
+        public async Task<T?> GetAsync<T>(Expression<Func<T, bool>>? filter = null, bool tracked = true, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] navigationProperties) where T : class, ITFEHelperModel
+        {
+            return await _repository.GetAsync(filter, tracked, cancellationToken, navigationProperties);
         }
 
         public async Task RemoveAsync<T>(T entity, CancellationToken cancellationToken) where T : class, ITFEHelperModel
@@ -114,6 +121,10 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
             }
         }
 
+        #endregion
+
+        #region Plugins
+
         public IEnumerable<PluginInfo> GetAllPlugins()
         {
             return _pluginManager
@@ -138,10 +149,18 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
             return _mapper.Map<IEnumerable<Publication>>(pluginPublications);
         }
 
+        #endregion
+
+        #region Configuration
+
         public IEnumerable<EnumerationTable> GetEnumerationTables()
         {
             return _configurationManager.GetEnumerationTables();
         }
+
+        #endregion
+
+        #region Dummy
 
         /// <summary>
         /// Aplica la regla de filtros Rf1 a una lista.
@@ -204,5 +223,7 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
 
             return filtered2;
         }
+
+        #endregion
     }
 }

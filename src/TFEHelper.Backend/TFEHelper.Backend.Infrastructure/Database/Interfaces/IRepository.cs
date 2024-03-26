@@ -13,16 +13,16 @@ namespace TFEHelper.Backend.Infrastructure.Database.Interfaces
 
         Task CreateRangeAsync<T>(IEnumerable<T> entities, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel;
 
-        Task<T?> GetAsync<T>(Expression<Func<T, bool>>? filter = null, bool tracked = true, string? includedProperties = null, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel;
+        Task<T?> GetAsync<T>(Expression<Func<T, bool>>? filter = null, bool tracked = true, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] navigationProperties) where T : class, ITFEHelperModel;
 
-        Task<List<T>> GetListAsync<T>(Expression<Func<T, bool>>? filter = null, string? includedProperties = null, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel;
+        Task<List<T>> GetListAsync<T>(Expression<Func<T, bool>>? filter = null, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] navigationProperties) where T : class, ITFEHelperModel;
 
-        PaginatedList<T> GetListPaginated<T>(PaginationParameters parameters, Expression<Func<T, bool>>? filter = null, string? includedProperties = null) where T : class, ITFEHelperModel;
+        PaginatedList<T> GetListPaginated<T>(PaginationParameters parameters, Expression<Func<T, bool>>? filter = null, params Expression<Func<T, object>>[] navigationProperties) where T : class, ITFEHelperModel;
 
         Task<T> UpdateAsync<T>(T publication, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel;
 
         Task RemoveAsync<T>(T entity, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel;
 
-        Task<List<T>> RunDatabaseQueryAsync<T>(string query, CancellationToken cancellationToken = default, params IDatabaseParameter[] parameters) where T : class, ITFEHelperModel;
+        Task<List<T>> RunDatabaseQueryAsync<T>(string query, string? includedProperties = null, CancellationToken cancellationToken = default, params IDatabaseParameter[] parameters) where T : class, ITFEHelperModel;
     }
 }
