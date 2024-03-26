@@ -50,14 +50,14 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
             await _repository.CreateRangeAsync(entities, cancellationToken);
         }
 
-        public async Task<List<T>> GetAllAsync<T>(Expression<Func<T, bool>>? filter, string? includedProperties, CancellationToken cancellationToken) where T : class, ITFEHelperModel
+        public async Task<List<T>> GetListAsync<T>(Expression<Func<T, bool>>? filter, string? includedProperties, CancellationToken cancellationToken) where T : class, ITFEHelperModel
         {
-            return await _repository.GetAllAsync(filter, includedProperties, cancellationToken);
+            return await _repository.GetListAsync(filter, includedProperties, cancellationToken);
         }
 
-        public PaginatedList<T> GetAllPaginated<T>(PaginationParameters parameters, Expression<Func<T, bool>>? filter, string? includedProperties) where T : class, ITFEHelperModel
+        public PaginatedList<T> GetListPaginated<T>(PaginationParameters parameters, Expression<Func<T, bool>>? filter, string? includedProperties) where T : class, ITFEHelperModel
         {
-            return _repository.GetAllPaginated(parameters, filter, includedProperties);
+            return _repository.GetListPaginated(parameters, filter, includedProperties);
         }
 
         public async Task<T?> GetAsync<T>(Expression<Func<T, bool>>? filter, bool tracked, string? includedProperties, CancellationToken cancellationToken) where T : class, ITFEHelperModel
@@ -150,7 +150,7 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
         /// <returns></returns>
         public List<Publication> PerformRf1(List<Publication> publications)
         {
-#warning usar queries dinámicas con expression trees (https://code-maze.com/dynamic-queries-expression-trees-csharp/)
+#warning usar queries dinámicas con expression trees (https://code-maze.com/dynamic-queries-expression-trees-csharp/) o Dynamic LinQ (https://code-maze.com/using-dynamic-linq/ / https://github.com/zzzprojects/System.Linq.Dynamic.Core)
 
             var filtered = new List<Publication>();
             var filtered2 = new List<Publication>();

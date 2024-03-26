@@ -36,7 +36,7 @@ namespace TFEHelper.Backend.API.Controllers
         {
             _logger.LogInformation("Obteniendo publicaciones...");
 
-            IEnumerable<Publication> publicationList = await _orchestrator.GetAllAsync<Publication>(cancellationToken:cancellationToken);
+            IEnumerable<Publication> publicationList = await _orchestrator.GetListAsync<Publication>(cancellationToken:cancellationToken);
 
             _response.IsSuccessful = publicationList.Any();
             _response.Payload = _mapper.Map<IEnumerable<PublicationDTO>>(publicationList);
@@ -51,7 +51,7 @@ namespace TFEHelper.Backend.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<APIResponse> GetPublicationsPaginated([FromQuery] PaginationParameters parameters)
         {
-            var publicationList = _orchestrator.GetAllPaginated<Publication>(parameters);
+            var publicationList = _orchestrator.GetListPaginated<Publication>(parameters);
 
             _response.IsSuccessful = publicationList.Any();
             _response.Payload = _mapper.Map<IEnumerable<PublicationDTO>>(publicationList);
@@ -190,7 +190,7 @@ namespace TFEHelper.Backend.API.Controllers
         public async Task<ActionResult<APIResponse>> ExportPublications(string filePath, FileFormatType formatType, CancellationToken cancellationToken = default)
         {
 
-            await _orchestrator.ExportPublicationsAsync(await _orchestrator.GetAllAsync<Publication>(), filePath, formatType, cancellationToken);
+            await _orchestrator.ExportPublicationsAsync(await _orchestrator.GetListAsync<Publication>(), filePath, formatType, cancellationToken);
 
             _response.IsSuccessful = true;
             _response.StatusCode = HttpStatusCode.OK;

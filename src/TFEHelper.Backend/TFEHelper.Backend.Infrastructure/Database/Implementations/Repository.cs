@@ -60,7 +60,7 @@ namespace TFEHelper.Backend.Infrastructure.Database.Implementations
             return await query.FirstOrDefaultAsync(cancellationToken);
         }
 
-        public async Task<List<T>> GetAllAsync<T>(Expression<Func<T, bool>>? filter = null, string? includedProperties = null, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel
+        public async Task<List<T>> GetListAsync<T>(Expression<Func<T, bool>>? filter = null, string? includedProperties = null, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel
         {
             IQueryable<T> query = _dbContext.Set<T>();
 
@@ -80,7 +80,7 @@ namespace TFEHelper.Backend.Infrastructure.Database.Implementations
             return await query.ToListAsync(cancellationToken);
         }
 
-        public PaginatedList<T> GetAllPaginated<T>(PaginationParameters parameters, Expression<Func<T, bool>>? filter = null, string? includedProperties = null) where T : class, ITFEHelperModel
+        public PaginatedList<T> GetListPaginated<T>(PaginationParameters parameters, Expression<Func<T, bool>>? filter = null, string? includedProperties = null) where T : class, ITFEHelperModel
         {
             IQueryable<T> query = _dbContext.Set<T>();
 

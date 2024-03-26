@@ -15,9 +15,9 @@ namespace TFEHelper.Backend.Infrastructure.Database.Interfaces
 
         Task<T?> GetAsync<T>(Expression<Func<T, bool>>? filter = null, bool tracked = true, string? includedProperties = null, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel;
 
-        Task<List<T>> GetAllAsync<T>(Expression<Func<T, bool>>? filter = null, string? includedProperties = null, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel;
+        Task<List<T>> GetListAsync<T>(Expression<Func<T, bool>>? filter = null, string? includedProperties = null, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel;
 
-        PaginatedList<T> GetAllPaginated<T>(PaginationParameters parameters, Expression<Func<T, bool>>? filter = null, string? includedProperties = null) where T : class, ITFEHelperModel;
+        PaginatedList<T> GetListPaginated<T>(PaginationParameters parameters, Expression<Func<T, bool>>? filter = null, string? includedProperties = null) where T : class, ITFEHelperModel;
 
         Task<T> UpdateAsync<T>(T publication, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel;
 
