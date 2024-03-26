@@ -23,6 +23,6 @@ namespace TFEHelper.Backend.Infrastructure.Database.Interfaces
 
         Task RemoveAsync<T>(T entity, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel;
 
-        Task<List<T>> RunDatabaseQueryAsync<T>(string query, string? includedProperties = null, CancellationToken cancellationToken = default, params IDatabaseParameter[] parameters) where T : class, ITFEHelperModel;
+        Task<List<T>> RunDatabaseQueryAsync<T>(string query, List<IDatabaseParameter>? parameters, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] navigationProperties) where T : class, ITFEHelperModel;
     }
 }

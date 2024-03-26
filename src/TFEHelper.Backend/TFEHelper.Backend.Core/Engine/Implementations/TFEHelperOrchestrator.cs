@@ -57,9 +57,9 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
             return await _repository.GetListAsync(filter, cancellationToken, navigationProperties);
         }
 
-        public async Task<List<T>> GetListAsync<T>(string filter, string? includedProperties = null, CancellationToken cancellationToken = default) where T : class, ITFEHelperModel
+        public async Task<List<T>> GetListAsync<T>(string filter, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] navigationProperties) where T : class, ITFEHelperModel
         {
-            return await _repository.RunDatabaseQueryAsync<T>(filter, includedProperties, cancellationToken);
+            return await _repository.RunDatabaseQueryAsync<T>(filter, null, cancellationToken, navigationProperties);
         }
 
         public PaginatedList<T> GetListPaginated<T>(PaginationParameters parameters, Expression<Func<T, bool>>? filter = null, params Expression<Func<T, object>>[] navigationProperties) where T : class, ITFEHelperModel

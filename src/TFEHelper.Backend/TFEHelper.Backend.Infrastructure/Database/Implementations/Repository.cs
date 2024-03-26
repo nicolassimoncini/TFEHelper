@@ -87,20 +87,15 @@ namespace TFEHelper.Backend.Infrastructure.Database.Implementations
             await SaveAsync<T>(cancellationToken);
         }
 
-        public async Task<List<T>> RunDatabaseQueryAsync<T>(string query, string? includedProperties = null, CancellationToken cancellationToken = default, params IDatabaseParameter[] parameters) where T : class, ITFEHelperModel
+        public async Task<List<T>> RunDatabaseQueryAsync<T>(string query, List<IDatabaseParameter>? parameters, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] navigationProperties) where T : class, ITFEHelperModel
         {
             List<DbParameter> _parameters = new();
-            parameters.ToList().ForEach(p => _parameters.Add(_dbContext.CreateDbParameter(p)));
+            parameters?.ForEach(p => _parameters.Add(_dbContext.CreateDbParameter(p)));
 
             IQueryable<T> result = _dbContext.Set<T>().FromSqlRaw(query, _parameters.ToArray());
 
-            if (includedProperties != null)
-            {
-                foreach (var includeProperty in includedProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                {
-                    result = result.Include(includeProperty);
-                }
-            }
+            foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
+                result = result.Include(navigationProperty);
 
             return await result.ToListAsync(cancellationToken);
         }
