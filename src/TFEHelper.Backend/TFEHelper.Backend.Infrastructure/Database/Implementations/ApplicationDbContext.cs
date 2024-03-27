@@ -8,7 +8,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TFEHelper.Backend.Domain.Classes.Database.Specifications;
+using TFEHelper.Backend.Domain.Classes.Database;
 using TFEHelper.Backend.Domain.Classes.Models;
 using TFEHelper.Backend.Infrastructure.Database.Extensions;
 

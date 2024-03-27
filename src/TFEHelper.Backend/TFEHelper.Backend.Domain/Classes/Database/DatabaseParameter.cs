@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TFEHelper.Backend.Domain.Enums;
 
-namespace TFEHelper.Backend.Domain.Classes.Database.Specifications
+namespace TFEHelper.Backend.Domain.Classes.Database
 {
     /// <summary>
     /// Parameter entity to be used when running a database query or command

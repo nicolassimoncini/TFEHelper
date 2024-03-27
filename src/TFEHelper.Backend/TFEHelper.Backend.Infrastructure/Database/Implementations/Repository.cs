@@ -2,7 +2,7 @@
 using System.Data.Common;
 using System.Linq.Expressions;
 using TFEHelper.Backend.Domain.Classes.API;
-using TFEHelper.Backend.Domain.Classes.Database.Specifications;
+using TFEHelper.Backend.Domain.Classes.Database;
 using TFEHelper.Backend.Domain.Classes.Models;
 using TFEHelper.Backend.Infrastructure.Database.Interfaces;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;

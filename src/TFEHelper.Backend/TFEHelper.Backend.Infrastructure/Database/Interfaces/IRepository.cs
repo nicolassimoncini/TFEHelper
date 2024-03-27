@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using System.Threading.Tasks;
 using TFEHelper.Backend.Domain.Classes.API;
-using TFEHelper.Backend.Domain.Classes.Database.Specifications;
+using TFEHelper.Backend.Domain.Classes.Database;
 using TFEHelper.Backend.Domain.Classes.Models;
 
 namespace TFEHelper.Backend.Infrastructure.Database.Interfaces
