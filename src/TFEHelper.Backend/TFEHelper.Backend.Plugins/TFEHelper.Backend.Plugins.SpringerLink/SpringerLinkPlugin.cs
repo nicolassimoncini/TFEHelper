@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,9 +23,11 @@ namespace TFEHelper.Backend.Plugins.SpringerLink
         public Version Version => new Version(1, 0, 0);
         public PluginType Type => PluginType.PublicationsCollector;
         public string Description => "API adapter for Springer Link";
+        private ILogger _logger;
 
-        public bool Configure()
+        public bool Configure(ILogger logger)
         {
+            _logger = logger;
             return true;
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,6 @@ namespace TFEHelper.Backend.Plugins.PluginBase.Interfaces
         public PluginType Type { get; }
         public string Description { get; }
 
-        bool Configure();
+        bool Configure(ILogger logger);
     }
 }
-#warning meter un constructor base con ILogger o hacer algo para que lo pueda inyectar PluginManager...

@@ -83,6 +83,7 @@ internal class Program
 
         builder.Services.AddAutoMapper(typeof(MappingConfig));
 
+        builder.Services.AddSingleton(typeof(ILogger<>), typeof(LoggerEx<>));
         builder.Services.AddScoped<IRepository, Repository>();
         builder.Services.AddSingleton<IPluginManager, PluginManager>();
         builder.Services.AddSingleton<ITFEHelperConfigurationManager, TFEHelperConfigurationManager>();

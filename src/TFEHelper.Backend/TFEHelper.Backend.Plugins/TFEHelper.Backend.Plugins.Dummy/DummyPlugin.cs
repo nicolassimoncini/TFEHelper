@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,13 +16,19 @@ namespace TFEHelper.Backend.Plugins.Dummy
         public PluginType Type => PluginType.PublicationsCollector;
         public string Description => "Test plugin for IPublicationsCollector";
 
-        public bool Configure()
+        private ILogger _logger;
+
+        public bool Configure(ILogger logger)
         {
+            _logger = logger;
             return true;
         }
 
         public Task<IEnumerable<Publication>> GetPublicationsAsync(PublicationsCollectorParameters searchParameters, CancellationToken cancellationToken = default)
         {
+
+            _logger.LogInformation("Getting publications...");
+
             var result = new List<Publication>()
             {
                 new Publication()
