@@ -7,6 +7,7 @@ using TFEHelper.Backend.Core.Plugin.Interfaces;
 using TFEHelper.Backend.Core.Processors.BibTeX;
 using TFEHelper.Backend.Core.Processors.CSV;
 using TFEHelper.Backend.Domain.Classes.API;
+using TFEHelper.Backend.Domain.Classes.Database;
 using TFEHelper.Backend.Domain.Classes.Models;
 using TFEHelper.Backend.Domain.Classes.Plugin;
 using TFEHelper.Backend.Domain.Enums;
@@ -57,9 +58,13 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
             return await _repository.GetListAsync(filter, cancellationToken, navigationProperties);
         }
 
-        public async Task<List<T>> GetListAsync<T>(string filter, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] navigationProperties) where T : class, ITFEHelperModel
+        public async Task<List<T>> GetListAsync<T>(SearchSpecification searchSpecification, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] navigationProperties) where T : class, ITFEHelperModel
         {
-            return await _repository.RunDatabaseQueryAsync<T>(filter, null, cancellationToken, navigationProperties);
+            return await _repository.RunDatabaseQueryAsync<T>(
+                searchSpecification.Query,
+                _mapper.Map<List<SearchParameter>, List<IDatabaseParameter>>(searchSpecification.Parameters), 
+                cancellationToken, 
+                navigationProperties);
         }
 
         public PaginatedList<T> GetListPaginated<T>(PaginationParameters parameters, Expression<Func<T, bool>>? filter = null, params Expression<Func<T, object>>[] navigationProperties) where T : class, ITFEHelperModel

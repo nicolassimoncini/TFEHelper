@@ -82,6 +82,21 @@ namespace TFEHelper.Backend.API.Controllers
             return Ok(_response);
         }
 
+        [HttpPost("Search")]
+        [ResponseCache(CacheProfileName = "Default30")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<APIResponse>> SearchPublications([FromBody] SearchSpecification specification, CancellationToken cancellationToken = default)
+        {
+            IEnumerable<Publication> publicationList = await _orchestrator.GetListAsync<Publication>(specification, cancellationToken: cancellationToken);
+
+            _response.IsSuccessful = publicationList.Any();
+            _response.Payload = _mapper.Map<IEnumerable<PublicationDTO>>(publicationList);
+            _response.StatusCode = HttpStatusCode.OK;
+
+            return Ok(_response);
+        }
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
