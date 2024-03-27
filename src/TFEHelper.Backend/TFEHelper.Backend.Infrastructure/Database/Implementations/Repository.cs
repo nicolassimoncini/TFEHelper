@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
 using System.Linq.Expressions;
-using TFEHelper.Backend.Domain.Classes.API.Specifications;
+using TFEHelper.Backend.Domain.Classes.API;
 using TFEHelper.Backend.Domain.Classes.Database.Specifications;
-using TFEHelper.Backend.Domain.Interfaces;
+using TFEHelper.Backend.Domain.Classes.Models;
 using TFEHelper.Backend.Infrastructure.Database.Interfaces;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 

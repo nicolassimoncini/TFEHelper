@@ -8,7 +8,6 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using TFEHelper.Backend.Domain.Attributes;
 using TFEHelper.Backend.Domain.Enums;
-using TFEHelper.Backend.Domain.Interfaces;
 
 namespace TFEHelper.Backend.Domain.Classes.Models
 {

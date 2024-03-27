@@ -1,8 +1,8 @@
 ﻿using System.Linq.Expressions;
-using TFEHelper.Backend.Domain.Classes.API.Specifications;
+using TFEHelper.Backend.Domain.Classes.API;
 using TFEHelper.Backend.Domain.Classes.Models;
+using TFEHelper.Backend.Domain.Classes.Plugin;
 using TFEHelper.Backend.Domain.Enums;
-using TFEHelper.Backend.Domain.Interfaces;
 
 namespace TFEHelper.Backend.Core.Engine.Interfaces
 {
@@ -32,7 +32,7 @@ namespace TFEHelper.Backend.Core.Engine.Interfaces
 
         IEnumerable<PluginInfo> GetPublicationsCollectorPlugins();
 
-        Task<IEnumerable<Publication>> GetPublicationsFromPluginAsync(int pluginId, SearchParameters searchParameters, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Publication>> GetPublicationsFromPluginAsync(int pluginId, PublicationsCollectorParameters searchParameters, CancellationToken cancellationToken = default);
 
         IEnumerable<EnumerationTable> GetEnumerationTables();
     }

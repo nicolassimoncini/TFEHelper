@@ -6,7 +6,6 @@ using TFEHelper.Backend.Domain.Attributes;
 using TFEHelper.Backend.Domain.Classes.Models;
 using TFEHelper.Backend.Domain.Enums;
 using TFEHelper.Backend.Domain.Extensions;
-using TFEHelper.Backend.Domain.Interfaces;
 
 namespace TFEHelper.Backend.Core.Processors.BibTeX
 {

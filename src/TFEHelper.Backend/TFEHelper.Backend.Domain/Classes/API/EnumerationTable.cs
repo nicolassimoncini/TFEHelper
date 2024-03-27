@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TFEHelper.Backend.Domain.Classes.Models
+namespace TFEHelper.Backend.Domain.Classes.API
 {
     public class EnumerationTable
     {

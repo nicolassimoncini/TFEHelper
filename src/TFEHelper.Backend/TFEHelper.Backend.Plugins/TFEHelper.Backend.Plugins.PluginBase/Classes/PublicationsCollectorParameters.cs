@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TFEHelper.Backend.Plugins.PluginBase.Classes
 {
-    public class SearchParameters
+    public class PublicationsCollectorParameters
     {
         [Required(AllowEmptyStrings = false)]
         public string Query { get; set; }

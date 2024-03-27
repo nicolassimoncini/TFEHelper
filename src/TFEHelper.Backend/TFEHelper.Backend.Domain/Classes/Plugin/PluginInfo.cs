@@ -1,7 +1,7 @@
 ﻿using System;
 using TFEHelper.Backend.Plugins.PluginBase.Enums;
 
-namespace TFEHelper.Backend.Domain.Classes.Models
+namespace TFEHelper.Backend.Domain.Classes.Plugin
 {
     public class PluginInfo
     {

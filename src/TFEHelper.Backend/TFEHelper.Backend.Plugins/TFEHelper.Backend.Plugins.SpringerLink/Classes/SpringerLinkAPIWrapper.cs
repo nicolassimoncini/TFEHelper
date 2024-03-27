@@ -52,7 +52,7 @@ namespace TFEHelper.Backend.Plugins.SpringerLink.Classes
             _client?.Dispose();
         }
 
-        public void Setup(SearchParameters searchParameters, int pageSize = 100, int returnQuantityLimit = 0)
+        public void Setup(PublicationsCollectorParameters searchParameters, int pageSize = 100, int returnQuantityLimit = 0)
         {
             _returnQuantityLimit = (returnQuantityLimit > 0) ? returnQuantityLimit : 0;
 
@@ -68,7 +68,7 @@ namespace TFEHelper.Backend.Plugins.SpringerLink.Classes
             _request.AddQueryParameter("p", pageSize.ToString());
         }
 
-        private string ParseQuery(SearchParameters searchParameters)
+        private string ParseQuery(PublicationsCollectorParameters searchParameters)
         {
             string query = "";
 

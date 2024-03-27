@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using TFEHelper.Backend.Domain.Enums;
-using TFEHelper.Backend.Domain.Interfaces;
 
 namespace TFEHelper.Backend.Domain.Classes.DTO
 {

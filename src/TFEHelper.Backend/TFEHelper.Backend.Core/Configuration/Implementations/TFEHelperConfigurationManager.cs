@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using TFEHelper.Backend.Core.Configuration.Interfaces;
-using TFEHelper.Backend.Domain.Classes.Models;
+using TFEHelper.Backend.Domain.Classes.API;
 using TFEHelper.Backend.Domain.Enums;
 using TFEHelper.Backend.Domain.Extensions;
 

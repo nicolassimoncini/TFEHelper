@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TFEHelper.Backend.Plugins.PluginBase.Interfaces;
 
-namespace TFEHelper.Backend.Domain.Classes.Models
+namespace TFEHelper.Backend.Domain.Classes.Plugin
 {
     public class PluginContainer
     {

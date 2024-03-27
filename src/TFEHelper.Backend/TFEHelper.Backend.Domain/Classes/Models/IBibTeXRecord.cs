@@ -1,6 +1,6 @@
 ﻿using TFEHelper.Backend.Domain.Enums;
 
-namespace TFEHelper.Backend.Domain.Interfaces
+namespace TFEHelper.Backend.Domain.Classes.Models
 {
     public interface IBibTeXRecord
     {

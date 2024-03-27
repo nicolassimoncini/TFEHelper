@@ -6,16 +6,16 @@ using TFEHelper.Backend.Core.Engine.Interfaces;
 using TFEHelper.Backend.Core.Plugin.Interfaces;
 using TFEHelper.Backend.Core.Processors.BibTeX;
 using TFEHelper.Backend.Core.Processors.CSV;
-using TFEHelper.Backend.Domain.Classes.API.Specifications;
+using TFEHelper.Backend.Domain.Classes.API;
 using TFEHelper.Backend.Domain.Classes.Models;
+using TFEHelper.Backend.Domain.Classes.Plugin;
 using TFEHelper.Backend.Domain.Enums;
 using TFEHelper.Backend.Domain.Extensions;
-using TFEHelper.Backend.Domain.Interfaces;
 using TFEHelper.Backend.Infrastructure.Database.Interfaces;
 using TFEHelper.Backend.Plugins.PluginBase.Interfaces;
 using ModelValidator = TFEHelper.Backend.Tools.ComponentModel.ModelValidator;
-using SearchParametersFromModel = TFEHelper.Backend.Domain.Classes.Models.SearchParameters;
-using SearchParametersFromPlugin = TFEHelper.Backend.Plugins.PluginBase.Classes.SearchParameters;
+using SearchParametersFromModel = TFEHelper.Backend.Domain.Classes.Plugin.PublicationsCollectorParameters;
+using SearchParametersFromPlugin = TFEHelper.Backend.Plugins.PluginBase.Classes.PublicationsCollectorParameters;
 
 namespace TFEHelper.Backend.Core.Engine.Implementations
 {

@@ -10,6 +10,6 @@ namespace TFEHelper.Backend.Plugins.PluginBase.Interfaces
     public interface IPublicationsCollector : IBasePlugin
     {
         bool IsOnline();
-        Task<IEnumerable<Publication>> GetPublicationsAsync(SearchParameters searchParameters, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Publication>> GetPublicationsAsync(PublicationsCollectorParameters searchParameters, CancellationToken cancellationToken = default);
     }
 }

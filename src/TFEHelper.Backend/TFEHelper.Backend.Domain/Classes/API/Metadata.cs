@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TFEHelper.Backend.Domain.Classes.API.Specifications
+namespace TFEHelper.Backend.Domain.Classes.API
 {
     public class Metadata
     {

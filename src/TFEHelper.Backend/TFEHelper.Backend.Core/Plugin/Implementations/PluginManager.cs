@@ -2,6 +2,7 @@
 using System.Reflection;
 using TFEHelper.Backend.Core.Plugin.Interfaces;
 using TFEHelper.Backend.Domain.Classes.Models;
+using TFEHelper.Backend.Domain.Classes.Plugin;
 using TFEHelper.Backend.Plugins.PluginBase.Interfaces;
 using TFEHelper.Backend.Tools.Assembly;
 

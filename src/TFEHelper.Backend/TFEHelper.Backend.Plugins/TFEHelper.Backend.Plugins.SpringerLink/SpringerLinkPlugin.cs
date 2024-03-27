@@ -33,7 +33,7 @@ namespace TFEHelper.Backend.Plugins.SpringerLink
             return true;
         }
 
-        public async Task<IEnumerable<Publication>> GetPublicationsAsync(SearchParameters searchParameters, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Publication>> GetPublicationsAsync(PublicationsCollectorParameters searchParameters, CancellationToken cancellationToken = default)
         {
             const string uri = "http://api.springernature.com/metadata";
             const string APIKey = "51cc9a793e0d7714a068c4f2a2cc7f19";

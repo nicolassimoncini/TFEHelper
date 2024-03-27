@@ -20,7 +20,7 @@ namespace TFEHelper.Backend.Plugins.Dummy
             return true;
         }
 
-        public Task<IEnumerable<Publication>> GetPublicationsAsync(SearchParameters searchParameters, CancellationToken cancellationToken = default)
+        public Task<IEnumerable<Publication>> GetPublicationsAsync(PublicationsCollectorParameters searchParameters, CancellationToken cancellationToken = default)
         {
             var result = new List<Publication>()
             {

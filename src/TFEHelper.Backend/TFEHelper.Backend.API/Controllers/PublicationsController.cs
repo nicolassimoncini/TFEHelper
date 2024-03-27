@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using TFEHelper.Backend.Core.Engine.Interfaces;
 using TFEHelper.Backend.Domain.Classes.API;
-using TFEHelper.Backend.Domain.Classes.API.Specifications;
 using TFEHelper.Backend.Domain.Classes.DTO;
 using TFEHelper.Backend.Domain.Classes.Models;
 using TFEHelper.Backend.Domain.Enums;

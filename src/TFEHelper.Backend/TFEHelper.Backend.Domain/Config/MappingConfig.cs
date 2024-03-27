@@ -5,8 +5,8 @@ using BibTeXPublicationTypeFromPlugin = TFEHelper.Backend.Plugins.PluginBase.Enu
 using BibTeXPublicationTypeLocal = TFEHelper.Backend.Domain.Enums.BibTeXPublicationType;
 using PublicationFromModel = TFEHelper.Backend.Domain.Classes.Models.Publication;
 using PublicationFromPlugin = TFEHelper.Backend.Plugins.PluginBase.Classes.Publication;
-using SearchParametersFromModel = TFEHelper.Backend.Domain.Classes.Models.SearchParameters;
-using SearchParametersFromPlugin = TFEHelper.Backend.Plugins.PluginBase.Classes.SearchParameters;
+using PublicationsCollectorParametersFromModel = TFEHelper.Backend.Domain.Classes.Plugin.PublicationsCollectorParameters;
+using PublicationsCollectorParametersFromPlugin = TFEHelper.Backend.Plugins.PluginBase.Classes.PublicationsCollectorParameters;
 
 namespace TFEHelper.Backend.Domain.Config
 {
@@ -19,7 +19,7 @@ namespace TFEHelper.Backend.Domain.Config
             CreateMap<BibTeXPublicationTypeLocal, BibTeXPublicationTypeFromPlugin>()
                 .ConvertUsingEnumMapping(opt => opt.MapByValue())
                 .ReverseMap(); 
-            CreateMap<SearchParametersFromModel, SearchParametersFromPlugin>().ReverseMap();
+            CreateMap<PublicationsCollectorParametersFromModel, PublicationsCollectorParametersFromPlugin>().ReverseMap();
         }
     }
 }

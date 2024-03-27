@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TFEHelper.Backend.Domain.Classes.Models
+namespace TFEHelper.Backend.Domain.Classes.Plugin
 {
-    public class SearchParameters
+    public class PublicationsCollectorParameters
     {
         [Required(AllowEmptyStrings = false)]
         public string Query { get; set; }

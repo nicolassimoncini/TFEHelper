@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using TFEHelper.Backend.Core.Engine.Interfaces;
 using TFEHelper.Backend.Domain.Classes.API;
-using TFEHelper.Backend.Domain.Classes.Models;
 
 namespace TFEHelper.Backend.API.Controllers
 {

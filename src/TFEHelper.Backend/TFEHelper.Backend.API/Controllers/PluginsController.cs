@@ -5,6 +5,7 @@ using TFEHelper.Backend.Core.Engine.Interfaces;
 using TFEHelper.Backend.Domain.Classes.API;
 using TFEHelper.Backend.Domain.Classes.DTO;
 using TFEHelper.Backend.Domain.Classes.Models;
+using TFEHelper.Backend.Domain.Classes.Plugin;
 
 namespace TFEHelper.Backend.API.Controllers
 {
@@ -43,7 +44,7 @@ namespace TFEHelper.Backend.API.Controllers
         [HttpPost("/api/[controller]/Collectors/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIResponse>> RunPublicationsCollectorPlugin(int id, [FromBody] SearchParameters searchParameters, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<APIResponse>> RunPublicationsCollectorPlugin(int id, [FromBody] PublicationsCollectorParameters searchParameters, CancellationToken cancellationToken = default)
         {
             IEnumerable<Publication> publications = await _orchestrator.GetPublicationsFromPluginAsync(id, searchParameters, cancellationToken);
 
