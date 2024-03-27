@@ -20,6 +20,14 @@ namespace TFEHelper.Backend.Domain.Enums
         [Display(Name = "IEEE Xplore")]
         IEEEXplore = 4,
         [Display(Name = "Manual")]
-        Manual = 5
+        Manual = 5,
+        [Display(Name = "Pub Med")]
+        PubMed = 6,
+        [Display(Name = "Scopus")]
+        Scopus = 7,
+        [Display(Name = "Eric")]
+        Eric = 8,
+        [Display(Name = "Doaj")]
+        Doaj = 9
     }
 }
