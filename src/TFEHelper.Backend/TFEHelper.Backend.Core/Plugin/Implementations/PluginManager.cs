@@ -55,11 +55,10 @@ namespace TFEHelper.Backend.Core.Plugin.Implementations
                 if (_plugins.Any())
                 {
                     _logger.LogInformation($"{_plugins.Count()} plugin(s) detected:");
-                    _plugins.ToList().ForEach(p => 
-                    {
-                        _logger.LogInformation($"--> {p.Info.Name} - v{p.Info.Version}");
-                        p.Plugin.Configure(_loggerFactory.CreateLogger(p.Plugin.GetType()));
-                    });
+                    _plugins.ToList().ForEach(p => _logger.LogInformation($"--> {p.Info.Name} - v{p.Info.Version}"));
+
+                    _logger.LogInformation("Invoking plugins self configuration...");
+                    _plugins.ToList().ForEach(p => p.Plugin.Configure(_loggerFactory.CreateLogger(p.Plugin.GetType())));
                 }
                 else _logger.LogInformation("No plugins detected.");
             });

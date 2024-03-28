@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using TFEHelper.Backend.Plugins.PluginBase.Classes;
 using TFEHelper.Backend.Plugins.PluginBase.Enums;
 using TFEHelper.Backend.Plugins.PluginBase.Interfaces;
+using TFEHelper.Backend.Plugins.PluginBase.Tools;
 using TFEHelper.Backend.Plugins.SpringerLink.Classes;
 using TFEHelper.Backend.Plugins.SpringerLink.DTO;
 using TFEHelper.Backend.Plugins.SpringerLink.Enums;
@@ -23,11 +24,15 @@ namespace TFEHelper.Backend.Plugins.SpringerLink
         public Version Version => new Version(1, 0, 0);
         public PluginType Type => PluginType.PublicationsCollector;
         public string Description => "API adapter for Springer Link";
+        
         private ILogger _logger;
+        private PluginConfigurationController _config;
 
         public bool Configure(ILogger logger)
         {
             _logger = logger;
+            _config = new PluginConfigurationController(_logger);
+
             return true;
         }
 
@@ -38,9 +43,9 @@ namespace TFEHelper.Backend.Plugins.SpringerLink
 
         public async Task<IEnumerable<Publication>> GetPublicationsAsync(PublicationsCollectorParameters searchParameters, CancellationToken cancellationToken = default)
         {
-            const string uri = "http://api.springernature.com/metadata";
-            const string APIKey = "51cc9a793e0d7714a068c4f2a2cc7f19";
-            const int defaultPageSize = 5;
+            string uri = _config.Get<string>("URI"); //"http://api.springernature.com/metadata"
+            string APIKey = _config.Get<string>("APIKey"); //"51cc9a793e0d7714a068c4f2a2cc7f19"
+            int defaultPageSize = _config.Get<int>("DefaultPageSize"); //5;
 
             using (var api = new SpringerLinkAPIWrapper(uri, APIKey, SpringerLinkAPIAuthorizationType.QueryParameter))
             {

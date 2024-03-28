@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TFEHelper.Backend.Plugins.PluginBase.Classes;
 using TFEHelper.Backend.Plugins.PluginBase.Enums;
 using TFEHelper.Backend.Plugins.PluginBase.Interfaces;
+using TFEHelper.Backend.Plugins.PluginBase.Tools;
 
 namespace TFEHelper.Backend.Plugins.Dummy
 {
@@ -17,10 +18,13 @@ namespace TFEHelper.Backend.Plugins.Dummy
         public string Description => "Test plugin for IPublicationsCollector";
 
         private ILogger _logger;
+        private PluginConfigurationController _config;
 
         public bool Configure(ILogger logger)
         {
             _logger = logger;
+            _config = new PluginConfigurationController(_logger);
+
             return true;
         }
 
