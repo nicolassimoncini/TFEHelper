@@ -101,16 +101,15 @@ namespace TFEHelper.Backend.API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIResponse>> CreatePublication([FromBody] PublicationDTO publication, CancellationToken cancellationToken = default)
-        { 
-            Publication model = _mapper.Map<Publication>(publication);
-            await _orchestrator.CreateAsync(model, cancellationToken: cancellationToken);
+        public async Task<ActionResult<APIResponse>> CreatePublications([FromBody] List<PublicationDTO> publications, CancellationToken cancellationToken = default)
+        {
+            List<Publication> models = _mapper.Map<List<Publication>>(publications);
+            await _orchestrator.CreateRangeAsync(models, cancellationToken: cancellationToken);
 
             _response.IsSuccessful = true;
-            _response.Payload = _mapper.Map<PublicationDTO>(model);
             _response.StatusCode = HttpStatusCode.Created;
 
-            return CreatedAtRoute("GetPublication", new { id = model.Id }, _response);
+            return Ok(_response);
         }
 
         [HttpDelete("{id:int}")]
