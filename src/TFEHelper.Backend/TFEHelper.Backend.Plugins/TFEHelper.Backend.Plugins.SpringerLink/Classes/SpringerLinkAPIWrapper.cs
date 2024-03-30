@@ -52,6 +52,7 @@ namespace TFEHelper.Backend.Plugins.SpringerLink.Classes
         /// <inheritdoc/>
         public void Dispose()
         {
+            _logger = null;
             _client?.Dispose();
         }
 
