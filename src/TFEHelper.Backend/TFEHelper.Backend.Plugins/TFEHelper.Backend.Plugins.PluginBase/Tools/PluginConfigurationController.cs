@@ -65,4 +65,3 @@ namespace TFEHelper.Backend.Plugins.PluginBase.Tools
         }
     }
 }
-#warning investigar por qué al debuggear, la base de datos se busca en "D:\I&D\Sandbox\UTN\TFE\TFEHelper\src\TFEHelper.Backend\TFEHelper.Backend.API\"!

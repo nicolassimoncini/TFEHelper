@@ -1,4 +1,5 @@
-﻿using RestSharp;
+﻿using Microsoft.Extensions.Logging;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace TFEHelper.Backend.Plugins.SpringerLink.Classes
         private readonly RestClient _client;
         private readonly RestRequest _request;
         private int _returnQuantityLimit;
+        private ILogger _logger;
 
         /// <summary>
         /// Creates an APIConsumer.
@@ -25,8 +27,9 @@ namespace TFEHelper.Backend.Plugins.SpringerLink.Classes
         /// <param name="URI">The API Uri.</param>
         /// <param name="APIKey">The API Key for using as X-Authorization header validation.</param>
         /// <param name="authorizationType">The authorization type</param>
-        public SpringerLinkAPIWrapper(string URI, string APIKey, SpringerLinkAPIAuthorizationType authorizationType)
+        public SpringerLinkAPIWrapper(string URI, string APIKey, SpringerLinkAPIAuthorizationType authorizationType, ILogger logger)
         {
+            _logger = logger;
             _client = new RestClient(URI);
             _request = new RestRequest("json");
 
@@ -52,9 +55,9 @@ namespace TFEHelper.Backend.Plugins.SpringerLink.Classes
             _client?.Dispose();
         }
 
-        public void Setup(PublicationsCollectorParameters searchParameters, int pageSize = 100, int returnQuantityLimit = 0)
+        public void Setup(PublicationsCollectorParameters searchParameters, int pageSize = 100)
         {
-            _returnQuantityLimit = (returnQuantityLimit > 0) ? returnQuantityLimit : 0;
+            _returnQuantityLimit = (searchParameters.ReturnQuantityLimit > 0) ? searchParameters.ReturnQuantityLimit : 0;
 
             string query = ParseQuery(searchParameters);
 
@@ -91,13 +94,15 @@ namespace TFEHelper.Backend.Plugins.SpringerLink.Classes
             bool maxReached = false;
             int remaining;
 
+            _logger.LogInformation("Requesting publications...");
+
             do
             {
                 response = await _client.GetAsync<SpringerLinkRootDTO>(_request, cancellationToken) ?? new SpringerLinkRootDTO();
                 records.AddRange(response.Records);
                 SpringerLinkResultDTO result = response.Result.First();
 
-                Console.WriteLine($"Retrieved {records.Count()} / {result.Total}");
+                _logger.LogInformation($"Retrieved {records.Count()} / {result.Total} records.");
 
                 remaining = _returnQuantityLimit - records.Count();
                 

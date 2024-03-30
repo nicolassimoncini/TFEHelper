@@ -47,12 +47,9 @@ namespace TFEHelper.Backend.Plugins.SpringerLink
             string APIKey = _config.Get<string>("APIKey"); //"51cc9a793e0d7714a068c4f2a2cc7f19"
             int defaultPageSize = _config.Get<int>("DefaultPageSize"); //5;
 
-            using (var api = new SpringerLinkAPIWrapper(uri, APIKey, SpringerLinkAPIAuthorizationType.QueryParameter))
+            using (var api = new SpringerLinkAPIWrapper(uri, APIKey, SpringerLinkAPIAuthorizationType.QueryParameter, _logger))
             {
-                api.Setup(
-                    searchParameters,
-                    defaultPageSize,
-                    searchParameters.ReturnQuantityLimit);
+                api.Setup(searchParameters, defaultPageSize);
 
                 List<SpringerLinkRecordDTO> result = await api.GetAllRecordsAsync(cancellationToken);
                 List<Publication> publications = new List<Publication>();
@@ -89,3 +86,14 @@ namespace TFEHelper.Backend.Plugins.SpringerLink
 //const string uri = "http://api.springernature.com/meta/v2";
 //const string query = "software development framework ontology domain";
 //const string query = "(software NEAR/5 development NEAR/5 framework*) OR (software NEAR/5 development NEAR/5 framework* NEAR/5 ontolog* NEAR/5 domain*)"; 
+//
+/* ejemplo de PublicationsCollectorParameters
+{
+  "query": "software",
+  "searchIn": "",
+  "subject": "Computer Science",
+  "dateFrom": "2023-03-30",
+  "dateTo": "2024-03-30",
+  "returnQuantityLimit": 5
+}
+*/
