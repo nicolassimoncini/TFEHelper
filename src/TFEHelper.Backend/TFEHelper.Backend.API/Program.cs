@@ -97,7 +97,7 @@ internal class Program
         app.UseResponseCaching();
         app.UseSwagger();
         app.UseSwaggerUI();
-        app.UseHttpsRedirection();
+        //app.UseHttpsRedirection();
         app.MapControllers();
         app.ApplyDatabaseMigration();
         app.UseMiddleware<ExceptionHandlingMiddleware>();
