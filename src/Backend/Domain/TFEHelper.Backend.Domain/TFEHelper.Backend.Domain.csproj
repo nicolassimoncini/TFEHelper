@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TFEHelper.Backend.Plugins\TFEHelper.Backend.Plugins.PluginBase\TFEHelper.Backend.Plugins.PluginBase.csproj" />
+    <ProjectReference Include="..\..\Plugins\TFEHelper.Backend.Plugins.PluginBase\TFEHelper.Backend.Plugins.PluginBase.csproj" />
   </ItemGroup>
 
 </Project>

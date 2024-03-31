@@ -211,3 +211,4 @@ namespace TFEHelper.Backend.API.Controllers
         }
     }
 }
+#warning meter la "lógica de negocio" dentro de Core (servicio) y encapsular errores con excepciones capturables y convertibles en el middleware...
