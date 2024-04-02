@@ -41,7 +41,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFEHelper.Backend.Tools.Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFEHelper.Backend.API", "API\TFEHelper.Backend.API\TFEHelper.Backend.API.csproj", "{2DB3A59D-BF06-45E2-862D-E2CCA3933190}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFEHelper.Backend.API.Test", "API\TFEHelper.Backend.API.Test\TFEHelper.Backend.API.Test.csproj", "{981EF278-A1E4-4196-88CD-CE70E7EC0FB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFEHelper.Backend.API.Test", "API\TFEHelper.Backend.API.Test\TFEHelper.Backend.API.Test.csproj", "{981EF278-A1E4-4196-88CD-CE70E7EC0FB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFEHelper.Backend.Services.Abstractions", "Services\TFEHelper.Backend.Services.Abstractions\TFEHelper.Backend.Services.Abstractions.csproj", "{15C3F021-DC86-4B48-9F3F-D87326B7530C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFEHelper.Backend.Services.Contracts", "Services\TFEHelper.Backend.Services.Contracts\TFEHelper.Backend.Services.Contracts.csproj", "{77718E43-B922-4577-A73D-BDC8A034898E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +109,14 @@ Global
 		{981EF278-A1E4-4196-88CD-CE70E7EC0FB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{981EF278-A1E4-4196-88CD-CE70E7EC0FB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{981EF278-A1E4-4196-88CD-CE70E7EC0FB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15C3F021-DC86-4B48-9F3F-D87326B7530C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15C3F021-DC86-4B48-9F3F-D87326B7530C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15C3F021-DC86-4B48-9F3F-D87326B7530C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15C3F021-DC86-4B48-9F3F-D87326B7530C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77718E43-B922-4577-A73D-BDC8A034898E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77718E43-B922-4577-A73D-BDC8A034898E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77718E43-B922-4577-A73D-BDC8A034898E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77718E43-B922-4577-A73D-BDC8A034898E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,6 +136,8 @@ Global
 		{2C1C7E99-3C8F-4965-B52B-641F8C50BE92} = {62502CA5-FE12-4EFC-86FE-C0340C5F2814}
 		{2DB3A59D-BF06-45E2-862D-E2CCA3933190} = {79E88285-83FD-48C8-81A1-EBF5C35E4D55}
 		{981EF278-A1E4-4196-88CD-CE70E7EC0FB1} = {79E88285-83FD-48C8-81A1-EBF5C35E4D55}
+		{15C3F021-DC86-4B48-9F3F-D87326B7530C} = {E9F95634-78E2-4289-A902-861A5912B311}
+		{77718E43-B922-4577-A73D-BDC8A034898E} = {E9F95634-78E2-4289-A902-861A5912B311}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C0B3D73E-CF42-498C-97C5-06A8F7372B49}

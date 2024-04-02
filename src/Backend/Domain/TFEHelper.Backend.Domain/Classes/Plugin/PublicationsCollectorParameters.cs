@@ -10,9 +10,9 @@ namespace TFEHelper.Backend.Domain.Classes.Plugin
     public class PublicationsCollectorParameters
     {
         [Required(AllowEmptyStrings = false)]
-        public string Query { get; set; }
-        public string SearchIn { get; set; }
-        public string Subject { get; set; }
+        public string Query { get; set; } = string.Empty;
+        public string SearchIn { get; set; } = string.Empty;
+        public string Subject { get; set; } = string.Empty;
         public DateOnly DateFrom { get; set; }
         public DateOnly DateTo { get; set; }
         [Range(0, int.MaxValue)]

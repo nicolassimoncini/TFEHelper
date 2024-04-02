@@ -17,7 +17,7 @@ namespace TFEHelper.Backend.Domain.Classes.API
         public HttpStatusCode StatusCode { get; set; }
         public bool IsSuccessful { get; set; } = true;
         public List<string> ErrorMessages { get; set; }
-        public object Payload { get; set; }
+        public object? Payload { get; set; }
         public int TotalPages { get; set; }        
     }
 }

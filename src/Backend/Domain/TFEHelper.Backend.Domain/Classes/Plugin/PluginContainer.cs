@@ -11,5 +11,11 @@ namespace TFEHelper.Backend.Domain.Classes.Plugin
     {
         public PluginInfo Info { get; set; }
         public IBasePlugin Plugin { get; set; }
+
+        public PluginContainer(PluginInfo info, IBasePlugin plugin)
+        {
+            Info = info;
+            Plugin = plugin;
+        }
     }
 }

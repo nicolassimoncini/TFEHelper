@@ -29,12 +29,7 @@ namespace TFEHelper.Backend.Core.Engine.Implementations
         private readonly IMapper _mapper;
         private readonly BibTeXProcessor _bibTeXProcessor;
         private readonly CSVProcessor _csvProcessor;
-#warning desacoplar esta clase. convertir TFEHelperOrchestrator en TFEServiceManager y que dentro tenga EntityManager (que implemente IRepository), ConfigurationManager (que implemente ITFEHelperConfigurationManager) y PluginManager (IPluginManager)
-#warning entonces, desde la API se podría llamar así: _service.EntityManager.Create... / _service.ConfigurationManager.GetConfig... / _service.PluginManager.GetPublicationsFromPlugin... en vez de llamar siempre al orchestrator...
-#warning la interfaz IServiceManager deberá contener IEntityManager, IConfigurationManager y IPluginManager.
-#warning para no romper todo, crear la carpeta ..\Services y meter todo el moco ahí.  Lo más lógico sería que la class library se llame ahora TFEHelper.Backend.Services en vez de TFEHelper.Backend.Core
-#warning por lo anterior, crearía una nueva class library y metería todo adentro para hacerlo bien limpito de cero sin romper nada y luego cambiaría todo el wiring...
-#warning la culpa de todo la tiene: https://code-maze.com/onion-architecture-in-aspnetcore/ ;P
+
         public TFEHelperOrchestrator(ILogger<TFEHelperOrchestrator> logger, IRepository repository, IPluginManager pluginManager, ITFEHelperConfigurationManager configurationManager, IMapper mapper)
         {
             _logger = logger;

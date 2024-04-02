@@ -7,9 +7,9 @@ namespace TFEHelper.Backend.Domain.Classes.Plugin
     {
         public int Id { get; set; }
         public PluginType Type { get; set; }
-        public string Name { get; set; }
-        public Version Version { get; set; }
-        public string Description { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public Version Version { get; set; } = new Version();
+        public string Description { get; set; } = string.Empty;
 
         public override string ToString()
         {

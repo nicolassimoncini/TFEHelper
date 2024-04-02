@@ -8,7 +8,7 @@ namespace TFEHelper.Backend.Domain.Classes.API
 {
     public class EnumerationTableItem
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public int Value { get; set; }
     }
 }

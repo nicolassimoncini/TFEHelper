@@ -6,4 +6,16 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="31.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+    <PackageReference Include="Neat.BibTeX" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\TFEHelper.Backend.Domain\TFEHelper.Backend.Domain.csproj" />
+    <ProjectReference Include="..\TFEHelper.Backend.Services.Abstractions\TFEHelper.Backend.Services.Abstractions.csproj" />
+    <ProjectReference Include="..\TFEHelper.Backend.Services.Contracts\TFEHelper.Backend.Services.Contracts.csproj" />
+  </ItemGroup>
+
 </Project>

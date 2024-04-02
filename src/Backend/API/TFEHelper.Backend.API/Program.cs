@@ -1,3 +1,4 @@
+using AutoMapper.Extensions.ExpressionMapping;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -81,7 +82,9 @@ internal class Program
                 m => m.MigrationsAssembly(builder.Configuration.GetValue<string>("Database:MigrationAssembly")));
         });
 
-        builder.Services.AddAutoMapper(typeof(MappingConfig));
+        builder.Services.AddAutoMapper(
+            profileAssemblyMarkerTypes: typeof(MappingConfig), 
+            configAction: cfg => cfg.AddExpressionMapping());
 
         builder.Services.AddSingleton(typeof(ILogger<>), typeof(LoggerEx<>));
         builder.Services.AddScoped<IRepository, Repository>();

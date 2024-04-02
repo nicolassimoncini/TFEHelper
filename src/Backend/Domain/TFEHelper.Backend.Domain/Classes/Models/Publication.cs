@@ -20,20 +20,20 @@ namespace TFEHelper.Backend.Domain.Classes.Models
         [Required]
         public BibTeXPublicationType Type { get; set; }
         [BibTeXKey]
-        public string Key { get; set; }
+        public string Key { get; set; } = string.Empty;
         [BibTeXKey]
         [Required]
         public SearchSourceType Source { get; set; }
-        public string URL { get; set; }
+        public string URL { get; set; } = string.Empty;
         [Required]
-        public string Title { get; set; }
-        public string Authors { get; set; }
-        public string Keywords { get; set; }
-        public string DOI { get; set; }
+        public string Title { get; set; } = string.Empty; 
+        public string Authors { get; set; } = string.Empty;
+        public string Keywords { get; set; } = string.Empty;
+        public string DOI { get; set; } = string.Empty;
         public int Year { get; set; }
-        public string ISBN { get; set; }
-        public string ISSN { get; set; }
-        public string Abstract { get; set; }
-        public string Pages { get; set; }
+        public string ISBN { get; set; } = string.Empty;
+        public string ISSN { get; set; } = string.Empty;
+        public string Abstract { get; set; } = string.Empty;
+        public string Pages { get; set; } = string.Empty;
     }
 }

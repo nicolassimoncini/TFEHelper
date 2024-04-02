@@ -37,18 +37,16 @@ namespace TFEHelper.Backend.Core.Plugin.Implementations
                 var i = 1;
                 foreach (var plugin in plugins)
                 {
-                    _plugins.Add(new PluginContainer()
-                    {
-                        Info = new PluginInfo()
+                    _plugins.Add(new PluginContainer(
+                        new PluginInfo()
                         {
                             Id = i,
                             Type = plugin.Type,
                             Name = plugin.Name,
                             Version = plugin.Version,
                             Description = plugin.Description
-                        },
-                        Plugin = plugin
-                    });
+                        }
+                        ,plugin));
                     i++;
                 }
 

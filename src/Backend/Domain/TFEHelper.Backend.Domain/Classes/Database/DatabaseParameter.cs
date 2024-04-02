@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace TFEHelper.Backend.Domain.Classes.Database
     public sealed class DatabaseParameter : IDatabaseParameter
     {
         /// <inheritdoc/>
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         /// <inheritdoc/>
         public DatabaseParameterType? Type { get; set; }
@@ -33,6 +34,7 @@ namespace TFEHelper.Backend.Domain.Classes.Database
         public DatabaseParameter()
         {
             Direction = ParameterDirection.Input;
+            Value = new object();
         }
 
         /// <summary>

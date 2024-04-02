@@ -8,7 +8,7 @@ namespace TFEHelper.Backend.Domain.Classes.API
 {
     public class SearchSpecification
     {
-        public string Query { get; set; }
+        public string Query { get; set; } = string.Empty;
         public List<SearchParameter> Parameters { get; set; } = new List<SearchParameter>();
     }
 }
