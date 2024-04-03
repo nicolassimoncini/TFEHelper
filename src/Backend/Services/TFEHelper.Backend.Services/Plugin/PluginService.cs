@@ -49,3 +49,6 @@ namespace TFEHelper.Backend.Services.Plugin
         }
     }
 }
+
+#warning al momento de migrar a cebolla, sacar la dependencia domain -> pluginbase y cambiarla por pluginbase -> domain
+#warning luego, eliminar publication, publicationscollectorparameters, bibtexpublicationtype, plugintype (moverlo a domain) y searchsourcetype de pluginbase

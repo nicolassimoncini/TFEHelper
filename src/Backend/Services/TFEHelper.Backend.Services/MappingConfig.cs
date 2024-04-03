@@ -14,6 +14,7 @@ using TFEHelper.Backend.Domain.Enums;
 using TFEHelper.Backend.Services.Contracts.DTO.API;
 using TFEHelper.Backend.Services.Contracts.DTO.Plugin;
 using Publication = TFEHelper.Backend.Domain.Classes.Models.Publication;
+using PublicationsCollectorParameters = TFEHelper.Backend.Plugins.PluginBase.Classes.PublicationsCollectorParameters;
 
 namespace TFEHelper.Backend.Services
 {

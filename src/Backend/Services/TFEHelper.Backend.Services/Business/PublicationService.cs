@@ -43,7 +43,6 @@ namespace TFEHelper.Backend.Services.Business
 
         public async Task<List<PublicationDTO>> GetListAsync(Expression<Func<PublicationDTO, bool>>? filter = null, bool tracked = true, CancellationToken cancellationToken = default, params Expression<Func<PublicationDTO, object>>[] navigationProperties)
         {
-            //[TODO]: agregar expression mapping (AddExpressionMapping()) en la configuración del mapper en program...
             var publications = await _repository.Publications.GetAsync(
                 _mapper.Map<Expression<Func<Publication, bool>>>(filter),
                 tracked,
@@ -55,7 +54,6 @@ namespace TFEHelper.Backend.Services.Business
 
         public async Task<List<PublicationDTO>> GetListAsync(SearchSpecificationDTO searchSpecification, bool tracked = true, CancellationToken cancellationToken = default, params Expression<Func<PublicationDTO, object>>[] navigationProperties)
         {
-            //[TODO]: agregar expression mapping (AddExpressionMapping()) en la configuración del mapper en program...
             var publications = await _repository.Publications.RunDatabaseQueryAsync(
                 searchSpecification.Query,
                 _mapper.Map<List<SearchParameterDTO>, List<IDatabaseParameter>>(searchSpecification.Parameters),
@@ -67,7 +65,6 @@ namespace TFEHelper.Backend.Services.Business
 
         public PaginatedListDTO<PublicationDTO> GetListPaginated(PaginationParametersDTO parameters, Expression<Func<PublicationDTO, bool>>? filter = null, params Expression<Func<PublicationDTO, object>>[] navigationProperties)
         {
-            //[TODO]: agregar expression mapping (AddExpressionMapping()) en la configuración del mapper en program...
             var publications = _repository.Publications.GetPaginated(
                 _mapper.Map<PaginationParameters>(parameters),
                 _mapper.Map<Expression<Func<Publication, bool>>>(filter),

@@ -30,6 +30,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Domain\TFEHelper.Backend.Domain\TFEHelper.Backend.Domain.csproj" />
     <ProjectReference Include="..\..\Services\TFEHelper.Backend.Core\TFEHelper.Backend.Core.csproj" />
+    <ProjectReference Include="..\..\Services\TFEHelper.Backend.Services.Abstractions\TFEHelper.Backend.Services.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Services\TFEHelper.Backend.Services\TFEHelper.Backend.Services.csproj" />
   </ItemGroup>
 
 </Project>

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TFEHelper.Backend.Services.Abstractions.Interfaces;
 using TFEHelper.Backend.Services.Contracts.DTO.API;
+using TFEHelper.Backend.Services.Contracts.DTO.Configuration;
 using TFEHelper.Backend.Services.Contracts.Extensions;
 
 namespace TFEHelper.Backend.Services.Configuration
