@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TFEHelper.Backend.Plugins.PluginBase.Enums;
+using TFEHelper.Backend.Plugins.PluginBase.Specifications.PublicationsCollector.Enums;
 
 namespace TFEHelper.Backend.Plugins.SpringerLink.Extensions
 {
@@ -11,8 +11,8 @@ namespace TFEHelper.Backend.Plugins.SpringerLink.Extensions
     {
         public static string NormalizePublicationType(string pt) => pt switch
         {
-            "Chapter ConferencePaper" => BibTeXPublicationType.Conference.ToString(),
-            "Chapter" => BibTeXPublicationType.Book.ToString(),
+            "Chapter ConferencePaper" => BibTeXPublicationPLGType.Conference.ToString(),
+            "Chapter" => BibTeXPublicationPLGType.Book.ToString(),
             _ => pt
         };
     }

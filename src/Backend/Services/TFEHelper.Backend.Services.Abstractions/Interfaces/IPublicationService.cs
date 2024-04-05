@@ -14,9 +14,9 @@ namespace TFEHelper.Backend.Services.Abstractions.Interfaces
 
         Task CreateRangeAsync(IEnumerable<PublicationDTO> entities, CancellationToken cancellationToken = default);
 
-        Task<List<PublicationDTO>> GetListAsync(Expression<Func<PublicationDTO, bool>>? filter = null, bool tracked = true, CancellationToken cancellationToken = default, params Expression<Func<PublicationDTO, object>>[] navigationProperties);
+        Task<IEnumerable<PublicationDTO>> GetListAsync(Expression<Func<PublicationDTO, bool>>? filter = null, bool tracked = true, CancellationToken cancellationToken = default, params Expression<Func<PublicationDTO, object>>[] navigationProperties);
 
-        Task<List<PublicationDTO>> GetListAsync(SearchSpecificationDTO searchSpecification, bool tracked = true, CancellationToken cancellationToken = default, params Expression<Func<PublicationDTO, object>>[] navigationProperties);
+        Task<IEnumerable<PublicationDTO>> GetListAsync(SearchSpecificationDTO searchSpecification, bool tracked = true, CancellationToken cancellationToken = default, params Expression<Func<PublicationDTO, object>>[] navigationProperties);
 
         PaginatedListDTO<PublicationDTO> GetListPaginated(PaginationParametersDTO parameters, Expression<Func<PublicationDTO, bool>>? filter = null, params Expression<Func<PublicationDTO, object>>[] navigationProperties);
 
@@ -26,6 +26,6 @@ namespace TFEHelper.Backend.Services.Abstractions.Interfaces
 
         Task ImportPublicationsAsync(string filePath, FileFormatDTOType formatType, SearchSourceDTOType source, bool discardInvalidRecords = true, CancellationToken cancellationToken = default);
 
-        Task ExportPublicationsAsync(List<PublicationDTO> publications, string filePath, FileFormatDTOType formatType, CancellationToken cancellationToken = default);
+        Task ExportPublicationsAsync(IEnumerable<PublicationDTO> publications, string filePath, FileFormatDTOType formatType, CancellationToken cancellationToken = default);
     }
 }

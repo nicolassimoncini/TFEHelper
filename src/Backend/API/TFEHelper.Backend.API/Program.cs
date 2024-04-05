@@ -4,17 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using TFEHelper.Backend.API.Configuration;
 using TFEHelper.Backend.API.Middleware;
-using TFEHelper.Backend.Core.Configuration.Implementations;
-using TFEHelper.Backend.Core.Configuration.Interfaces;
-using TFEHelper.Backend.Core.Engine.Implementations;
-using TFEHelper.Backend.Core.Engine.Interfaces;
-using TFEHelper.Backend.Core.Plugin.Implementations;
-using TFEHelper.Backend.Core.Plugin.Interfaces;
-using TFEHelper.Backend.Domain.Config;
 using TFEHelper.Backend.Infrastructure.Database.Implementations;
-using TFEHelper.Backend.Infrastructure.Database.Interfaces;
-using TFEHelper.Backend.Services;
-using TFEHelper.Backend.Services.Abstractions.Interfaces;
+using TFEHelper.Backend.Services.Common;
+using TFEHelper.Backend.Services.Implementations;
+using TFEHelper.Backend.Services.Implementations.Business;
+using TFEHelper.Backend.Services.Implementations.Configuration;
+using TFEHelper.Backend.Services.Implementations.Plugin;
+using TFEHelper.Backend.Tools.Logging;
 using TFEHelper.Backend.Tools.Strings;
 
 internal class Program
@@ -85,28 +81,19 @@ internal class Program
         });
 
         builder.Services.AddAutoMapper(
-            //profileAssemblyMarkerTypes: typeof(TFEHelper.Backend.Services.MappingConfig),
-            profileAssemblyMarkerTypes: typeof(TFEHelper.Backend.Domain.Config.MappingConfig),
+            profileAssemblyMarkerTypes: typeof(MappingConfig),
             configAction: cfg => cfg.AddExpressionMapping());
 
         builder.Services.AddSingleton(typeof(ILogger<>), typeof(LoggerEx<>));
-        builder.Services.AddScoped<IRepository, Repository>();
+        
+        builder.Services.AddScoped<TFEHelper.Backend.Services.Abstractions.Interfaces.IServiceManager, ServiceManager>();
+        builder.Services.AddScoped<TFEHelper.Backend.Services.Abstractions.Interfaces.IConfigurationService, ConfigurationService>();
+        builder.Services.AddScoped<TFEHelper.Backend.Services.Abstractions.Interfaces.IPluginService, PluginService>();
+        builder.Services.AddScoped<TFEHelper.Backend.Services.Abstractions.Interfaces.IPublicationService, PublicationService>();
         builder.Services.AddSingleton<IPluginManager, PluginManager>();
-        builder.Services.AddSingleton<ITFEHelperConfigurationManager, TFEHelperConfigurationManager>();
-        builder.Services.AddScoped<ITFEHelperOrchestrator, TFEHelperOrchestrator>();
-
-        // ----------------------- CEBOLLA ----------------------
-        /*
-        builder.Services.AddScoped<TFEHelper.Backend.Services.Abstractions.Interfaces.IServiceManager, TFEHelper.Backend.Services.ServiceManager>();
-        builder.Services.AddScoped<TFEHelper.Backend.Services.Abstractions.Interfaces.IConfigurationService, TFEHelper.Backend.Services.Configuration.ConfigurationService>();
-        builder.Services.AddScoped<TFEHelper.Backend.Services.Abstractions.Interfaces.IPluginService, TFEHelper.Backend.Services.Plugin.PluginService>();
-        builder.Services.AddScoped<TFEHelper.Backend.Services.Abstractions.Interfaces.IPublicationService, TFEHelper.Backend.Services.Business.PublicationService>();
-        builder.Services.AddSingleton<TFEHelper.Backend.Services.Plugin.IPluginManager, TFEHelper.Backend.Services.Plugin.PluginManager>();
 
         builder.Services.AddScoped<TFEHelper.Backend.Domain.Repositories.IRepositoryManager, TFEHelper.Backend.Infrastructure.Database.Implementations.RepositoryManager>();
         builder.Services.AddScoped<TFEHelper.Backend.Domain.Repositories.IPublicationRepository, TFEHelper.Backend.Infrastructure.Database.Implementations.PublicationRepository>();
-        */
-        // ----------------------- CEBOLLA ----------------------
 
         var app = builder.Build();
 

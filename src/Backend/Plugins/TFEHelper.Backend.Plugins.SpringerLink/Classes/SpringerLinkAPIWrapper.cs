@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using TFEHelper.Backend.Plugins.PluginBase.Classes;
+using TFEHelper.Backend.Plugins.PluginBase.Specifications.PublicationsCollector.Classes;
 using TFEHelper.Backend.Plugins.SpringerLink.DTO;
 using TFEHelper.Backend.Plugins.SpringerLink.Enums;
 
@@ -56,7 +56,7 @@ namespace TFEHelper.Backend.Plugins.SpringerLink.Classes
             _client?.Dispose();
         }
 
-        public void Setup(PublicationsCollectorParameters searchParameters, int pageSize = 100)
+        public void Setup(PublicationsCollectorParametersPLG searchParameters, int pageSize = 100)
         {
             _returnQuantityLimit = (searchParameters.ReturnQuantityLimit > 0) ? searchParameters.ReturnQuantityLimit : 0;
 
@@ -72,7 +72,7 @@ namespace TFEHelper.Backend.Plugins.SpringerLink.Classes
             _request.AddQueryParameter("p", pageSize.ToString());
         }
 
-        private string ParseQuery(PublicationsCollectorParameters searchParameters)
+        private string ParseQuery(PublicationsCollectorParametersPLG searchParameters)
         {
             string query = "";
 

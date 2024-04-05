@@ -5,13 +5,4 @@
 	<Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="13.0.1" />
-    <PackageReference Include="AutoMapper.Extensions.EnumMapping" Version="3.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Plugins\TFEHelper.Backend.Plugins.PluginBase\TFEHelper.Backend.Plugins.PluginBase.csproj" />
-  </ItemGroup>
-
 </Project>

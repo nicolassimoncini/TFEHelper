@@ -39,7 +39,7 @@ namespace TFEHelper.Backend.Services.Processors.CSV
         /// <param name="filePath"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public static async Task ExportAsync(List<Publication> list, string filePath, CancellationToken cancellationToken = default)
+        public static async Task ExportAsync(IEnumerable<Publication> list, string filePath, CancellationToken cancellationToken = default)
         {
             using (var writer = new StreamWriter(filePath))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))

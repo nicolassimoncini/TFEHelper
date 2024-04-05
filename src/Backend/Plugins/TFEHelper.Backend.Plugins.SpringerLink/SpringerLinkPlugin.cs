@@ -7,9 +7,10 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using TFEHelper.Backend.Plugins.PluginBase.Classes;
-using TFEHelper.Backend.Plugins.PluginBase.Enums;
+using TFEHelper.Backend.Plugins.PluginBase.Common.Enums;
 using TFEHelper.Backend.Plugins.PluginBase.Interfaces;
+using TFEHelper.Backend.Plugins.PluginBase.Specifications.PublicationsCollector.Classes;
+using TFEHelper.Backend.Plugins.PluginBase.Specifications.PublicationsCollector.Enums;
 using TFEHelper.Backend.Plugins.PluginBase.Tools;
 using TFEHelper.Backend.Plugins.SpringerLink.Classes;
 using TFEHelper.Backend.Plugins.SpringerLink.DTO;
@@ -41,7 +42,7 @@ namespace TFEHelper.Backend.Plugins.SpringerLink
             return true;
         }
 
-        public async Task<IEnumerable<Publication>> GetPublicationsAsync(PublicationsCollectorParameters searchParameters, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<PublicationPLG>> GetPublicationsAsync(PublicationsCollectorParametersPLG searchParameters, CancellationToken cancellationToken = default)
         {
             string uri = _config.Get<string>("URI"); //"http://api.springernature.com/metadata"
             string APIKey = _config.Get<string>("APIKey"); //"51cc9a793e0d7714a068c4f2a2cc7f19"
@@ -52,11 +53,11 @@ namespace TFEHelper.Backend.Plugins.SpringerLink
                 api.Setup(searchParameters, defaultPageSize);
 
                 List<SpringerLinkRecordDTO> result = await api.GetAllRecordsAsync(cancellationToken);
-                List<Publication> publications = new List<Publication>();
+                List<PublicationPLG> publications = new List<PublicationPLG>();
 
                 foreach (var record in result)
                 {
-                    publications.Add(new Publication()
+                    publications.Add(new PublicationPLG()
                     {
                         Key = "undefined", // SpringerLink no define Key.
                         Abstract = record.Abstract,
@@ -66,7 +67,7 @@ namespace TFEHelper.Backend.Plugins.SpringerLink
                         ISSN = record.ElectronicISBN,
                         Keywords = null,
                         Pages = null,
-                        Source = SearchSourceType.SpringerLink,
+                        Source = SearchSourcePLGType.SpringerLink,
                         Title = record.Title,
                         Type = StringExtensions.NormalizePublicationType(record.ContentType).ToPublicationType(),
                         URL = record.URL?.FirstOrDefault()?.Value,

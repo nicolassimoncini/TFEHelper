@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using TFEHelper.Backend.Plugins.PluginBase.Classes;
-using TFEHelper.Backend.Plugins.PluginBase.Enums;
+using TFEHelper.Backend.Plugins.PluginBase.Specifications.PublicationsCollector.Classes;
+using TFEHelper.Backend.Plugins.PluginBase.Specifications.PublicationsCollector.Enums;
 using TFEHelper.Backend.Plugins.SpringerLink.DTO;
 using TFEHelper.Backend.Plugins.SpringerLink.Enums;
 using TFEHelper.Backend.Plugins.SpringerLink.Extensions;
@@ -50,23 +50,23 @@ namespace TFEHelper.Backend.Plugins.SpringerLink.Classes
         }
         */
 
-        public static async Task<List<Publication>> ImportAsync(string filePath, CancellationToken cancellationToken = default)
+        public static async Task<List<PublicationPLG>> ImportAsync(string filePath, CancellationToken cancellationToken = default)
         {
             string NormalizePublicationType(string pt) => pt switch
             {
-                "Chapter ConferencePaper" => BibTeXPublicationType.Conference.ToString(),
-                "Chapter" => BibTeXPublicationType.Book.ToString(),
+                "Chapter ConferencePaper" => BibTeXPublicationPLGType.Conference.ToString(),
+                "Chapter" => BibTeXPublicationPLGType.Book.ToString(),
                 _ => pt
             };
 
-            List<Publication> publications = new List<Publication>();
+            List<PublicationPLG> publications = new List<PublicationPLG>();
 
             using (FileStream openStream = File.OpenRead(filePath))
             {
                 List<SpringerLinkRecordDTO> result = await JsonSerializer.DeserializeAsync<List<SpringerLinkRecordDTO>>(openStream, JsonSerializerOptions.Default, cancellationToken);
                 foreach (var record in result ?? Enumerable.Empty<SpringerLinkRecordDTO>())
                 {
-                    publications.Add(new Publication()
+                    publications.Add(new PublicationPLG()
                     {
                         Key = "undefined", // SpringerLink no define Key.
                         Abstract = record.Abstract,
@@ -76,7 +76,7 @@ namespace TFEHelper.Backend.Plugins.SpringerLink.Classes
                         ISSN = record.ElectronicISBN,
                         Keywords = null,
                         Pages = null,
-                        Source = SearchSourceType.SpringerLink,
+                        Source = SearchSourcePLGType.SpringerLink,
                         Title = record.Title,
                         Type = NormalizePublicationType(record.ContentType).ToPublicationType(),
                         URL = record.URL?.FirstOrDefault()?.Value,

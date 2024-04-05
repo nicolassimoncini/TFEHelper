@@ -5,8 +5,4 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Tools\TFEHelper.Backend.Tools\TFEHelper.Backend.Tools.csproj" />
-  </ItemGroup>
-
 </Project>

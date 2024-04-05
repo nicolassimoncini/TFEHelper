@@ -1,11 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TFEHelper.Backend.Plugins.PluginBase.Classes;
-using TFEHelper.Backend.Plugins.PluginBase.Enums;
+using TFEHelper.Backend.Plugins.PluginBase.Common.Enums;
 
 namespace TFEHelper.Backend.Plugins.PluginBase.Interfaces
 {

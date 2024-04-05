@@ -9,6 +9,6 @@ namespace TFEHelper.Backend.Services.Contracts.DTO.API
     public class SearchSpecificationDTO
     {
         public string Query { get; set; }
-        public List<SearchParameterDTO> Parameters { get; set; } = new List<SearchParameterDTO>();
+        public IEnumerable<SearchParameterDTO> Parameters { get; set; } = new List<SearchParameterDTO>();
     }
 }

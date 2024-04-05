@@ -3,9 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using TFEHelper.Backend.Plugins.PluginBase.Classes;
-using TFEHelper.Backend.Plugins.PluginBase.Enums;
+using TFEHelper.Backend.Plugins.PluginBase.Common.Enums;
 using TFEHelper.Backend.Plugins.PluginBase.Interfaces;
+using TFEHelper.Backend.Plugins.PluginBase.Specifications.PublicationsCollector.Classes;
+using TFEHelper.Backend.Plugins.PluginBase.Specifications.PublicationsCollector.Enums;
 using TFEHelper.Backend.Plugins.PluginBase.Tools;
 
 namespace TFEHelper.Backend.Plugins.Dummy
@@ -28,14 +29,14 @@ namespace TFEHelper.Backend.Plugins.Dummy
             return true;
         }
 
-        public Task<IEnumerable<Publication>> GetPublicationsAsync(PublicationsCollectorParameters searchParameters, CancellationToken cancellationToken = default)
+        public Task<IEnumerable<PublicationPLG>> GetPublicationsAsync(PublicationsCollectorParametersPLG searchParameters, CancellationToken cancellationToken = default)
         {
 
             _logger.LogInformation("Getting publications...");
 
-            var result = new List<Publication>()
+            var result = new List<PublicationPLG>()
             {
-                new Publication()
+                new PublicationPLG()
                 {
                     Abstract = "abstract abstract abstract abstract abstract abstract abstract abstract ",
                     Authors = "author author and author",
@@ -45,13 +46,13 @@ namespace TFEHelper.Backend.Plugins.Dummy
                     Key = "Key value",
                     Keywords = "Keywords value",
                     Pages = "Pages value",
-                    Source = SearchSourceType.Manual,
+                    Source = SearchSourcePLGType.Manual,
                     Title = "Title value",
-                    Type = BibTeXPublicationType.Article,
+                    Type = BibTeXPublicationPLGType.Article,
                     URL = "URL value",
                     Year = 1995
                 },
-                new Publication()
+                new PublicationPLG()
                 {
                     Abstract = "abstract2 abstract2 abstract2 abstract2 abstract2 abstract2 abstract2 abstract2 ",
                     Authors = "author2 author2 and author2",
@@ -61,13 +62,13 @@ namespace TFEHelper.Backend.Plugins.Dummy
                     Key = "Key value2",
                     Keywords = "Keywords value2",
                     Pages = "Pages value2",
-                    Source = SearchSourceType.SEDICI,
+                    Source = SearchSourcePLGType.SEDICI,
                     Title = "Title value2",
-                    Type = BibTeXPublicationType.Conference,
+                    Type = BibTeXPublicationPLGType.Conference,
                     URL = "URL value2",
                     Year = 1998
                 },
-                new Publication()
+                new PublicationPLG()
                 {
                     Abstract = "abstract3 abstract3 abstract3 abstract3 abstract3 abstract3 abstract3 abstract3",
                     Authors = "author3 author3 and author3",
@@ -77,15 +78,15 @@ namespace TFEHelper.Backend.Plugins.Dummy
                     Key = "Key value3",
                     Keywords = "Keywords value3",
                     Pages = "Pages value3",
-                    Source = SearchSourceType.ACMDigitalLibrary,
+                    Source = SearchSourcePLGType.ACMDigitalLibrary,
                     Title = "Title value3",
-                    Type = BibTeXPublicationType.Inproceedings,
+                    Type = BibTeXPublicationPLGType.InProceedings,
                     URL = "URL value3",
                     Year = 1983
                 },
             };
 
-            return Task.Run<IEnumerable<Publication>>(() => { return result; }, cancellationToken);
+            return Task.Run<IEnumerable<PublicationPLG>>(() => { return result; }, cancellationToken);
         }
 
         public bool IsOnline()

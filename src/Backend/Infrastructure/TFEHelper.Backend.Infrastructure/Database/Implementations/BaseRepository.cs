@@ -32,7 +32,7 @@ namespace TFEHelper.Backend.Infrastructure.Database.Implementations
             _dbContext.Set<T>().AddRange(entities);
         }
 
-        public async Task<IEnumerable<T>>GetAsync(Expression<Func<T, bool>>? filter = null, bool tracked = true, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] navigationProperties)
+        public async Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>>? filter = null, bool tracked = true, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] navigationProperties)
         {
             IQueryable<T> result = _dbContext.Set<T>();
 
@@ -68,10 +68,10 @@ namespace TFEHelper.Backend.Infrastructure.Database.Implementations
             _dbContext.Set<T>().Remove(entity);
         }
 
-        public async Task<IEnumerable<T>>RunDatabaseQueryAsync(string query, List<IDatabaseParameter>? parameters, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] navigationProperties)
+        public async Task<IEnumerable<T>> RunDatabaseQueryAsync(string query, IEnumerable<IDatabaseParameter>? parameters, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] navigationProperties)
         {
             List<DbParameter> _parameters = new();
-            parameters?.ForEach(p => _parameters.Add(_dbContext.CreateDbParameter(p)));
+            parameters?.ToList().ForEach(p => _parameters.Add(_dbContext.CreateDbParameter(p)));
 
             IQueryable<T> result = _dbContext.Set<T>().FromSqlRaw(query, _parameters.ToArray());
 

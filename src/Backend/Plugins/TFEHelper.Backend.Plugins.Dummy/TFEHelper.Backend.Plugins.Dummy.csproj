@@ -10,8 +10,8 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\TFEHelper.Backend.Plugins.PluginBase\TFEHelper.Backend.Plugins.PluginBase.csproj">
-		  <Private>false</Private>
-		  <ExcludeAssets>runtime</ExcludeAssets>
+			<Private>false</Private>
+			<ExcludeAssets>runtime</ExcludeAssets>
 		</ProjectReference>
 	</ItemGroup>
 

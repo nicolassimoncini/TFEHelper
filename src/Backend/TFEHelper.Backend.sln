@@ -29,8 +29,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFEHelper.Backend.Infrastru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFEHelper.Backend.Infrastructure", "Infrastructure\TFEHelper.Backend.Infrastructure\TFEHelper.Backend.Infrastructure.csproj", "{8AFFC517-F836-4611-BE76-59E33C65A67D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFEHelper.Backend.Core", "Services\TFEHelper.Backend.Core\TFEHelper.Backend.Core.csproj", "{8601CD8F-92FB-4BBB-BA5E-B37E9295DDBC}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{79E88285-83FD-48C8-81A1-EBF5C35E4D55}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{62502CA5-FE12-4EFC-86FE-C0340C5F2814}"
@@ -43,9 +41,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFEHelper.Backend.API", "AP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFEHelper.Backend.API.Test", "API\TFEHelper.Backend.API.Test\TFEHelper.Backend.API.Test.csproj", "{981EF278-A1E4-4196-88CD-CE70E7EC0FB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFEHelper.Backend.Services.Abstractions", "Services\TFEHelper.Backend.Services.Abstractions\TFEHelper.Backend.Services.Abstractions.csproj", "{15C3F021-DC86-4B48-9F3F-D87326B7530C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFEHelper.Backend.Services.Abstractions", "Services\TFEHelper.Backend.Services.Abstractions\TFEHelper.Backend.Services.Abstractions.csproj", "{15C3F021-DC86-4B48-9F3F-D87326B7530C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFEHelper.Backend.Services.Contracts", "Services\TFEHelper.Backend.Services.Contracts\TFEHelper.Backend.Services.Contracts.csproj", "{77718E43-B922-4577-A73D-BDC8A034898E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFEHelper.Backend.Services.Contracts", "Services\TFEHelper.Backend.Services.Contracts\TFEHelper.Backend.Services.Contracts.csproj", "{77718E43-B922-4577-A73D-BDC8A034898E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,10 +87,6 @@ Global
 		{8AFFC517-F836-4611-BE76-59E33C65A67D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AFFC517-F836-4611-BE76-59E33C65A67D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AFFC517-F836-4611-BE76-59E33C65A67D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8601CD8F-92FB-4BBB-BA5E-B37E9295DDBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8601CD8F-92FB-4BBB-BA5E-B37E9295DDBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8601CD8F-92FB-4BBB-BA5E-B37E9295DDBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8601CD8F-92FB-4BBB-BA5E-B37E9295DDBC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2F7B5542-9B12-4ECE-BDFC-55250DAEE1FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2F7B5542-9B12-4ECE-BDFC-55250DAEE1FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F7B5542-9B12-4ECE-BDFC-55250DAEE1FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -131,7 +125,6 @@ Global
 		{853EE20F-5398-4CD8-A98D-EB5FD408D333} = {4234DE98-713D-42E9-A9A1-F4433B105CCE}
 		{186725EB-2B64-4CF9-A6EB-B00524F81DEB} = {D8CB6DC0-27B0-4B01-9D75-CFC500C49DB4}
 		{8AFFC517-F836-4611-BE76-59E33C65A67D} = {D8CB6DC0-27B0-4B01-9D75-CFC500C49DB4}
-		{8601CD8F-92FB-4BBB-BA5E-B37E9295DDBC} = {E9F95634-78E2-4289-A902-861A5912B311}
 		{2F7B5542-9B12-4ECE-BDFC-55250DAEE1FC} = {62502CA5-FE12-4EFC-86FE-C0340C5F2814}
 		{2C1C7E99-3C8F-4965-B52B-641F8C50BE92} = {62502CA5-FE12-4EFC-86FE-C0340C5F2814}
 		{2DB3A59D-BF06-45E2-862D-E2CCA3933190} = {79E88285-83FD-48C8-81A1-EBF5C35E4D55}

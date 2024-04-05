@@ -3,8 +3,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using TFEHelper.Backend.Domain.Classes.API;
-using TFEHelper.Backend.Domain.Classes.DTO;
-using TFEHelper.Backend.Domain.Classes.Models;
 using TFEHelper.Backend.Domain.Enums;
 
 namespace TFEHelper.Backend.Domain.Extensions

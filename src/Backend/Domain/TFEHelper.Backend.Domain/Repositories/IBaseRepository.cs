@@ -25,6 +25,6 @@ namespace TFEHelper.Backend.Domain.Repositories
 
         void Remove(T entity);
 
-        Task<IEnumerable<T>>RunDatabaseQueryAsync(string query, List<IDatabaseParameter>? parameters, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] navigationProperties);
+        Task<IEnumerable<T>>RunDatabaseQueryAsync(string query, IEnumerable<IDatabaseParameter>? parameters, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] navigationProperties);
     }
 }

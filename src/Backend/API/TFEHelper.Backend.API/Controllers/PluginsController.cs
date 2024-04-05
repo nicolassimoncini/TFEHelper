@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using TFEHelper.Backend.Core.Engine.Interfaces;
-using TFEHelper.Backend.Domain.Classes.API;
-using TFEHelper.Backend.Domain.Classes.DTO;
-using TFEHelper.Backend.Domain.Classes.Models;
-using TFEHelper.Backend.Domain.Classes.Plugin;
+using TFEHelper.Backend.Services.Abstractions.Interfaces;
+using TFEHelper.Backend.Services.Contracts.DTO.API;
+using TFEHelper.Backend.Services.Contracts.DTO.Plugin;
 
 namespace TFEHelper.Backend.API.Controllers
 {
@@ -14,14 +12,14 @@ namespace TFEHelper.Backend.API.Controllers
     public class PluginsController : ControllerBase
     {
         private readonly ILogger<PublicationsController> _logger;
-        private readonly ITFEHelperOrchestrator _orchestrator;
+        private readonly IServiceManager _services;
         private readonly IMapper _mapper;
-        protected APIResponse _response;
+        protected APIResponseDTO _response;
 
-        public PluginsController(ILogger<PublicationsController> logger, ITFEHelperOrchestrator orchestrator, IMapper mapper)
+        public PluginsController(ILogger<PublicationsController> logger, IServiceManager services, IMapper mapper)
         {
             _logger = logger;
-            _orchestrator = orchestrator;
+            _services = services;
             _mapper = mapper;
             _response = new();
         }
@@ -30,9 +28,9 @@ namespace TFEHelper.Backend.API.Controllers
         [ResponseCache(CacheProfileName = "Default30")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<APIResponse> GetAllPlugins()
+        public ActionResult<APIResponseDTO> GetAllPlugins()
         {
-            IEnumerable<PluginInfo> plugins = _orchestrator.GetAllPlugins();
+            IEnumerable<PluginInfoDTO> plugins = _services.Plugins.GetAllPlugins();
 
             _response.IsSuccessful = plugins.Any();
             _response.Payload = plugins;
@@ -44,12 +42,12 @@ namespace TFEHelper.Backend.API.Controllers
         [HttpPost("/api/[controller]/Collectors/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIResponse>> RunPublicationsCollectorPlugin(int id, [FromBody] PublicationsCollectorParameters searchParameters, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<APIResponseDTO>> RunPublicationsCollectorPlugin(int id, [FromBody] PublicationsCollectorParametersDTO searchParameters, CancellationToken cancellationToken = default)
         {
-            IEnumerable<Publication> publications = await _orchestrator.GetPublicationsFromPluginAsync(id, searchParameters, cancellationToken);
+            IEnumerable<PublicationDTO> publications = await _services.Plugins.GetPublicationsFromPluginAsync(id, searchParameters, cancellationToken);
 
             _response.IsSuccessful = publications.Any();
-            _response.Payload = _mapper.Map<IEnumerable<PublicationDTO>>(publications);
+            _response.Payload = publications;
             _response.StatusCode = HttpStatusCode.OK;
 
             return Ok(_response);

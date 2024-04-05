@@ -64,7 +64,7 @@ namespace TFEHelper.Backend.Services.Processors.BibTeX
         /// <param name="filePath"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public static async Task ExportAsync<T>(List<T> list, string filePath, CancellationToken cancellationToken = default) where T : class, IBibTeXRecord
+        public static async Task ExportAsync<T>(IEnumerable<T> list, string filePath, CancellationToken cancellationToken = default) where T : class, IBibTeXRecord
         {
             string recordHeader = "@{0}{{{1}," + Environment.NewLine;
             string field = "{0} = {{{1}}}," + Environment.NewLine; ;

@@ -2,11 +2,8 @@
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using TFEHelper.Backend.Core.Engine.Interfaces;
-using TFEHelper.Backend.Domain.Classes.API;
-using TFEHelper.Backend.Domain.Classes.DTO;
-using TFEHelper.Backend.Domain.Classes.Models;
-using TFEHelper.Backend.Domain.Enums;
+using TFEHelper.Backend.Services.Abstractions.Interfaces;
+using TFEHelper.Backend.Services.Contracts.DTO.API;
 
 namespace TFEHelper.Backend.API.Controllers
 {
@@ -15,14 +12,14 @@ namespace TFEHelper.Backend.API.Controllers
     public class PublicationsController : ControllerBase
     {
         private readonly ILogger<PublicationsController> _logger;
-        private readonly ITFEHelperOrchestrator _orchestrator;
+        private readonly IServiceManager _services;
         private readonly IMapper _mapper;
-        protected APIResponse _response;
+        protected APIResponseDTO _response;
 
-        public PublicationsController(ILogger<PublicationsController> logger, ITFEHelperOrchestrator orchestrator, IMapper mapper)
+        public PublicationsController(ILogger<PublicationsController> logger, IServiceManager services, IMapper mapper)
         {
             _logger = logger;
-            _orchestrator = orchestrator;
+            _services = services;
             _mapper = mapper;
             _response = new();
         }
@@ -31,14 +28,12 @@ namespace TFEHelper.Backend.API.Controllers
         [ResponseCache(CacheProfileName = "Default30")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIResponse>> GetPublications(CancellationToken cancellationToken = default)
+        public async Task<ActionResult<APIResponseDTO>> GetPublications(CancellationToken cancellationToken = default)
         {
-            _logger.LogInformation("Obteniendo publicaciones...");
+            IEnumerable<PublicationDTO> publications = await _services.Publications.GetListAsync(cancellationToken:cancellationToken);
 
-            IEnumerable<Publication> publicationList = await _orchestrator.GetListAsync<Publication>(cancellationToken:cancellationToken);
-
-            _response.IsSuccessful = publicationList.Any();
-            _response.Payload = _mapper.Map<IEnumerable<PublicationDTO>>(publicationList);
+            _response.IsSuccessful = publications.Any();
+            _response.Payload = publications;
             _response.StatusCode = HttpStatusCode.OK;
 
             return Ok(_response);
@@ -48,14 +43,15 @@ namespace TFEHelper.Backend.API.Controllers
         [ResponseCache(CacheProfileName = "Default30", VaryByQueryKeys = ["parameters"])]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<APIResponse> GetPublicationsPaginated([FromQuery] PaginationParameters parameters)
+        public ActionResult<APIResponseDTO> GetPublicationsPaginated([FromQuery] PaginationParametersDTO parameters)
         {
-            var publicationList = _orchestrator.GetListPaginated<Publication>(parameters);
+            PaginatedListDTO<PublicationDTO> publications = _services.Publications.GetListPaginated(parameters);
 
-            _response.IsSuccessful = publicationList.Any();
-            _response.Payload = _mapper.Map<IEnumerable<PublicationDTO>>(publicationList);
+            _response.IsSuccessful = publications.Any();
+            _response.Payload = publications;
             _response.StatusCode = HttpStatusCode.OK;
-            _response.TotalPages = publicationList.Metadata.TotalPages;
+            _response.TotalPages = publications.Metadata.TotalPages;
+            
             return Ok(_response);
         }
 
@@ -64,11 +60,11 @@ namespace TFEHelper.Backend.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIResponse>> GetPublication(int id, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<APIResponseDTO>> GetPublication(int id, CancellationToken cancellationToken = default)
         {
-            var publication = await _orchestrator.GetAsync<Publication>(v => v.Id == id, cancellationToken: cancellationToken);
+            IEnumerable<PublicationDTO> publication = await _services.Publications.GetListAsync(v => v.Id == id, cancellationToken: cancellationToken);
 
-            if (publication == null)
+            if (!publication.Any())
             {
                 _response.StatusCode = HttpStatusCode.NotFound;
                 _response.IsSuccessful = false;
@@ -76,7 +72,7 @@ namespace TFEHelper.Backend.API.Controllers
             }
 
             _response.IsSuccessful = true;
-            _response.Payload = _mapper.Map<PublicationDTO>(publication);
+            _response.Payload = publication;
             _response.StatusCode = HttpStatusCode.OK;
 
             return Ok(_response);
@@ -86,12 +82,12 @@ namespace TFEHelper.Backend.API.Controllers
         [ResponseCache(CacheProfileName = "Default30")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIResponse>> SearchPublications([FromBody] SearchSpecification specification, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<APIResponseDTO>> SearchPublications([FromBody] SearchSpecificationDTO searchSpecification, CancellationToken cancellationToken = default)
         {
-            IEnumerable<Publication> publicationList = await _orchestrator.GetListAsync<Publication>(specification, cancellationToken: cancellationToken);
+            IEnumerable<PublicationDTO> publications = await _services.Publications.GetListAsync(searchSpecification, cancellationToken: cancellationToken);
 
-            _response.IsSuccessful = publicationList.Any();
-            _response.Payload = _mapper.Map<IEnumerable<PublicationDTO>>(publicationList);
+            _response.IsSuccessful = publications.Any();
+            _response.Payload = publications;
             _response.StatusCode = HttpStatusCode.OK;
 
             return Ok(_response);
@@ -101,10 +97,9 @@ namespace TFEHelper.Backend.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIResponse>> CreatePublications([FromBody] List<PublicationDTO> publications, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<APIResponseDTO>> CreatePublications([FromBody] IEnumerable<PublicationDTO> publications, CancellationToken cancellationToken = default)
         {
-            List<Publication> models = _mapper.Map<List<Publication>>(publications);
-            await _orchestrator.CreateRangeAsync(models, cancellationToken: cancellationToken);
+            await _services.Publications.CreateRangeAsync(publications, cancellationToken:cancellationToken);
 
             _response.IsSuccessful = true;
             _response.StatusCode = HttpStatusCode.Created;
@@ -116,21 +111,22 @@ namespace TFEHelper.Backend.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> RemovePublication(int id, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<APIResponseDTO>> RemovePublication(int id, CancellationToken cancellationToken = default)
         {
-            var publication = await _orchestrator.GetAsync<Publication>(v => v.Id == id, cancellationToken: cancellationToken);
+            IEnumerable<PublicationDTO> publications = await _services.Publications.GetListAsync(v => v.Id == id, tracked: false, cancellationToken: cancellationToken);
 
-            if (publication == null)
+            if (!publications.Any())
             {
                 _response.IsSuccessful = false;
                 _response.StatusCode = HttpStatusCode.NotFound;
                 return NotFound(_response);
             }
-            await _orchestrator.RemoveAsync(publication, cancellationToken: cancellationToken);
+            await _services.Publications.RemoveAsync(publications.First(), cancellationToken: cancellationToken);
 
             _response.IsSuccessful = true;
-            _response.Payload = _mapper.Map<PublicationDTO>(publication);
+            _response.Payload = publications.First();
             _response.StatusCode = HttpStatusCode.OK;
+            
             return Ok(_response);
         }
 
@@ -138,7 +134,7 @@ namespace TFEHelper.Backend.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> UpdatePublication(int id, [FromBody] PublicationDTO publication, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<APIResponseDTO>> UpdatePublication(int id, [FromBody] PublicationDTO publication, CancellationToken cancellationToken = default)
         {
             if (publication == null || id != publication.Id)
             {
@@ -148,13 +144,12 @@ namespace TFEHelper.Backend.API.Controllers
                 return BadRequest(_response);
             }
 
-            Publication model = _mapper.Map<Publication>(publication);
-
-            await _orchestrator.UpdateAsync(model, cancellationToken: cancellationToken);
+            await _services.Publications.UpdateAsync(publication, cancellationToken: cancellationToken);
             
             _response.IsSuccessful = true;
             _response.Payload = publication;
             _response.StatusCode = HttpStatusCode.OK;
+            
             return Ok(_response);
         }
 
@@ -163,23 +158,20 @@ namespace TFEHelper.Backend.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> UpdatePartialPublication(int id, JsonPatchDocument<PublicationDTO> publication, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<APIResponseDTO>> UpdatePartialPublication(int id, JsonPatchDocument<PublicationDTO> publication, CancellationToken cancellationToken = default)
         {
-            var _currentPublication = await _orchestrator.GetAsync<Publication>(v => v.Id == id, tracked: false, cancellationToken: cancellationToken);
+            IEnumerable<PublicationDTO> _currentPublications = await _services.Publications.GetListAsync(v => v.Id == id, tracked: false, cancellationToken: cancellationToken);
 
-            if (_currentPublication == null) return NotFound();
+            if (!_currentPublications.Any()) return NotFound();
 
-            PublicationDTO _currentPublicationDTO = _mapper.Map<PublicationDTO>(_currentPublication);
+            publication.ApplyTo(_currentPublications.First(), ModelState);
 
-            publication.ApplyTo(_currentPublicationDTO, ModelState);
-
-            Publication modelo = _mapper.Map<Publication>(_currentPublicationDTO);
-
-            await _orchestrator.UpdateAsync(modelo, cancellationToken: cancellationToken);
+            await _services.Publications.UpdateAsync(_currentPublications.First(), cancellationToken: cancellationToken);
             
             _response.IsSuccessful = true;
-            _response.Payload = _currentPublicationDTO;
+            _response.Payload = _currentPublications.First();
             _response.StatusCode = HttpStatusCode.OK;
+            
             return Ok(_response);
         }
 
@@ -187,12 +179,13 @@ namespace TFEHelper.Backend.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIResponse>> ImportPublications(string filePath, FileFormatType formatType, SearchSourceType source, bool discardInvalidRecords = true, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<APIResponseDTO>> ImportPublications(string filePath, FileFormatDTOType formatType, SearchSourceDTOType source, bool discardInvalidRecords = true, CancellationToken cancellationToken = default)        
         {
-            await _orchestrator.ImportPublicationsAsync(filePath, formatType, source, discardInvalidRecords, cancellationToken);
+            await _services.Publications.ImportPublicationsAsync(filePath, formatType, source, discardInvalidRecords, cancellationToken);
 
             _response.IsSuccessful = true;
             _response.StatusCode = HttpStatusCode.Created;
+            
             return Ok(_response);
         }
 
@@ -200,13 +193,14 @@ namespace TFEHelper.Backend.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIResponse>> ExportPublications(string filePath, FileFormatType formatType, [FromBody] List<Publication>? publications = null, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<APIResponseDTO>> ExportPublications(string filePath, FileFormatDTOType formatType, [FromBody] IEnumerable<PublicationDTO>? publications = null, CancellationToken cancellationToken = default)
         {
-            var pubs = (publications == null) ? await _orchestrator.GetListAsync<Publication>() : publications;
-            await _orchestrator.ExportPublicationsAsync(pubs, filePath, formatType, cancellationToken);
+            IEnumerable<PublicationDTO> _publications = (publications == null) ? await _services.Publications.GetListAsync() : publications;
+            await _services.Publications.ExportPublicationsAsync(_publications, filePath, formatType, cancellationToken);
 
             _response.IsSuccessful = true;
             _response.StatusCode = HttpStatusCode.OK;
+            
             return Ok(_response);
         }
     }

@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using TFEHelper.Backend.Core.Engine.Interfaces;
-using TFEHelper.Backend.Domain.Classes.API;
+using TFEHelper.Backend.Services.Abstractions.Interfaces;
+using TFEHelper.Backend.Services.Contracts.DTO.API;
+using TFEHelper.Backend.Services.Contracts.DTO.Configuration;
 
 namespace TFEHelper.Backend.API.Controllers
 {
@@ -11,14 +12,14 @@ namespace TFEHelper.Backend.API.Controllers
     public class ConfigurationsController : ControllerBase
     {
         private readonly ILogger<PublicationsController> _logger;
-        private readonly ITFEHelperOrchestrator _orchestrator;
+        private readonly IServiceManager _services;
         private readonly IMapper _mapper;
-        protected APIResponse _response;
+        protected APIResponseDTO _response;
 
-        public ConfigurationsController(ILogger<PublicationsController> logger, ITFEHelperOrchestrator orchestrator, IMapper mapper)
+        public ConfigurationsController(ILogger<PublicationsController> logger, IServiceManager services, IMapper mapper)
         {
             _logger = logger;
-            _orchestrator = orchestrator;
+            _services = services;
             _mapper = mapper;
             _response = new();
         }
@@ -27,9 +28,9 @@ namespace TFEHelper.Backend.API.Controllers
         [ResponseCache(CacheProfileName = "Default30")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<APIResponse> GetAllEnumerators()
+        public ActionResult<APIResponseDTO> GetAllEnumerators()
         {
-            IEnumerable<EnumerationTable> enumerations = _orchestrator.GetEnumerationTables();
+            IEnumerable<EnumerationTableDTO> enumerations = _services.Configurations.GetEnumerationTables();
 
             _response.IsSuccessful = enumerations.Any();
             _response.Payload = enumerations;
