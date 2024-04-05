@@ -14,11 +14,13 @@ namespace TFEHelper.Backend.Services.Abstractions.Interfaces
 
         Task CreateRangeAsync(IEnumerable<PublicationDTO> entities, CancellationToken cancellationToken = default);
 
-        Task<IEnumerable<PublicationDTO>> GetListAsync(Expression<Func<PublicationDTO, bool>>? filter = null, bool tracked = true, CancellationToken cancellationToken = default, params Expression<Func<PublicationDTO, object>>[] navigationProperties);
+        Task<PublicationDTO> GetAsync(int id, bool tracked = true, bool raiseErrorWhenNoResult = false, CancellationToken cancellationToken = default, params Expression<Func<PublicationDTO, object>>[] navigationProperties);
 
-        Task<IEnumerable<PublicationDTO>> GetListAsync(SearchSpecificationDTO searchSpecification, bool tracked = true, CancellationToken cancellationToken = default, params Expression<Func<PublicationDTO, object>>[] navigationProperties);
+        Task<IEnumerable<PublicationDTO>> GetListAsync(Expression<Func<PublicationDTO, bool>>? filter = null, bool tracked = true, bool raiseErrorWhenNoResult = false, CancellationToken cancellationToken = default, params Expression<Func<PublicationDTO, object>>[] navigationProperties);
 
-        PaginatedListDTO<PublicationDTO> GetListPaginated(PaginationParametersDTO parameters, Expression<Func<PublicationDTO, bool>>? filter = null, params Expression<Func<PublicationDTO, object>>[] navigationProperties);
+        Task<IEnumerable<PublicationDTO>> GetListAsync(SearchSpecificationDTO searchSpecification, bool tracked = true, bool raiseErrorWhenNoResult = false,CancellationToken cancellationToken = default, params Expression<Func<PublicationDTO, object>>[] navigationProperties);
+
+        PaginatedListDTO<PublicationDTO> GetListPaginated(PaginationParametersDTO parameters, Expression<Func<PublicationDTO, bool>>? filter = null, bool raiseErrorWhenNoResult = false, params Expression<Func<PublicationDTO, object>>[] navigationProperties);
 
         Task<PublicationDTO> UpdateAsync(PublicationDTO publication, CancellationToken cancellationToken = default);
 

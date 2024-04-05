@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 using System.Linq.Expressions;
 using TFEHelper.Backend.Domain.Classes.API;
 using TFEHelper.Backend.Domain.Classes.Database;
 using TFEHelper.Backend.Domain.Enums;
+using TFEHelper.Backend.Domain.Exceptions;
 using TFEHelper.Backend.Domain.Repositories;
 using TFEHelper.Backend.Services.Abstractions.Interfaces;
 using TFEHelper.Backend.Services.Contracts.DTO.API;
@@ -39,7 +41,20 @@ namespace TFEHelper.Backend.Services.Implementations.Business
             await _repository.SaveAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<PublicationDTO>> GetListAsync(Expression<Func<PublicationDTO, bool>>? filter = null, bool tracked = true, CancellationToken cancellationToken = default, params Expression<Func<PublicationDTO, object>>[] navigationProperties)
+        public async Task<PublicationDTO> GetAsync(int id, bool tracked = true, bool raiseErrorWhenNoResult = false, CancellationToken cancellationToken = default, params Expression<Func<PublicationDTO, object>>[] navigationProperties)
+        {
+            var publications = await _repository.Publications.GetAsync(
+                p => p.Id == id,
+                tracked,
+                cancellationToken,
+                _mapper.Map<IEnumerable<Expression<Func<Publication, object>>>>(navigationProperties).ToArray());
+
+            if (raiseErrorWhenNoResult && !publications.Any()) throw new EntityNotFoundException<Publication>(id);
+
+            return _mapper.Map<PublicationDTO>(publications.First());
+        }
+
+        public async Task<IEnumerable<PublicationDTO>> GetListAsync(Expression<Func<PublicationDTO, bool>>? filter = null, bool tracked = true, bool raiseErrorWhenNoResult = false, CancellationToken cancellationToken = default, params Expression<Func<PublicationDTO, object>>[] navigationProperties)
         {
             var publications = await _repository.Publications.GetAsync(
                 _mapper.Map<Expression<Func<Publication, bool>>>(filter),
@@ -47,10 +62,12 @@ namespace TFEHelper.Backend.Services.Implementations.Business
                 cancellationToken,
                 _mapper.Map<IEnumerable<Expression<Func<Publication, object>>>>(navigationProperties).ToArray());
 
+            if (raiseErrorWhenNoResult && !publications.Any()) throw new EntityNotFoundException<Publication>();
+
             return _mapper.Map<IEnumerable<PublicationDTO>>(publications);
         }
 
-        public async Task<IEnumerable<PublicationDTO>> GetListAsync(SearchSpecificationDTO searchSpecification, bool tracked = true, CancellationToken cancellationToken = default, params Expression<Func<PublicationDTO, object>>[] navigationProperties)
+        public async Task<IEnumerable<PublicationDTO>> GetListAsync(SearchSpecificationDTO searchSpecification, bool tracked = true, bool raiseErrorWhenNoResult = false, CancellationToken cancellationToken = default, params Expression<Func<PublicationDTO, object>>[] navigationProperties)
         {
             var publications = await _repository.Publications.RunDatabaseQueryAsync(
                 searchSpecification.Query,
@@ -58,21 +75,32 @@ namespace TFEHelper.Backend.Services.Implementations.Business
                 cancellationToken,
                 _mapper.Map<IEnumerable<Expression<Func<Publication, object>>>>(navigationProperties).ToArray());
 
+            if (raiseErrorWhenNoResult && !publications.Any()) throw new EntityNotFoundException<Publication>();
+
             return _mapper.Map<IEnumerable<PublicationDTO>>(publications);
         }
 
-        public PaginatedListDTO<PublicationDTO> GetListPaginated(PaginationParametersDTO parameters, Expression<Func<PublicationDTO, bool>>? filter = null, params Expression<Func<PublicationDTO, object>>[] navigationProperties)
+        public PaginatedListDTO<PublicationDTO> GetListPaginated(PaginationParametersDTO parameters, Expression<Func<PublicationDTO, bool>>? filter = null, bool raiseErrorWhenNoResult = false, params Expression<Func<PublicationDTO, object>>[] navigationProperties)
         {
             var publications = _repository.Publications.GetPaginated(
                 _mapper.Map<PaginationParameters>(parameters),
                 _mapper.Map<Expression<Func<Publication, bool>>>(filter),
                 _mapper.Map<IEnumerable<Expression<Func<Publication, object>>>>(navigationProperties).ToArray());
 
+            if (raiseErrorWhenNoResult && !publications.Any()) throw new EntityNotFoundException<Publication>();
+
             return _mapper.Map<PaginatedListDTO<PublicationDTO>>(publications);
         }
 
         public async Task<PublicationDTO> UpdateAsync(PublicationDTO publication, CancellationToken cancellationToken = default)
         {
+            var publications = await _repository.Publications.GetAsync(
+                p => p.Id == publication.Id,
+                tracked: false,
+                cancellationToken);
+
+            if (!publications.Any()) throw new EntityNotFoundException<Publication>(publication.Id);
+
             var publicationUpdated = _repository.Publications.Update(_mapper.Map<Publication>(publication));
             await _repository.SaveAsync(cancellationToken);
 
@@ -81,6 +109,10 @@ namespace TFEHelper.Backend.Services.Implementations.Business
 
         public async Task RemoveAsync(PublicationDTO entity, CancellationToken cancellationToken = default)
         {
+            var _entity = await _repository.Publications.GetAsync(p => p.Id == entity.Id, tracked: false, cancellationToken: cancellationToken);
+
+            if (!_entity.Any()) throw new EntityNotFoundException<Publication>(entity.Id);
+
             _repository.Publications.Remove(_mapper.Map<Publication>(entity));
 
             await _repository.SaveAsync(cancellationToken);

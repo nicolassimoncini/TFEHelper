@@ -84,6 +84,8 @@ internal class Program
             profileAssemblyMarkerTypes: typeof(MappingConfig),
             configAction: cfg => cfg.AddExpressionMapping());
 
+        builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
         builder.Services.AddSingleton(typeof(ILogger<>), typeof(LoggerEx<>));
         
         builder.Services.AddScoped<TFEHelper.Backend.Services.Abstractions.Interfaces.IServiceManager, ServiceManager>();
@@ -106,7 +108,8 @@ internal class Program
         //app.UseHttpsRedirection();
         app.MapControllers();
         app.ApplyDatabaseMigration();
-        app.UseMiddleware<ExceptionHandlingMiddleware>();
+        //app.UseMiddleware<ExceptionHandlingMiddleware>();
+        app.UseExceptionHandler(opt => { });
 
         return app;
     }
