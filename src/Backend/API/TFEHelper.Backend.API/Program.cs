@@ -13,104 +13,106 @@ using TFEHelper.Backend.Services.Implementations.Plugin;
 using TFEHelper.Backend.Tools.Logging;
 using TFEHelper.Backend.Tools.Strings;
 
-internal class Program
+namespace TFEHelper.Backend.API
 {
-    private static async Task<int> Main(string[] args)
+    public class Program
     {
-        SetupStaticLogger(args);
-        try 
+        public static async Task<int> Main(string[] args)
         {
-            Log.Information("Starting web application for TFEHelper.");
-
-            var webApp = await CreateWebApplication(args);
-            webApp.Run();
-
-            return 0;
-        } 
-        catch (Exception ex) 
-        {
-            if (ex is not OperationCanceledException)
+            SetupStaticLogger(args);
+            try
             {
-                Log.Fatal(ex, "Web application for TFEHelper terminated unexpectedly.");
-                return 1;
+                Log.Information("Starting web application for TFEHelper.");
+
+                var webApp = await CreateWebApplication(args);
+                webApp.Run();
+
+                return 0;
             }
-            else return 0;
-        }
-        finally
-        {
-            await Log.CloseAndFlushAsync();
-        }
-    }
-
-    private static void SetupStaticLogger(string[] args)
-    {
-        var environmentCurrent = CommandLineHelper.GetArgument(args, "--environment");
-        var configuration = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"appsettings.{environmentCurrent ?? "Production"}.json", optional: true)
-            .Build();
-
-        Log.Logger = new LoggerConfiguration()
-            .ReadFrom.Configuration(configuration)
-            .CreateLogger();
-    }
-
-    private static async Task<WebApplication> CreateWebApplication(string[] args)
-    {
-        var builder = WebApplication.CreateBuilder(args);
-
-        builder.Host.UseSerilog();
-
-        builder.Services.AddControllers(option =>
-        {
-            option.CacheProfiles.Add("Default30",
-                new CacheProfile()
+            catch (Exception ex)
+            {
+                if (ex is not OperationCanceledException)
                 {
-                    Duration = 30
-                });
-        }).AddNewtonsoftJson();
+                    Log.Fatal(ex, "Web application for TFEHelper terminated unexpectedly.");
+                    return 1;
+                }
+                else return 0;
+            }
+            finally
+            {
+                await Log.CloseAndFlushAsync();
+            }
+        }
 
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
-        builder.Services.AddResponseCaching();
-
-        builder.Services.AddDbContext<ApplicationDbContext>(option =>
+        private static void SetupStaticLogger(string[] args)
         {
-            option.UseSqlite(builder.Configuration.GetValue<string>("Database:ConnectionString"), 
-                m => m.MigrationsAssembly(builder.Configuration.GetValue<string>("Database:MigrationAssembly")));
-        });
+            var environmentCurrent = CommandLineHelper.GetArgument(args, "--environment");
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{environmentCurrent ?? "Production"}.json", optional: true)
+                .Build();
 
-        builder.Services.AddAutoMapper(
-            profileAssemblyMarkerTypes: typeof(MappingConfig),
-            configAction: cfg => cfg.AddExpressionMapping());
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .CreateLogger();
+        }
 
-        builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+        private static async Task<WebApplication> CreateWebApplication(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddSingleton(typeof(ILogger<>), typeof(LoggerEx<>));
-        
-        builder.Services.AddScoped<TFEHelper.Backend.Services.Abstractions.Interfaces.IServiceManager, ServiceManager>();
-        builder.Services.AddScoped<TFEHelper.Backend.Services.Abstractions.Interfaces.IConfigurationService, ConfigurationService>();
-        builder.Services.AddScoped<TFEHelper.Backend.Services.Abstractions.Interfaces.IPluginService, PluginService>();
-        builder.Services.AddScoped<TFEHelper.Backend.Services.Abstractions.Interfaces.IPublicationService, PublicationService>();
-        builder.Services.AddSingleton<IPluginManager, PluginManager>();
+            builder.Host.UseSerilog();
 
-        builder.Services.AddScoped<TFEHelper.Backend.Domain.Repositories.IRepositoryManager, TFEHelper.Backend.Infrastructure.Database.Implementations.RepositoryManager>();
-        builder.Services.AddScoped<TFEHelper.Backend.Domain.Repositories.IPublicationRepository, TFEHelper.Backend.Infrastructure.Database.Implementations.PublicationRepository>();
+            builder.Services.AddControllers(option =>
+            {
+                option.CacheProfiles.Add("Default30",
+                    new CacheProfile()
+                    {
+                        Duration = 30
+                    });
+            }).AddNewtonsoftJson();
 
-        var app = builder.Build();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+            builder.Services.AddResponseCaching();
 
-        var pluginManager = app.Services.GetService<IPluginManager>();
-        if (pluginManager != null) await pluginManager.ScanAsync();
+            builder.Services.AddDbContext<ApplicationDbContext>(option =>
+            {
+                option.UseSqlite(builder.Configuration.GetValue<string>("Database:SQLite:ConnectionString"),
+                    m => m.MigrationsAssembly(builder.Configuration.GetValue<string>("Database:SQLite:MigrationAssembly")));
+            });
 
-        app.UseResponseCaching();
-        app.UseSwagger();
-        app.UseSwaggerUI();
-        //app.UseHttpsRedirection();
-        app.MapControllers();
-        app.ApplyDatabaseMigration();
-        //app.UseMiddleware<ExceptionHandlingMiddleware>();
-        app.UseExceptionHandler(opt => { });
+            builder.Services.AddAutoMapper(
+                profileAssemblyMarkerTypes: typeof(MappingConfig),
+                configAction: cfg => cfg.AddExpressionMapping());
 
-        return app;
+            builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
+            builder.Services.AddSingleton(typeof(ILogger<>), typeof(LoggerEx<>));
+
+            builder.Services.AddScoped<TFEHelper.Backend.Services.Abstractions.Interfaces.IServiceManager, ServiceManager>();
+            builder.Services.AddScoped<TFEHelper.Backend.Services.Abstractions.Interfaces.IConfigurationService, ConfigurationService>();
+            builder.Services.AddScoped<TFEHelper.Backend.Services.Abstractions.Interfaces.IPluginService, PluginService>();
+            builder.Services.AddScoped<TFEHelper.Backend.Services.Abstractions.Interfaces.IPublicationService, PublicationService>();
+            builder.Services.AddSingleton<IPluginManager, PluginManager>();
+
+            builder.Services.AddScoped<TFEHelper.Backend.Domain.Repositories.IRepositoryManager, TFEHelper.Backend.Infrastructure.Database.Implementations.RepositoryManager>();
+            builder.Services.AddScoped<TFEHelper.Backend.Domain.Repositories.IPublicationRepository, TFEHelper.Backend.Infrastructure.Database.Implementations.PublicationRepository>();
+
+            var app = builder.Build();
+
+            var pluginManager = app.Services.GetService<IPluginManager>();
+            if (pluginManager != null) await pluginManager.ScanAsync();
+
+            app.UseResponseCaching();
+            app.UseSwagger();
+            app.UseSwaggerUI();
+            //app.UseHttpsRedirection();
+            app.MapControllers();
+            app.UseExceptionHandler(opt => { });
+            app.ApplyDatabaseMigration();
+
+            return app;
+        }
     }
 }

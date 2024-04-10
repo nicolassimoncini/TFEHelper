@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Serilog;
 using TFEHelper.Backend.Infrastructure.Database.Implementations;
 
@@ -11,9 +13,14 @@ namespace TFEHelper.Backend.API.Configuration
         public static void ApplyDatabaseMigration(this IApplicationBuilder app)
         {
             Log.Information("Checking and aplying pending database migrations...");
-            using var scope = app.ApplicationServices.CreateScope();
-            var dataContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            dataContext.Database.Migrate();
+
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                using (var dataContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>())
+                {
+                    dataContext.Database.Migrate();
+                }
+            }
         }
     }
 }

@@ -19,8 +19,8 @@ namespace TFEHelper.Backend.Plugins.PluginBase.Tools
 
         public PluginConfigurationController(ILogger logger, string configurationFilePath = "", bool autoLoad = true)
         {
-            var hardCoddedFilePath = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName) + "\\" + Assembly.GetCallingAssembly().GetName().Name + ".cfg";
-
+            var hardCoddedFilePath = System.IO.Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) + "\\" + Assembly.GetCallingAssembly().GetName().Name + ".cfg";
+            
             _configurationFilePath = (configurationFilePath != string.Empty) ? configurationFilePath : hardCoddedFilePath;
             _logger = logger;
             _items = new List<PluginConfigurationItem>();

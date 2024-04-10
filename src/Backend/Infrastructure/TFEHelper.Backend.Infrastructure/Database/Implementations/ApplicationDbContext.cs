@@ -21,6 +21,11 @@ namespace TFEHelper.Backend.Infrastructure.Database.Implementations
         {
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        {
+            base.OnConfiguring(options);
+        }
+
         public DbSet<Publication> Publications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -42,4 +47,5 @@ namespace TFEHelper.Backend.Infrastructure.Database.Implementations
         }
     }
 }
-#warning investigar por qué al debuggear, la base de datos se busca en "D:\I&D\Sandbox\UTN\TFE\TFEHelper\src\TFEHelper.Backend\TFEHelper.Backend.API\"! (hint: https://stackoverflow.com/a/65093101/14042736)
+#warning investigar por qué al debuggear, la base de datos se busca en la raíz del proyecto TFEHelper.Backend.API! (hint: https://stackoverflow.com/a/65093101/14042736)
+#warning otro hint (medio pedorro): https://stackoverflow.com/questions/49569055/store-entity-framework-core-sqlite-file-in-project-relative-subdirectory

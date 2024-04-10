@@ -17,12 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
-    <Folder Include="Database\Migrations\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Domain\TFEHelper.Backend.Domain\TFEHelper.Backend.Domain.csproj" />
   </ItemGroup>
-
 </Project>
