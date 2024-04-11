@@ -46,7 +46,10 @@ RUN dotnet restore
 # Copy all files and build / publish
 # -----------------------------------------------------------------------------------------
 COPY . .
-RUN dotnet publish ./API/TFEHelper.Backend.API/TFEHelper.Backend.API.csproj -o /publish/ 
+RUN dotnet build
+RUN dotnet publish ./API/TFEHelper.Backend.API/TFEHelper.Backend.API.csproj -o /publish/
+RUN dotnet publish ./Plugins/TFEHelper.Backend.Plugins.Dummy/TFEHelper.Backend.Plugins.Dummy.csproj -o /publish/
+RUN dotnet publish ./Plugins/TFEHelper.Backend.Plugins.SpringerLink/TFEHelper.Backend.Plugins.SpringerLink.csproj -o /publish/
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app 
