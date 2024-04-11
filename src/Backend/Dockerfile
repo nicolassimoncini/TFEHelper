@@ -32,11 +32,13 @@ COPY ./Services/TFEHelper.Backend.Services.Contracts/TFEHelper.Backend.Services.
 COPY ./Services/TFEHelper.Backend.Services.Test/TFEHelper.Backend.Services.Test.csproj ./Services/TFEHelper.Backend.Services.Test/
 
 # Tools projects
-COPY ./Tools/TFEHelper.Backend.Tools/TFEHelper.Backend.Tools.csproj ./Services/TFEHelper.Backend.Tools/
-COPY ./Tools/TFEHelper.Backend.Tools.Test/TFEHelper.Backend.Tools.Test.csproj ./Services/TFEHelper.Backend.Tools.Test/
+COPY ./Tools/TFEHelper.Backend.Tools/TFEHelper.Backend.Tools.csproj ./Tools/TFEHelper.Backend.Tools/
+COPY ./Tools/TFEHelper.Backend.Tools.Test/TFEHelper.Backend.Tools.Test.csproj ./Tools/TFEHelper.Backend.Tools.Test/
 
 # External packages
-COPY ./Packages/* ./Packages
+COPY ./Packages/. ./Packages
+
+RUN dotnet nuget add source /app/Packages
 
 RUN dotnet restore
 

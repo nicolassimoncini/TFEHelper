@@ -1,6 +1,6 @@
 services:
     frontend:
-        image: TFEHelper.Frontend
+        image: tfehelper.frontend
         build:
             context: src/Frontend
         ports:
@@ -10,18 +10,18 @@ services:
             - backend-network
             
     backend:
-        image: TFEHelper.Backend
+        image: tfehelper.backend
         build:
             context: src/Backend
         ports:
             - "5000:5000"
         volumes:
-            - TFEHelper.Backend.Data:/app/data
+            - tfehelper.backend.data:/app/data
         networks:
             - backend-network
 
 volumes:
-    TFEHelper.Backend.Data:
+    tfehelper.backend.data:
 
 networks:
     frontend-network: {}
