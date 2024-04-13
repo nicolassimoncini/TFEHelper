@@ -39,7 +39,7 @@ namespace TFEHelper.Backend.API.Controllers
             return Ok(_response);
         }
 
-        [HttpPost("/api/[controller]/Collectors/{id:int}")]
+        [HttpPost("/api/[controller]/Collectors/{id:int}/Run")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<APIResponseDTO>> RunPublicationsCollectorPlugin(int id, [FromBody] PublicationsCollectorParametersDTO searchParameters, CancellationToken cancellationToken = default)
