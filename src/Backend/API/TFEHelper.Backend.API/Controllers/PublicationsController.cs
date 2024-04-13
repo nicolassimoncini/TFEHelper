@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.IO;
 using System.Net;
+using System.Net.Http.Headers;
 using TFEHelper.Backend.Services.Abstractions.Interfaces;
 using TFEHelper.Backend.Services.Contracts.DTO.API;
+using TFEHelper.Backend.Tools.Files;
 
 namespace TFEHelper.Backend.API.Controllers
 {
@@ -22,6 +26,18 @@ namespace TFEHelper.Backend.API.Controllers
             _services = services;
             _mapper = mapper;
             _response = new();
+        }
+
+        private static string GetContentType(string path)
+        {
+            return Path.GetExtension(path).ToLowerInvariant() switch
+            {
+                ".bib" => "application/x-bibtex",
+                ".csv" => "text/csv",
+                ".xls" => "application/vnd.ms-excel",
+                ".xlsx" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                _ => "application/octet-stream"
+            };
         }
 
         [HttpGet]
@@ -166,6 +182,28 @@ namespace TFEHelper.Backend.API.Controllers
             return Ok(_response);
         }
 
+        [HttpPost("ImportAsStream")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<APIResponseDTO>> ImportPublicationsAsStream(IFormFile file, FileFormatDTOType formatType, SearchSourceDTOType source, bool discardInvalidRecords = true, CancellationToken cancellationToken = default)
+        {
+            var filePath = Path.Combine(Path.GetTempPath(), FileHelper.GetRandomFileName("tmp"));
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream, cancellationToken);
+            }
+
+            await _services.Publications.ImportPublicationsAsync(filePath, formatType, source, discardInvalidRecords, cancellationToken);
+
+            _response.IsSuccessful = true;
+            _response.StatusCode = HttpStatusCode.Created;
+
+            System.IO.File.Delete(filePath);
+
+            return Ok(_response);
+        }
+
         [HttpPost("Export")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -173,12 +211,29 @@ namespace TFEHelper.Backend.API.Controllers
         public async Task<ActionResult<APIResponseDTO>> ExportPublications(string filePath, FileFormatDTOType formatType, [FromBody] IEnumerable<PublicationDTO>? publications = null, CancellationToken cancellationToken = default)
         {
             IEnumerable<PublicationDTO> _publications = (publications == null) ? await _services.Publications.GetListAsync() : publications;
-            await _services.Publications.ExportPublicationsAsync(_publications, filePath, formatType, cancellationToken);
+            await _services.Publications.ExportPublicationsAsync(_publications, formatType, filePath, cancellationToken);
 
             _response.IsSuccessful = true;
             _response.StatusCode = HttpStatusCode.OK;
             
             return Ok(_response);
+        }
+
+        [HttpPost("ExportAsStream"), DisableRequestSizeLimit]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ExportPublicationsAsStream(FileFormatDTOType formatType, [FromBody] IEnumerable<PublicationDTO>? publications = null, CancellationToken cancellationToken = default)
+        {
+            IEnumerable<PublicationDTO> _publications = publications ?? await _services.Publications.GetListAsync();
+            var filePath = await _services.Publications.ExportPublicationsAsync(_publications, formatType, cancellationToken: cancellationToken);
+          
+            var memoryStream = new MemoryStream(await System.IO.File.ReadAllBytesAsync(filePath, cancellationToken));
+            memoryStream.Position = 0;
+
+            System.IO.File.Delete(filePath);
+
+            return File(memoryStream, GetContentType(filePath), "publications" + Path.GetExtension(filePath));
         }
     }
 }

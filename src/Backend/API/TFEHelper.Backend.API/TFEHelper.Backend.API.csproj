@@ -33,6 +33,7 @@
     <ProjectReference Include="..\..\Infrastructure\TFEHelper.Backend.Infrastructure\TFEHelper.Backend.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Services\TFEHelper.Backend.Services.Abstractions\TFEHelper.Backend.Services.Abstractions.csproj" />
     <ProjectReference Include="..\..\Services\TFEHelper.Backend.Services\TFEHelper.Backend.Services.csproj" />
+    <ProjectReference Include="..\..\Tools\TFEHelper.Backend.Tools\TFEHelper.Backend.Tools.csproj" />
   </ItemGroup>
 
 </Project>

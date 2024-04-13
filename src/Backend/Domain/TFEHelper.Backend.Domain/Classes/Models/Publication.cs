@@ -14,6 +14,7 @@ namespace TFEHelper.Backend.Domain.Classes.Models
     public class Publication : IBibTeXRecord, ITFEHelperModel
     {
         [Key]
+        [BibTeXKey]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [BibTeXKey]

@@ -8,10 +8,12 @@ using TFEHelper.Backend.Domain.Enums;
 using TFEHelper.Backend.Domain.Exceptions;
 using TFEHelper.Backend.Domain.Repositories;
 using TFEHelper.Backend.Services.Abstractions.Interfaces;
+using TFEHelper.Backend.Services.Common;
 using TFEHelper.Backend.Services.Contracts.DTO.API;
 using TFEHelper.Backend.Services.Processors.BibTeX;
 using TFEHelper.Backend.Services.Processors.CSV;
 using TFEHelper.Backend.Tools.ComponentModel;
+using TFEHelper.Backend.Tools.Files;
 using Publication = TFEHelper.Backend.Domain.Classes.Models.Publication;
 
 namespace TFEHelper.Backend.Services.Implementations.Business
@@ -145,22 +147,33 @@ namespace TFEHelper.Backend.Services.Implementations.Business
             await _repository.SaveAsync(cancellationToken);
         }
 
-        public async Task ExportPublicationsAsync(IEnumerable<PublicationDTO> publications, string filePath, FileFormatDTOType formatType, CancellationToken cancellationToken = default)
+        public async Task<string> ExportPublicationsAsync(IEnumerable<PublicationDTO> publications, FileFormatDTOType formatType, string? filePath = null, CancellationToken cancellationToken = default)
         {
+            var _filePath = filePath ?? Path.Combine(Path.GetTempPath(), FileHelper.GetRandomFileName(_mapper.Map<FileFormatType>(formatType).ToFileNameExtension()));
             var _publications = _mapper.Map<IEnumerable<Publication>>(publications);
             var _formatType = _mapper.Map<FileFormatType>(formatType);
 
             switch (_formatType)
             {
                 case FileFormatType.BibTeX:
-                    await BibTeXProcessor.ExportAsync(_publications, filePath, cancellationToken);
+                    await BibTeXProcessor.ExportAsync(_publications, _filePath, cancellationToken);
                     break;
                 case FileFormatType.CSV:
-                    await CSVProcessor.ExportAsync(_publications, filePath, cancellationToken);
+                    await CSVProcessor.ExportAsync(_publications, _filePath, cancellationToken);
                     break;
                 default:
                     break;
             }
+
+            return _filePath;
         }
     }
 }
+#warning mejorar la forma en que se exporta e importa CSV y BibTeX (ver abajo)
+/*
+*  La idea es que Export e Import tomen Publication pero que al final del día mapeen hacia CSVRecord y BibTeXRecord ya que cada "formato" tiene sus
+*  particularidades (CSV puede tener todos los datos de la base de datos pero BibTeX no).  Para lograr esto, recomiendo que se deje Publication como una
+*  entidad pura "modelo" sin decoraciones de BibTeX ya que eso confunde un poco.  Entonces, BibTeXRecord implementaría IBibTexRecord y habría que hacer
+*  todo el mapping "desde y hacia" Publication / PublicationDTO...
+*  Todo lo anterior hay que hacerlo implementando Strategy para no enmarañar mucho el código de ExportPublicationsAsync.
+*/

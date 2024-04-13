@@ -76,10 +76,9 @@ namespace TFEHelper.Backend.Services.Processors.BibTeX
             foreach (var record in list)
             {
                 // header
-                //newRecord = string.Format(recordHeader, record.Type.ToString().ToLower(), record.Key);
                 newRecord = string.Format(recordHeader, record.Type.ToString().ToLower(), record.Key.IsDefaultOrEmpty() ? "undefined" : record.Key);
 
-                // cuerpo
+                // body
                 foreach (var fieldInfo in record.GetType().GetProperties().Where(p => p.GetCustomAttribute(typeof(BibTeXKeyAttribute)) == null))
                 {
                     if (fieldInfo.GetValue(record, null) != null)

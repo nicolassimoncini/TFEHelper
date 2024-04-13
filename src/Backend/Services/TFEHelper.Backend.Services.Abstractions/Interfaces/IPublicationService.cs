@@ -28,6 +28,6 @@ namespace TFEHelper.Backend.Services.Abstractions.Interfaces
 
         Task ImportPublicationsAsync(string filePath, FileFormatDTOType formatType, SearchSourceDTOType source, bool discardInvalidRecords = true, CancellationToken cancellationToken = default);
 
-        Task ExportPublicationsAsync(IEnumerable<PublicationDTO> publications, string filePath, FileFormatDTOType formatType, CancellationToken cancellationToken = default);
+        Task<string> ExportPublicationsAsync(IEnumerable<PublicationDTO> publications, FileFormatDTOType formatType, string? filePath = null, CancellationToken cancellationToken = default);
     }
 }
