@@ -5,7 +5,7 @@ export const Container = styled.div<{ backgroundColor: string }>`
   background-repeat: no-repeat;
   background-size: cover;
   background-color: ${props => props.backgroundColor};
-  width: 100%;
+  width: 100vw;
 `;
 
 export const Column = styled.div`

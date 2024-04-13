@@ -1,13 +1,14 @@
-import { useState } from "react"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { MainContainer } from "../components/Main"
+import { HomePage } from "../layouts/home"
 
 export const Routing = ( ) => {
-    const [title, setTitle] = useState<string | undefined>('')
 
     return (
         <BrowserRouter>
         <Routes>
-           <Route path="">
+           <Route path="/" element={
+           <MainContainer children={<HomePage/>}></MainContainer>}>
             </Route> 
         </Routes>
         </BrowserRouter>

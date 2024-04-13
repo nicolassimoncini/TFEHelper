@@ -4,9 +4,9 @@
   "singleQuote": true,
   "semi": true,
   "trailingComma": "all",
-  "newline-before-return": true,
-  "no-duplicate-variable": [true, "check-parameters"],
-  "no-var-keyword": true,
+  "newlineBeforeReturn": true,
+  "noDuplicateVariable": ["check-parameters"],
+  "noVarKeyword": true,
   "arrowParens": "avoid",
   "bracketSpacing": true
 }
