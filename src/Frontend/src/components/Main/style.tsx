@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-export const Container = styled.div<{ backgroundColor: string }>`
+export const Container = styled.div<{ backgroundcolor: string }>`
   display: flex;
   background-repeat: no-repeat;
   background-size: cover;
-  background-color: ${props => props.backgroundColor};
+  background-color: ${props => props.backgroundcolor};
   width: 100vw;
 `;
 

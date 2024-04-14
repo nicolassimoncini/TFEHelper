@@ -1,14 +1,16 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 
-const baseURL: string = process.env.REACT_APP_API_URL as string || 'http://localhost:5000/api';
+const baseURL: string = process.env.REACT_APP_API_URL as string || 'http://localhost:4000/api';
 
 
-interface restApiResponse {
-    status: number,
-    isSuccesful: boolean,
-    errorMessage: string[],
-    payload: any,
-    totalPages: number
+interface restApiResponse extends AxiosResponse {
+    data: {
+        status: number,
+        isSuccesful: boolean,
+        errorMessage: string[],
+        payload: any,
+        totalPages: number
+    }
 }
 
 interface restApiAdapterInterface {

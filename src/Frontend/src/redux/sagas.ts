@@ -3,5 +3,5 @@ import { publicationsSaga } from "./publications/publications.saga";
 import { configurationSaga } from "./configurations/configuration.saga";
 
 export default function* rootSaga() {
-    yield all([publicationsSaga, configurationSaga])
+    yield all([publicationsSaga(), configurationSaga()])
 }

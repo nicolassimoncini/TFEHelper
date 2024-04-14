@@ -6,10 +6,12 @@ import { ConfigurationType } from '../../types/configurations.types';
 
 export function* fetchConfigurationsSaga(): Generator<AnyAction, void, any> {
     try {
+        console.log('first')
         yield put(fetchConfiguration);
 
         // make the api call to rest api server
         const configurations = yield call(getConfigurations);
+        console.log(configurations)
 
         // check if any configuration object is empty
         const isEmpty = configurations.some((cfg: ConfigurationType) => cfg.items.length === 0 )
@@ -22,9 +24,9 @@ export function* fetchConfigurationsSaga(): Generator<AnyAction, void, any> {
         // Dispatch action to populate store
         yield put(fetchConfigurationSuccess({
             configurations: {
-                BibTexConfig: configurations.find((cfg: ConfigurationType) => cfg.name === 'BibTeXPublicationType'),
-                FileFormatTypeConfig: configurations.find((cfg: ConfigurationType) => cfg.name === 'FileFormatType'),
-                SearchSourceTypeConfig: configurations.find((cfg: ConfigurationType) => cfg.name === 'SearchSourceType')
+                BibTexConfig: configurations.find((cfg: ConfigurationType) => cfg.name === 'BibTeXPublicationDTOType'),
+                FileFormatTypeConfig: configurations.find((cfg: ConfigurationType) => cfg.name === 'FileFormatDTOType'),
+                SearchSourceTypeConfig: configurations.find((cfg: ConfigurationType) => cfg.name === 'SearchSourceDTOType')
             }
         }))
 

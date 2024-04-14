@@ -1,4 +1,5 @@
-import { Publication } from "./publications.types";
+import { IConfigurationState } from "./configurations.types";
+import { PublicationState } from "./publications.types";
 
 export interface StatusState {
     isLoading: boolean;
@@ -6,6 +7,7 @@ export interface StatusState {
 }
 
 export interface Store{
-    publications: Publication[];
+    publication: PublicationState;
+    configuration: IConfigurationState
     status: StatusState;
 }

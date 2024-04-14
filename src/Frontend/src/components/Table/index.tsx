@@ -1,59 +1,11 @@
 import { Checkbox, CheckboxOptionType, Divider, Table } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Publication } from '../../types/publications.types';
 import { TableRowSelection } from 'antd/es/table/interface';
 import { RowABstractContent, RowAbstract, RowAbstractTitle } from './style';
-
-const datasource: Publication[] = [
-  {
-    id: 1,
-    key: '1',
-    type: { name: 'Journal', value: 1 },
-    source: { name: 'Springer', value: 1 },
-    url: 'http://www.google.com',
-    title: 'The book of life',
-    authors: 'John Doe',
-    keywords: 'Life, Book',
-    doi: '10.000/123',
-    year: 2021,
-    isbn: '123-123-123',
-    issn: '123-123-123',
-    abstract: 'This is a book about life',
-    pages: '1-100',
-  },
-  {
-    id: 2,
-    type: { value: 2, name: 'Article' },
-    key: '2',
-    source: { value: 2, name: 'IEEE' },
-    url: 'http://www.google.com',
-    title: 'The article of life',
-    authors: 'Jane Doe',
-    keywords: 'Life, Article',
-    doi: '10.000/123',
-    year: 2021,
-    isbn: '123-123-123',
-    issn: '123-123-123',
-    abstract: 'This is an article about life',
-    pages: '1-100',
-  },
-  {
-    id: 3,
-    type: { value: 3, name: 'Conference' },
-    key: '3',
-    source: { value: 3, name: 'ACM' },
-    url: 'http://www.google.com',
-    title: 'The conference of life',
-    authors: 'Jack Doe',
-    keywords: 'Life, Conference',
-    doi: '10.000/123',
-    year: 2021,
-    isbn: '123-123-123',
-    issn: '123-123-123',
-    abstract: 'This is a conference about life',
-    pages: '1-100',
-  },
-];
+import { useDispatch, useSelector } from 'react-redux';
+import { selectPublications } from '../../redux/publications/selectors';
+import { fetchPublications } from '../../redux/publications/publications.slice';
 
 interface DataType {
   title: string;
@@ -119,7 +71,18 @@ const defaultCheckedList = columns.map(item => item.key as string);
 export const TableComponent: React.FC = () => {
   // Hide/Show columns in table
   const [checkedList, setCheckedList] = useState<string[]>(defaultCheckedList);
+  // Rows selected
   const [selectedRow, setSelectedRow] = useState<React.Key[]>([]);
+
+  // Publications selector
+  const publications = useSelector(selectPublications);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchPublications());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const options = columns.map(({ key, title }) => ({
     label: title,
@@ -150,7 +113,7 @@ export const TableComponent: React.FC = () => {
       />
       <Table
         rowSelection={rowSelection}
-        dataSource={datasource}
+        dataSource={publications.publications}
         style={{ width: '100%', padding: '20px' }}
         columns={newColumns}
         expandable={{
