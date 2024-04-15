@@ -63,6 +63,13 @@ namespace TFEHelper.Backend.API
 
             builder.Host.UseSerilog();
 
+            builder.Services.AddCors(o => o.AddPolicy("TFEHelper", builder =>
+            {
+                builder.AllowAnyOrigin();
+                builder.AllowAnyMethod();
+                builder.AllowAnyHeader();
+            }));
+
             builder.Services.AddControllers(option =>
             {
                 option.CacheProfiles.Add("Default30",
@@ -110,6 +117,7 @@ namespace TFEHelper.Backend.API
             //app.UseHttpsRedirection();
             app.MapControllers();
             app.UseExceptionHandler(opt => { });
+            app.UseCors();
             app.ApplyDatabaseMigration();
 
             return app;
