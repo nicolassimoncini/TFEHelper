@@ -32,5 +32,7 @@ volumes:
     name: "tfehelper.backend.data"
 
 networks:
-  frontend-network: {}
-  backend-network: {}
+  frontend-network:
+    name: "tfehelper.frontend-network"
+  backend-network:
+    name: "tfehelper.backend-network"
