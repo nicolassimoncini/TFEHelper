@@ -28,8 +28,17 @@ export class RestApiAdapter implements restApiAdapterInterface {
         return await axios.get(`${baseURL}/${url}`) as restApiResponse;
     }
     async post(url: string, data: any): Promise<restApiResponse> {
-        return await axios.post(`${baseURL}/${url}`, data) as restApiResponse;
+        if (data instanceof FormData) {
+            return await axios.post(`${baseURL}/${url}`, data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }) as restApiResponse;
+        } else {
+            return await axios.post(`${baseURL}/${url}`, data) as restApiResponse;
+        }
     }
+
     async put(url: string, data: any): Promise<restApiResponse> {
         return await axios.put(`${baseURL}/${url}`, data) as restApiResponse;
     }

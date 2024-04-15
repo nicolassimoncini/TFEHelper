@@ -1,6 +1,6 @@
 import { RestApiAdapter } from '../helpers/rest-api.adapter';
 import { Publication } from '../types/publications.types';
-import { ISearchType, ImportFileType } from '../types/search.types';
+import { IFileUploadData, ISearchType, ImportFileType } from '../types/search.types';
 
 const restApiAdapter = new RestApiAdapter()
 
@@ -29,6 +29,22 @@ export const searchPublications = async(searchObj: ISearchType) => {
 export const importPublications = async(file: ImportFileType) => {
     return (await restApiAdapter.post(`Publications/Import`, file)).data.payload;
 }
+
+export const uploadFileRequest = async (data: IFileUploadData) => {
+    const formData = new FormData();
+    formData.append('file', data.file);
+
+    try {
+        const response = await restApiAdapter.post(
+            `Publications/ImportAsStrem?formatType=${data.formatType}&source=${data.source}&discardInvalidRecords=${data.discardInvalidRecords}`,
+            formData
+        );
+        return response
+    } catch (error) {
+        throw error;
+    }
+};
+
 
 export const exportPublications = async(file: ImportFileType) => { 
     return (await restApiAdapter.post(`Publications/Export`, file)).data.payload

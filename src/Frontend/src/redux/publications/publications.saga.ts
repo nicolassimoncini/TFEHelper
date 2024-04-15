@@ -1,7 +1,7 @@
 import { AnyAction } from "redux-saga";
 import {call, put, takeEvery} from 'redux-saga/effects'
-import { fetchPublications, fetchPublicationsError, fetchPublicationsSuccess } from "./publications.slice";
-import { getPublications } from "../../rest-api/publications.api";
+import { fetchPublications, fetchPublicationsError, fetchPublicationsSuccess, uploadFile, uploadFileSuccess } from "./publications.slice";
+import { getPublications, uploadFileRequest } from "../../rest-api/publications.api";
 
 export function* fetchPublicationSaga(): Generator<AnyAction, void, any> {
     try{
@@ -13,8 +13,18 @@ export function* fetchPublicationSaga(): Generator<AnyAction, void, any> {
     }
 }
 
+export function* uploadFileSaga(action: AnyAction): Generator<AnyAction, void, any> {
+    try {
+        yield put(uploadFile(action.payload));
+        yield call(uploadFileRequest, action.payload);
+        yield put(uploadFileSuccess());
+    } catch (error) {
+        yield put(fetchPublicationsError('Error uploading file'));
+    }
+}
+
 
 export function* publicationsSaga(){
-    console.log('Publications saga')
     yield takeEvery(fetchPublications.type.toString(), fetchPublicationSaga)
+    yield takeEvery(uploadFile.type.toString(), uploadFileSaga)
 }

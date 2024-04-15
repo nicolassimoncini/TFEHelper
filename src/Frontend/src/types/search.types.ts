@@ -6,6 +6,13 @@ export interface ISearchType{
     }[]
 }
 
+export interface IFileUploadData{
+    formatType: number;
+    source: number;
+    discardInvalidRecords: boolean
+    file: File
+}
+
 export interface ImportFileType{
     filePath: string;
     formatType: number;

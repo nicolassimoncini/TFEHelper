@@ -6,12 +6,10 @@ import { ConfigurationType } from '../../types/configurations.types';
 
 export function* fetchConfigurationsSaga(): Generator<AnyAction, void, any> {
     try {
-        console.log('first')
-        yield put(fetchConfiguration);
+        // yield put(fetchConfiguration());
 
         // make the api call to rest api server
         const configurations = yield call(getConfigurations);
-        console.log(configurations)
 
         // check if any configuration object is empty
         const isEmpty = configurations.some((cfg: ConfigurationType) => cfg.items.length === 0 )
