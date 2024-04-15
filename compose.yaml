@@ -1,8 +1,12 @@
+name: tfehelper
 services:
   frontend:
     image: tfehelper.frontend
+    container_name: tfehelper.frontend
     build:
       context: src/Frontend
+    depends_on:
+      - backend
     ports:
       - "80:80"
     environment:
@@ -13,6 +17,7 @@ services:
 
   backend:
     image: tfehelper.backend
+    container_name: tfehelper.backend
     build:
       context: src/Backend
     ports:
@@ -24,6 +29,7 @@ services:
 
 volumes:
   tfehelper.backend.data:
+    name: "tfehelper.backend.data"
 
 networks:
   frontend-network: {}
