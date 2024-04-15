@@ -1,28 +1,30 @@
 services:
-    frontend:
-        image: tfehelper.frontend
-        build:
-            context: src/Frontend
-        ports:
-            - "80:80"
-        networks:
-            - frontend-network
-            - backend-network
-            
-    backend:
-        image: tfehelper.backend
-        build:
-            context: src/Backend
-        ports:
-            - "5000:5000"
-        volumes:
-            - tfehelper.backend.data:/app/data
-        networks:
-            - backend-network
+  frontend:
+    image: tfehelper.frontend
+    build:
+      context: src/Frontend
+    ports:
+      - "80:80"
+    environment:
+      - REACT_APP_API_URL=http://backend:5000
+    networks:
+      - frontend-network
+      - backend-network
+
+  backend:
+    image: tfehelper.backend
+    build:
+      context: src/Backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - tfehelper.backend.data:/app/data
+    networks:
+      - backend-network
 
 volumes:
-    tfehelper.backend.data:
+  tfehelper.backend.data:
 
 networks:
-    frontend-network: {}
-    backend-network: {}
+  frontend-network: {}
+  backend-network: {}
