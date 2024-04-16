@@ -38,3 +38,5 @@ Follow the next steps for install and running TFEHelper:
 3. Access the GUI via `http://localhost:80`
 
 You can inspect the REST API via `http://localhost:5000/swagger`
+<br></br>
+>Note: Frontend and Backend ports can be changed by editing `compose.yaml`.
