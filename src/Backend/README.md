@@ -4,10 +4,10 @@ TFEHelper.Backend architecture design is based on [Clean architecture](https://b
 <br></br>
 Following is the layer structure defined for TFEHelper.Backend:
 <p align="center">
-  <img src="docs/TFEHelper.Onion-architecture.png">
+  <img src="docs/TFEHelper.Backend.Onion-architecture.png">
 </p>
 
 And also the blocks structure:
 <p align="center">
-  <img src="docs/TFEHelper.Blocks-structure.png">
+  <img src="docs/TFEHelper.Backend.Blocks-diagram.png">
 </p>
