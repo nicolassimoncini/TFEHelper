@@ -6,8 +6,14 @@ Following is the layer structure defined for TFEHelper.Backend:
 <p align="center">
   <img src="docs/TFEHelper.Backend.Onion-architecture.png">
 </p>
-
-And also the blocks structure:
+<br></br>
+The blocks structure:
 <p align="center">
   <img src="docs/TFEHelper.Backend.Blocks-diagram.png">
+</p>
+<br></br>
+The overal components diagram:
+<br></br>
+<p align="center">
+  <img src="docs/TFEHelper.Backend.Components-diagram.png">
 </p>
