@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { MainContainer } from '../components/Main';
 import { HomePage } from '../layouts/home';
 import { ImportFileLayout } from '../layouts/ImportLayout';
@@ -12,6 +12,7 @@ export const Routing = () => {
           path="/import"
           element={<MainContainer children={<ImportFileLayout />}></MainContainer>}
         ></Route>
+        <Route path="*" element={<Navigate to={'/'} replace />} />
       </Routes>
     </BrowserRouter>
   );

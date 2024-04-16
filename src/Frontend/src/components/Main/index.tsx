@@ -1,5 +1,6 @@
 import React from 'react';
-import { Container } from './style';
+import { Column, Container } from './style';
+import { Sidebar } from '../Sidebar';
 
 interface Props {
   children: JSX.Element;
@@ -22,8 +23,12 @@ export const MainContainer: React.FC<Props> = ({ children }) => {
     primaryColor: '#000000',
     secondaryColor: '#FFFFFF',
   };
+  const backgroundColor = '#F5F6FB';
 
   return (
-    <Container backgroundcolor={pallet.backgroundColor}>{React.cloneElement(children)}</Container>
+    <Container backgroundColor={backgroundColor}>
+      <Sidebar pallet={pallet} />
+      <Column>{React.cloneElement(children)}</Column>
+    </Container>
   );
 };
