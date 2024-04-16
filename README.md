@@ -13,7 +13,13 @@ With TFEHelper, users can:
 
 ## Details
 
-Documentation pending...
+TFEHelper is formed based on backend-frontend software architecture as follows:
+<br/><br/>
+<p align="center">
+  <img src="docs/TFEHelper.Backend-Frontend.png">
+</p>
+<br/><br/>
+For further technical details, please follow the below links.
 
 ### TFEHelper.Backend
 
@@ -22,3 +28,8 @@ Documentation pending...
 ### TFEHelper.Frontend
 
 [Readme](src/Frontend/README.md)
+
+## Usage
+Follow the next steps for install and running TFEHelper:
+1. Clone the repository
+2. Run `docker compose up -d`
