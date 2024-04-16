@@ -1,6 +1,6 @@
 # TFEHelper
 
-TFE stands for "**T**rabajo **F**inal de **E**specializacion" (final project for post-degree specialization) and TFEHelper is a single user tool designed for helping students on the collection and curate of diverse academic articles from the internet, when a [Systematic Literature Review (SLR)](https://en.wikipedia.org/wiki/Systematic_review) is needed.
+TFE stands for "**T**rabajo **F**inal de **E**specialización" (final project for post-degree specialization) and TFEHelper is a single user tool designed for helping students on the collection and curate of diverse academic articles from the internet, when a [Systematic Literature Review (SLR)](https://en.wikipedia.org/wiki/Systematic_review) is needed.
 
 With TFEHelper, users can:
 - Import, normalize, convert and export data sources to and from [CSV](https://en.wikipedia.org/wiki/Comma-separated_values) or [BibTeX](https://en.wikipedia.org/wiki/BibTeX) files.
