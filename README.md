@@ -7,7 +7,10 @@ With TFEHelper, users can:
 - Connect to several academic data sources for articles collection.
 - Keep information centralized in order to ease their classification work.
 
-![](docs/TFEHelper.png)
+ 
+<p align="center">
+  <img src="docs/TFEHelper.png">
+</p>
 
 ## Details
 
