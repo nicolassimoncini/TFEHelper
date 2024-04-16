@@ -11,6 +11,13 @@ With TFEHelper, users can:
   <img src="docs/TFEHelper.png">
 </p>
 
+Currently, TFEHelper access to [Springer Link database](https://link.springer.com/) for meta-data collection and it's planned to enable access also to:
+- IEEE Xplore
+- Pubmed
+- Scopus
+- Eric
+- Doaj
+
 ## Details
 
 TFEHelper is formed based on backend-frontend software architecture as follows:
