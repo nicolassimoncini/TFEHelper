@@ -17,3 +17,9 @@ The overal packages diagram:
 <p align="center">
   <img src="docs/TFEHelper.Backend.Packages-diagram.png">
 </p>
+<br></br>
+And their deglosed components:
+<br></br>
+<p align="center">
+  <img src="docs/TFEHelper.Backend.Components-diagram.png">
+</p>
