@@ -33,3 +33,4 @@ For further technical details, please follow the below links.
 Follow the next steps for install and running TFEHelper:
 1. Clone the repository
 2. Run `docker compose up -d`
+3. Access the GUI via `http://localhost:80`
