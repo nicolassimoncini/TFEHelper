@@ -6,7 +6,6 @@ With TFEHelper, users can:
 - Import, normalize, convert and export data sources to and from [CSV](https://en.wikipedia.org/wiki/Comma-separated_values) or [BibTeX](https://en.wikipedia.org/wiki/BibTeX) files.
 - Connect to several academic data sources for articles collection.
 - Keep information centralized in order to ease their classification work.
-
  
 <p align="center">
   <img src="docs/TFEHelper.png">
