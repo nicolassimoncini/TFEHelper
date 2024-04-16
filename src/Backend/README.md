@@ -12,8 +12,8 @@ The blocks structure:
   <img src="docs/TFEHelper.Backend.Blocks-diagram.png">
 </p>
 <br></br>
-The overal components diagram:
+The overal packages diagram:
 <br></br>
 <p align="center">
-  <img src="docs/TFEHelper.Backend.Components-diagram.png">
+  <img src="docs/TFEHelper.Backend.Packages-diagram.png">
 </p>
