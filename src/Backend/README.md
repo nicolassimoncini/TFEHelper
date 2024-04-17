@@ -60,7 +60,7 @@ This will return a data structure as follows:
 ```
 >Note that `"type": 0` corresponds to `SearchSourcePLGType.Manual` enum value.  There are several options to choose according the use case.
    
-2. Run TFEHelper.Backend.API `/api/Plugins/Collectors/{id}/Run` endpoint where {id} is the identity retrieved from previous step and populate the following strcture:<br>
+2. Run TFEHelper.Backend.API `/api/Plugins/Collectors/{id}/Run` endpoint where {id} is the identity retrieved from previous step and populate the following strcture which will be internally mapped to `PublicationsCollectorParametersPLG`:<br>
 
 ```json
 
@@ -80,7 +80,7 @@ where:
 - dateFrom / dateTo: the date filters.
 - returnQuantityLimit: how many records will the plugin return.
 
-After running the enpoint, the following strcture will be returned:
+After running the enpoint, the backend will asynchronously run the plugin's `IPublicationsCollector.GetPublicationsAsync` implementation and the following structure will be returned:
 
 ```json
 
