@@ -30,13 +30,88 @@ And their deglosed components:
 
 TFEHelper.Backend provides out of-the-box the capacity of being expanded by the usage of its plugin architecture.
 
-In order to create a plugin for TFEHelper.Backend, a .NET library project containing at least one implementation of the interface `IBasePlugin` hirearchy must be created.  The project must include the `TFEHelper.Backend.Plugins.PluginBase` library on its references.
+In order to create a plugin for TFEHelper.Backend, a .NET library project containing at least one implementation of the interface `IBasePlugin` hirearchy must be created.  The project must include the `TFEHelper.Backend.Plugins.PluginBase` library on its references.  The resulting library must be placed in the same folder where TFEHelper.Backend resides.
 
 ### The "PublicationsCollector" plugin type
 
-This plugin type expands the capacity of TFEHelper.Backend by allowing developers to add new data sources for collecting academic articles.
+This plugin type expands the capacity of TFEHelper.Backend by allowing developers to add new data sources for collecting academic articles.  Any plugin added to the TFEHelper.Backend.Plugins ecosystem is automatically enabled via TFEHelper.Backend.API to be executed by just identify its id by:
 
-Following is an example (extracted from `TFEHelper.Backend.Plugins.DummyPlugin`) on how to implement the PublicationsCollector type plugin:
+1. Get plugin information from TFEHelper.Backend.API `/api/Plugins` endpoint.<br>
+This will return a data structure as follows:
+
+```json
+
+{
+  "statusCode": 200,
+  "isSuccessful": true,
+  "errorMessages": [],
+  "payload": [
+    {
+      "id": 1,
+      "type": 0,
+      "name": "Dummy plugin",
+      "version": "1.0.0",
+      "description": "Test plugin for IPublicationsCollector"
+    }
+  ],
+  "totalPages": 1
+}
+
+```
+>Note that `"type": 0` corresponds to `SearchSourcePLGType.Manual` enum value.  There are several options to choose according the use case.
+   
+2. Run TFEHelper.Backend.API `/api/Plugins/Collectors/{id}/Run` endpoint where {id} is the identity retrieved from previous step and populate the following strcture:<br>
+
+```json
+
+{
+  "query": "example AND text",
+  "searchIn": "",
+  "subject": "",
+  "dateFrom": "2024-01-10",
+  "dateTo": "2024-02-17",
+  "returnQuantityLimit": 10
+}
+
+```
+where:
+- query: the filter to be implemented in the plugin.
+- searchIn / subject: in case the data source need a special sub-filter.
+- dateFrom / dateTo: the date filters.
+- returnQuantityLimit: how many records will the plugin return.
+
+This will return the following:
+
+```json
+
+{
+  "statusCode": 200,
+  "isSuccessful": true,
+  "errorMessages": [],
+  "payload": [
+    {
+      "id": 0,
+      "Abstract": "this is an example of abstract text...",
+      "Authors": "the name of the authors...",
+      "DOI": "DOI value",
+      "ISBN": "ISBN value",
+      "ISSN": "ISSN value",
+      "Key": "Key value",
+      "Keywords": "Keywords value",
+      "Pages": "Pages value",
+      "Source": 5,
+      "Title": "Title value",
+      "Type": 0,
+      "URL": "URL value",
+      "Year": 1995
+    }
+  ],
+  "totalPages": 1
+}
+
+```
+
+Following is a complete example (extracted from `TFEHelper.Backend.Plugins.DummyPlugin`) on how to implement the PublicationsCollector type plugin:
 
 ```c#
 
@@ -108,7 +183,7 @@ namespace TFEHelper.Backend.Plugins.Dummy
 }
 
 ```
-This example returns just one `PublicationPLG` instance to TFEHelper.Backend.
+This example returns one `PublicationPLG` hardcoded instance to TFEHelper.Backend.
 
 
 Currently only `PluginType.PublicationsCollector` is supported.  In the future more plugin types will be incorporated.
