@@ -1,5 +1,7 @@
 # TFEHelper.Backend
 
+## Architecture and Design
+
 TFEHelper.Backend architecture design is based on [Clean architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) proposed by Robert C. Martin in 2012 which is also based on [Onion architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/) originally proposed by Jeffrey Palermo in 2008 and [Hexagonal architecture](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)) by Alistair Cockburn, among others.
 <br></br>
 Following is the layer structure defined for TFEHelper.Backend:
@@ -23,3 +25,92 @@ And their deglosed components:
 <p align="center">
   <img src="docs/TFEHelper.Backend.Components-diagram.png">
 </p>
+
+## Plugins architecture
+
+TFEHelper.Backend provides out of-the-box the capacity of being expanded by the usage of its plugin architecture.
+
+In order to create a plugin for TFEHelper.Backend, a .NET library project containing at least one implementation of the interface `IBasePlugin` hirearchy must be created.  The project must include the `TFEHelper.Backend.Plugins.PluginBase` library on its references.
+
+### The "PublicationsCollector" plugin type
+
+This plugin type expands the capacity of TFEHelper.Backend by allowing developers to add new data sources for collecting academic articles.
+
+Following is an example (extracted from `TFEHelper.Backend.Plugins.DummyPlugin`) on how to implement the PublicationsCollector type plugin:
+
+```c#
+
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using TFEHelper.Backend.Plugins.PluginBase.Common.Enums;
+using TFEHelper.Backend.Plugins.PluginBase.Interfaces;
+using TFEHelper.Backend.Plugins.PluginBase.Specifications.PublicationsCollector.Classes;
+using TFEHelper.Backend.Plugins.PluginBase.Specifications.PublicationsCollector.Enums;
+using TFEHelper.Backend.Plugins.PluginBase.Tools;
+
+namespace TFEHelper.Backend.Plugins.Dummy
+{
+    public class DummyPlugin : IPublicationsCollector
+    {
+        public string Name => "Dummy plugin"; 
+        public Version Version => new Version(1,0,0);
+        public PluginType Type => PluginType.PublicationsCollector;
+        public string Description => "Test plugin for IPublicationsCollector";
+
+        private ILogger _logger;
+        private PluginConfigurationController _config;
+
+        public bool Configure(ILogger logger)
+        {
+            _logger = logger;
+            _config = new PluginConfigurationController(_logger);
+
+            return true;
+        }
+
+        public Task<IEnumerable<PublicationPLG>> GetPublicationsAsync(PublicationsCollectorParametersPLG searchParameters, CancellationToken cancellationToken = default)
+        {
+
+            _logger.LogInformation("Getting publications...");
+            string dummyValue = _config.Get<string>("DummyValue");
+
+            var result = new List<PublicationPLG>()
+            {
+                new PublicationPLG()
+                {
+                    Abstract = "this is an example of abstract text...",
+                    Authors = "the name of the authors...",
+                    DOI = "DOI value",
+                    ISBN = "ISBN value",
+                    ISSN = "ISSN value",
+                    Key = "Key value",
+                    Keywords = "Keywords value",
+                    Pages = "Pages value",
+                    Source = SearchSourcePLGType.Manual,
+                    Title = "Title value",
+                    Type = BibTeXPublicationPLGType.Article,
+                    URL = "URL value",
+                    Year = 1995
+                }
+            };
+
+            return Task.Run<IEnumerable<PublicationPLG>>(() => { return result; }, cancellationToken);
+        }
+
+        public bool IsOnline()
+        {
+            return true;
+        }
+    }
+}
+
+```
+This example returns just one `PublicationPLG` instance to TFEHelper.Backend.
+
+
+Currently only `PluginType.PublicationsCollector` is supported.  In the future more plugin types will be incorporated.
+
+Any 3rd party contribution is always welcomed.
