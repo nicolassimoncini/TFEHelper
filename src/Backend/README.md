@@ -80,7 +80,7 @@ where:
 - dateFrom / dateTo: the date filters.
 - returnQuantityLimit: how many records will the plugin return.
 
-This will return the following:
+After running the enpoint, the following strcture will be returned:
 
 ```json
 
