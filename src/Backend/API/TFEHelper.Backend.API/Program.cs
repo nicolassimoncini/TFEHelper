@@ -106,8 +106,11 @@ namespace TFEHelper.Backend.API
             builder.Services.AddScoped<TFEHelper.Backend.Domain.Repositories.IRepositoryManager, TFEHelper.Backend.Infrastructure.Database.Implementations.RepositoryManager>();
             builder.Services.AddScoped<TFEHelper.Backend.Domain.Repositories.IPublicationRepository, TFEHelper.Backend.Infrastructure.Database.Implementations.PublicationRepository>();
 
+            builder.Services.AddHealthChecks();
+
             var app = builder.Build();
 
+            app.MapHealthChecks("/healthcheck");
             var pluginManager = app.Services.GetService<IPluginManager>();
             if (pluginManager != null) await pluginManager.ScanAsync();
 
