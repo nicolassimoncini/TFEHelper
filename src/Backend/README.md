@@ -34,7 +34,8 @@ In order to create a plugin for TFEHelper.Backend, a .NET library project contai
 
 ### The "PublicationsCollector" plugin type
 
-This plugin type expands the capacity of TFEHelper.Backend by allowing developers to add new data sources for collecting academic articles.  Any plugin added to the TFEHelper.Backend.Plugins ecosystem is automatically enabled via TFEHelper.Backend.API to be executed by just identify its id by:
+This plugin type (which implements `IPublicationsCollector` interface) expands the capacity of TFEHelper.Backend by allowing developers to add new data sources for collecting academic articles.<br>
+Any plugin added to the TFEHelper.Backend.Plugins ecosystem is automatically enabled via TFEHelper.Backend.API to be executed by just identify its id by:
 
 1. Get plugin information from TFEHelper.Backend.API `/api/Plugins` endpoint.<br>
 This will return a data structure as follows:
