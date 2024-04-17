@@ -141,7 +141,7 @@ namespace TFEHelper.Backend.Plugins.Dummy
         public bool Configure(ILogger logger)
         {
             _logger = logger;
-            _config = new PluginConfigurationController(_logger);
+            _config = new PluginConfigurationController(_logger, "my_config_file.cfg");
 
             return true;
         }
@@ -185,7 +185,21 @@ namespace TFEHelper.Backend.Plugins.Dummy
 ```
 This example returns one `PublicationPLG` hardcoded instance to TFEHelper.Backend.
 
+In case the plugin needs to load some configuration on runtime, TFEHelper.Backend.Plugins.PluginBase library offers to dinamically load `PluginConfigurationItem` instances by using `PluginConfigurationController` as shown in the previous example.  In order to achieve this, an ASCII configuration file containing the following Json specification must be provided:
 
+```json
+
+[
+  {
+    "Name": "My config parameter name",
+    "Value": "My config parameter value"
+  }	
+]
+
+```
+>Note that if no configuration file is provided, `PluginConfigurationController` will try to search a file with the same name as the library binary file with ".cfg" extension.
+
+<br></br>
 Currently only `PluginType.PublicationsCollector` is supported.  In the future more plugin types will be incorporated.
 
 Any 3rd party contribution is always welcomed.
