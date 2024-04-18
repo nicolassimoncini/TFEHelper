@@ -6,7 +6,7 @@ services:
     build:
       context: src/Frontend
       args:
-        - REACT_APP_API_URL=http://backend:5000/api
+        - REACT_APP_API_URL=http://0.0.0.0:5000/api
     depends_on:
       - backend
     ports:
@@ -21,7 +21,7 @@ services:
     build:
       context: src/Backend
     ports:
-      - "5000:5000"
+      - "4000:5000"
     volumes:
       - tfehelper.backend.data:/app/data
     networks:

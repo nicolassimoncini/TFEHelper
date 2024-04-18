@@ -1,6 +1,9 @@
 # Use an official Node.js image as the base image
 FROM node:14-alpine AS build
 
+ARG REACT_APP_API_URL
+RUN echo $REACT_APP_API_URL
+
 # Set the working directory in the container
 WORKDIR /app
 
