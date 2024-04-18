@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { publicationInitialState } from "./publication.initial-state";
 import { Publication } from "../../types/publications.types";
-import { IFileUploadData } from "../../types/search.types";
 
 export const publicationsSlice = createSlice({
     name: 'publications',
@@ -10,8 +9,8 @@ export const publicationsSlice = createSlice({
         fetchPublications(store){
             store.isLoading = true
         },
-        fetchPublicationsSuccess(store, action: PayloadAction<{publications: Publication[]}>) {
-            store.publications = action.payload.publications;
+        fetchPublicationsSuccess(store, action: PayloadAction<Publication[]>) {
+            store.publications = action.payload;
             store.isLoading = false;
         },
         fetchPublicationsError(store, action: PayloadAction<string>){
@@ -24,7 +23,7 @@ export const publicationsSlice = createSlice({
         unsetActivePublication(store){
             store.activePublication = null
         },
-        uploadFile(store, action: PayloadAction<IFileUploadData>){
+        uploadFile(store){
             store.isLoading = true;
         },
         uploadFileSuccess(store){

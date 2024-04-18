@@ -15,7 +15,7 @@ export function* fetchPublicationSaga(): Generator<AnyAction, void, any> {
 
 export function* uploadFileSaga(action: AnyAction): Generator<AnyAction, void, any> {
     try {
-        yield put(uploadFile(action.payload));
+        yield put(uploadFile());
         yield call(uploadFileRequest, action.payload);
         yield put(uploadFileSuccess());
     } catch (error) {

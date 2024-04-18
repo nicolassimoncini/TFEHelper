@@ -3,6 +3,7 @@ import { TableComponent } from '../../components/Table';
 import { HomeLayout } from './style';
 import { useDispatch } from 'react-redux';
 import { fetchConfiguration } from '../../redux/configurations/configuration.slice';
+import { QueryBuilderComponent } from '../../components/QueryBuilder';
 
 export const HomePage = () => {
   const dispatch = useDispatch();
@@ -14,7 +15,8 @@ export const HomePage = () => {
 
   return (
     <HomeLayout>
-      <h1>Home Layout</h1>
+      <h1>SRL Helper Tool</h1>
+      <QueryBuilderComponent />
       <TableComponent></TableComponent>
     </HomeLayout>
   );

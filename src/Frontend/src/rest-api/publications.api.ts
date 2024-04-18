@@ -27,7 +27,7 @@ export const searchPublications = async(searchObj: ISearchType) => {
 }
 
 export const importPublications = async(file: ImportFileType) => {
-    return (await restApiAdapter.post(`Publications/Import`, file)).data.payload;
+    return (await restApiAdapter.post(`Publications/ImportAsStream`, file)).data.payload;
 }
 
 export const uploadFileRequest = async (data: IFileUploadData) => {

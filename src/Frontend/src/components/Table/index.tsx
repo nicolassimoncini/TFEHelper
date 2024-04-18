@@ -59,11 +59,6 @@ const columns: DataType[] = [
     dataIndex: 'pages',
     key: 'pages',
   },
-  {
-    title: 'Select',
-    dataIndex: 'select',
-    key: 'select',
-  },
 ];
 
 const defaultCheckedList = columns.map(item => item.key as string);
@@ -114,7 +109,7 @@ export const TableComponent: React.FC = () => {
       <Table
         rowSelection={rowSelection}
         dataSource={publications.publications}
-        style={{ width: '100%', padding: '20px' }}
+        style={{ width: '100%', padding: '1rem' }}
         columns={newColumns}
         expandable={{
           expandedRowRender: (record: Publication) => (

@@ -1,8 +1,9 @@
+import React from 'react';
+import { Upload } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
-import { Upload, UploadProps, message } from 'antd';
-import { RcFile } from 'antd/es/upload';
-import React, { useState } from 'react';
-import { UploadContainer } from './style';
+import Swal from 'sweetalert2';
+import { DraggerContainer } from './style';
+import { UploadChangeParam } from 'antd/es/upload';
 
 const { Dragger } = Upload;
 
@@ -10,44 +11,48 @@ interface FileUploadDraggerProps {
   onFileUpload: (file: File) => void;
 }
 
-// Define a function to map RcFile to File
-const mapRcFileToFile = (rcFile: RcFile): File => {
-  const file: File = rcFile as File;
-  return file;
-};
+const FileUploadDragger: React.FC<FileUploadDraggerProps> = ({ onFileUpload }) => {
+  //TODO: Implement the file upload logic for multiple files
 
-const FileUploadComponent: React.FC<FileUploadDraggerProps> = ({ onFileUpload }) => {
-  const [fileList, setFileList] = useState<RcFile[]>([]);
+  const onChange = (info: UploadChangeParam) => {
+    onFileUpload(info.file.originFileObj as File);
+  };
 
-  const props: UploadProps = {
-    name: 'file',
-    multiple: false,
-    fileList,
-    onChange(info) {
-      setFileList(info.fileList.map(file => file.originFileObj as RcFile));
-    },
-    beforeUpload(file) {
-      const fileExtension = file.name.split('.').pop()?.toLowerCase();
-      if (fileExtension !== 'bib' && fileExtension !== 'csv') {
-        message.error('Please upload a BibTeX (.bib) or CSV (.csv) file only.');
-        return false; // Prevent file upload
-      }
-      onFileUpload(mapRcFileToFile(file) as File); // Call the callback function to pass the uploaded file to the parent component
-      return false; // Prevent default upload behavior
-    },
+  const handleBeforeUpload = (file: File, _: File[]) => {
+    const fileExtension = file.name.split('.').pop()?.toLowerCase();
+    if (!(fileExtension === 'bib' || fileExtension === 'csv')) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please upload a CSV or BibTex file.',
+      });
+
+      return Upload.LIST_IGNORE;
+    }
+  };
+
+  const customRequest = ({ file, onSuccess }: any) => {
+    if (file instanceof File && file.size > 0) {
+      onSuccess('ok');
+    }
   };
 
   return (
-    <UploadContainer>
-      <Dragger {...props}>
+    <DraggerContainer>
+      <Dragger
+        customRequest={customRequest}
+        beforeUpload={handleBeforeUpload}
+        onChange={onChange}
+        multiple={false}
+        maxCount={1}
+      >
         <p className="ant-upload-drag-icon">
           <InboxOutlined />
         </p>
-        <p className="ant-upload-text">Click or drag BibTeX (.bib) or CSV (.csv) file to upload</p>
-        <p className="ant-upload-hint"></p>
+        <p className="ant-upload-text">Click or drag file to this area to upload</p>
       </Dragger>
-    </UploadContainer>
+    </DraggerContainer>
   );
 };
 
-export default FileUploadComponent;
+export default FileUploadDragger;
