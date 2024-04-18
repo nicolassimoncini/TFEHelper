@@ -17,6 +17,7 @@ Currently, TFEHelper access to [Springer Link database](https://link.springer.co
 - Scopus
 - Eric
 - Doaj
+- arXiv
 
 ## Details
 
