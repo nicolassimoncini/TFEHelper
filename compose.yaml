@@ -6,7 +6,7 @@ services:
     build:
       context: src/Frontend
       args:
-        - REACT_APP_API_URL=http://backend:5000/api
+        - REACT_APP_API_URL=http://localhost:5000/api
     depends_on:
       - backend
     ports:
