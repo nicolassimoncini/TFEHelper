@@ -63,7 +63,7 @@ namespace TFEHelper.Backend.API
 
             builder.Host.UseSerilog();
 
-            builder.Services.AddCors(o => o.AddPolicy("TFEHelper", builder =>
+            builder.Services.AddCors(o => o.AddDefaultPolicy(builder =>
             {
                 builder.AllowAnyOrigin();
                 builder.AllowAnyMethod();
@@ -114,13 +114,13 @@ namespace TFEHelper.Backend.API
             var pluginManager = app.Services.GetService<IPluginManager>();
             if (pluginManager != null) await pluginManager.ScanAsync();
 
+            app.UseExceptionHandler(opt => { });
+            app.UseCors();
             app.UseResponseCaching();
             app.UseSwagger();
             app.UseSwaggerUI();
             //app.UseHttpsRedirection();
-            app.MapControllers();
-            app.UseExceptionHandler(opt => { });
-            app.UseCors();
+            app.MapControllers();                     
             app.ApplyDatabaseMigration();
 
             return app;
