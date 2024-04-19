@@ -28,6 +28,8 @@ namespace TFEHelper.Backend.Services.Contracts.DTO.API
         [Display(Name = "Eric")]
         Eric = 8,
         [Display(Name = "Doaj")]
-        Doaj = 9
+        Doaj = 9,
+        [Display(Name = "arXiv")]
+        arXiv = 10,
     }
 }
