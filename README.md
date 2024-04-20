@@ -11,10 +11,9 @@ With TFEHelper, users can:
   <img src="docs/TFEHelper.png">
 </p>
 
-Currently, TFEHelper access to [Springer Link database](https://link.springer.com/) through their public API for meta-data collection and it's planned to also enable access to:
+Currently, TFEHelper access to [Springer Link database](https://link.springer.com/) and [Scopus](https://www.scopus.com) through their public API for meta-data collection and it's planned to also enable access to:
 - IEEE Xplore
 - Pubmed
-- Scopus
 - Eric
 - Doaj
 - arXiv
