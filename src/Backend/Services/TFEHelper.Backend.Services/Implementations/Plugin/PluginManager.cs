@@ -54,7 +54,7 @@ namespace TFEHelper.Backend.Services.Implementations.Plugin
                     _plugins.ToList().ForEach(p => _logger.LogInformation($"--> {p.Info.Name} - v{p.Info.Version}"));
 
                     _logger.LogInformation("Invoking plugins self configuration...");
-                    _plugins.ToList().ForEach(p => p.Plugin.Configure(_loggerFactory.CreateLogger(p.Plugin.GetType())));
+                    _plugins.ToList().ForEach(p => p.Plugin.StartUp(_loggerFactory.CreateLogger(p.Plugin.GetType())));
                 }
                 else _logger.LogInformation("No plugins detected.");
             });

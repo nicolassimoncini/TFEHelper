@@ -10,6 +10,6 @@ namespace TFEHelper.Backend.Plugins.PluginBase.Interfaces
         public PluginType Type { get; }
         public string Description { get; }
 
-        bool Configure(ILogger logger);
+        bool StartUp(ILogger logger);
     }
 }

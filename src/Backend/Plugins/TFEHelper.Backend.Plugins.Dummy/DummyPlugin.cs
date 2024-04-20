@@ -21,7 +21,7 @@ namespace TFEHelper.Backend.Plugins.Dummy
         private ILogger _logger;
         private PluginConfigurationController _config;
 
-        public bool Configure(ILogger logger)
+        public bool StartUp(ILogger logger)
         {
             _logger = logger;
             _config = new PluginConfigurationController(_logger);
