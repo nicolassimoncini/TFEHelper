@@ -24,6 +24,7 @@ COPY ./Infrastructure/TFEHelper.Backend.Infrastructure.Test/TFEHelper.Backend.In
 COPY ./Plugins/TFEHelper.Backend.Plugins.Dummy/TFEHelper.Backend.Plugins.Dummy.csproj ./Plugins/TFEHelper.Backend.Plugins.Dummy/
 COPY ./Plugins/TFEHelper.Backend.Plugins.PluginBase/TFEHelper.Backend.Plugins.PluginBase.csproj ./Plugins/TFEHelper.Backend.Plugins.PluginBase/
 COPY ./Plugins/TFEHelper.Backend.Plugins.SpringerLink/TFEHelper.Backend.Plugins.SpringerLink.csproj ./Plugins/TFEHelper.Backend.Plugins.SpringerLink/
+COPY ./Plugins/TFEHelper.Backend.Plugins.Scopus/TFEHelper.Backend.Plugins.Scopus.csproj ./Plugins/TFEHelper.Backend.Plugins.Scopus/
 
 # Services projects
 COPY ./Services/TFEHelper.Backend.Services/TFEHelper.Backend.Services.csproj ./Services/TFEHelper.Backend.Services/
@@ -50,6 +51,7 @@ RUN dotnet build
 RUN dotnet publish ./API/TFEHelper.Backend.API/TFEHelper.Backend.API.csproj -o /publish/
 RUN dotnet publish ./Plugins/TFEHelper.Backend.Plugins.Dummy/TFEHelper.Backend.Plugins.Dummy.csproj -o /publish/
 RUN dotnet publish ./Plugins/TFEHelper.Backend.Plugins.SpringerLink/TFEHelper.Backend.Plugins.SpringerLink.csproj -o /publish/
+RUN dotnet publish ./Plugins/TFEHelper.Backend.Plugins.Scopus/TFEHelper.Backend.Plugins.Scopus.csproj -o /publish/
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app 

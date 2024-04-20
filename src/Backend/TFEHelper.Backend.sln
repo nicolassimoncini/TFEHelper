@@ -45,6 +45,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFEHelper.Backend.Services.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFEHelper.Backend.Services.Contracts", "Services\TFEHelper.Backend.Services.Contracts\TFEHelper.Backend.Services.Contracts.csproj", "{77718E43-B922-4577-A73D-BDC8A034898E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFEHelper.Backend.Plugins.Scopus", "Plugins\TFEHelper.Backend.Plugins.Scopus\TFEHelper.Backend.Plugins.Scopus.csproj", "{0A7EF4BB-86A6-4D85-B5F3-E512A11925FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +113,10 @@ Global
 		{77718E43-B922-4577-A73D-BDC8A034898E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77718E43-B922-4577-A73D-BDC8A034898E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77718E43-B922-4577-A73D-BDC8A034898E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A7EF4BB-86A6-4D85-B5F3-E512A11925FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A7EF4BB-86A6-4D85-B5F3-E512A11925FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A7EF4BB-86A6-4D85-B5F3-E512A11925FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A7EF4BB-86A6-4D85-B5F3-E512A11925FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -131,6 +137,7 @@ Global
 		{981EF278-A1E4-4196-88CD-CE70E7EC0FB1} = {79E88285-83FD-48C8-81A1-EBF5C35E4D55}
 		{15C3F021-DC86-4B48-9F3F-D87326B7530C} = {E9F95634-78E2-4289-A902-861A5912B311}
 		{77718E43-B922-4577-A73D-BDC8A034898E} = {E9F95634-78E2-4289-A902-861A5912B311}
+		{0A7EF4BB-86A6-4D85-B5F3-E512A11925FD} = {1127FEB1-5E77-4242-93F2-9ABA2290B273}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C0B3D73E-CF42-498C-97C5-06A8F7372B49}
