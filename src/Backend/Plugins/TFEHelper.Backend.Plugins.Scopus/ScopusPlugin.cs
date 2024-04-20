@@ -14,7 +14,7 @@ using TFEHelper.Backend.Plugins.Scopus.Extensions;
 
 namespace TFEHelper.Backend.Plugins.Scopus
 {
-    public class ScopusPlugin : IPublicationsCollector
+    public class ScopusPlugin : IPublicationsCollectorPlugin
     {
         public string Name => "Scopus plugin";
         public Version Version => new Version(1, 0, 0);

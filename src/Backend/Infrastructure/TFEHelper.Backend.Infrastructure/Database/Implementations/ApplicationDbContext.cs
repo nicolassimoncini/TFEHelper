@@ -47,5 +47,3 @@ namespace TFEHelper.Backend.Infrastructure.Database.Implementations
         }
     }
 }
-#warning investigar por qué al debuggear, la base de datos se busca en la raíz del proyecto TFEHelper.Backend.API! (hint: https://stackoverflow.com/a/65093101/14042736)
-#warning otro hint (medio pedorro): https://stackoverflow.com/questions/49569055/store-entity-framework-core-sqlite-file-in-project-relative-subdirectory

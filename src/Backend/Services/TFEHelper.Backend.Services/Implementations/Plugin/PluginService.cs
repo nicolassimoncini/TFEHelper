@@ -33,7 +33,7 @@ namespace TFEHelper.Backend.Services.Implementations.Plugin
         public IEnumerable<PluginInfoDTO> GetPublicationsCollectorPlugins()
         {
             var plugins = _pluginManager
-                .GetPluginContainers<IPublicationsCollector>()
+                .GetPluginContainers<IPublicationsCollectorPlugin>()
                 .Select(p => p.Info);
 
             return _mapper.Map<IEnumerable<PluginInfoDTO>>(plugins);
@@ -41,7 +41,7 @@ namespace TFEHelper.Backend.Services.Implementations.Plugin
 
         public async Task<IEnumerable<PublicationDTO>> GetPublicationsFromPluginAsync(int pluginId, PublicationsCollectorParametersDTO searchParameters, CancellationToken cancellationToken = default)
         {
-            var plugin = _pluginManager.GetPlugin<IPublicationsCollector>(pluginId) ?? throw new Exception($"Plugin Id={pluginId} does not exist in this context!");
+            var plugin = _pluginManager.GetPlugin<IPublicationsCollectorPlugin>(pluginId) ?? throw new Exception($"Plugin Id={pluginId} does not exist in this context!");
 
             var pluginPublications = await plugin.GetPublicationsAsync(_mapper.Map<PublicationsCollectorParametersPLG>(searchParameters), cancellationToken);
 

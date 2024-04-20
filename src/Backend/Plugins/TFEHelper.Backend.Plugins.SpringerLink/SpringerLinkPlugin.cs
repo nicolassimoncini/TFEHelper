@@ -19,7 +19,7 @@ using TFEHelper.Backend.Plugins.SpringerLink.Extensions;
 
 namespace TFEHelper.Backend.Plugins.SpringerLink
 {
-    public class SpringerLinkPlugin : IPublicationsCollector
+    public class SpringerLinkPlugin : IPublicationsCollectorPlugin
     {
         public string Name => "SpringerLink plugin";
         public Version Version => new Version(1, 0, 0);

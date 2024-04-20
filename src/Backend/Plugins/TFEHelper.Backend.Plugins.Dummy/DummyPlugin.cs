@@ -11,7 +11,7 @@ using TFEHelper.Backend.Plugins.PluginBase.Tools;
 
 namespace TFEHelper.Backend.Plugins.Dummy
 {
-    public class DummyPlugin : IPublicationsCollector
+    public class DummyPlugin : IPublicationsCollectorPlugin
     {
         public string Name => "Dummy plugin"; 
         public Version Version => new Version(1,0,0);
