@@ -36,6 +36,10 @@ namespace TFEHelper.Backend.Services.Implementations.Plugin
                 var i = 1;
                 foreach (var plugin in plugins)
                 {
+                    _logger.LogInformation("Plugin {PluginName} ({PluginVersion}) detected.", plugin.Name, plugin.Version);
+                    _logger.LogInformation("Invoking {PluginName} configuration...", plugin.Name);
+                    plugin.StartUp(_loggerFactory.CreateLogger(plugin.GetType()));
+
                     _plugins.Add(new PluginContainer(
                         new PluginInfo()
                         {
@@ -45,20 +49,12 @@ namespace TFEHelper.Backend.Services.Implementations.Plugin
                             Version = plugin.Version,
                             Description = plugin.Description,
                             Parameters = plugin.Implements(typeof(IParametersTypesExposser)) ? ((IParametersTypesExposser)plugin).GetParametersTypes() : null
-                }
+                        }
                         , plugin));
                     i++;
                 }
 
-                if (_plugins.Any())
-                {
-                    _logger.LogInformation($"{_plugins.Count()} plugin(s) detected:");
-                    _plugins.ToList().ForEach(p => _logger.LogInformation($"--> {p.Info.Name} - v{p.Info.Version}"));
-
-                    _logger.LogInformation("Invoking plugins self configuration...");
-                    _plugins.ToList().ForEach(p => p.Plugin.StartUp(_loggerFactory.CreateLogger(p.Plugin.GetType())));
-                }
-                else _logger.LogInformation("No plugins detected.");
+                if (!_plugins.Any()) _logger.LogInformation("No plugins detected.");
             });
         }
 
