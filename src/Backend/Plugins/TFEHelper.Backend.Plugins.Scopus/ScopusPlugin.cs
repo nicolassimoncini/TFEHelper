@@ -16,6 +16,7 @@ namespace TFEHelper.Backend.Plugins.Scopus
 {
     public class ScopusPlugin : IPublicationsCollectorPlugin
     {
+    
         public string Name => "Scopus plugin";
         public Version Version => new Version(1, 0, 0);
         public PluginType Type => PluginType.PublicationsCollector;
