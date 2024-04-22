@@ -14,6 +14,7 @@ namespace TFEHelper.Backend.Plugins.PluginBase.Common.Classes
         public string Name { get; set; } = string.Empty;
         public Version Version { get; set; } = new Version();
         public string Description { get; set; } = string.Empty;
+        public GlobalParametersContainer Parameters { get; set; }
 
         public override string ToString()
         {

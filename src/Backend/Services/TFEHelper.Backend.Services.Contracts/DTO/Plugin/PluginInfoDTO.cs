@@ -9,6 +9,7 @@ namespace TFEHelper.Backend.Services.Contracts.DTO.Plugin
         public string Name { get; set; }
         public Version Version { get; set; }
         public string Description { get; set; }
+        public dynamic Parameters { get; set; }
 
         public override string ToString()
         {

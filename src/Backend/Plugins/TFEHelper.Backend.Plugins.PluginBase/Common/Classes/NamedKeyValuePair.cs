@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TFEHelper.Backend.Plugins.PluginBase.Tools
+namespace TFEHelper.Backend.Plugins.PluginBase.Common.Classes
 {
-    public class PluginConfigurationItem
+    public class NamedKeyValuePair<T>
     {
         public string Name { get; set; }
-        public string Value { get; set; }
+        public T Value { get; set; }
     }
 }

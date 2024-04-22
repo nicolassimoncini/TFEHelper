@@ -1,19 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using System.Reflection;
-using System.Security.Claims;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
+using TFEHelper.Backend.Plugins.PluginBase.Common.Classes;
 
 namespace TFEHelper.Backend.Plugins.PluginBase.Tools
 {
     public sealed class PluginConfigurationController
     {
-        private List<PluginConfigurationItem> _items { get; set; }
+        private List<NamedKeyValuePair<string>> _items { get; set; }
         private readonly string _configurationFilePath;
         private readonly ILogger _logger;
 
@@ -23,7 +17,7 @@ namespace TFEHelper.Backend.Plugins.PluginBase.Tools
             
             _configurationFilePath = (configurationFilePath != string.Empty) ? configurationFilePath : hardCoddedFilePath;
             _logger = logger;
-            _items = new List<PluginConfigurationItem>();
+            _items = new List<NamedKeyValuePair<string>>();
 
             if (autoLoad) Load();
         }
@@ -35,7 +29,7 @@ namespace TFEHelper.Backend.Plugins.PluginBase.Tools
                 _logger.LogInformation("Loading configuration from {ConfigFile}...", _configurationFilePath);
                 
                 string jsonString = File.ReadAllText(_configurationFilePath);
-                _items = JsonSerializer.Deserialize<List<PluginConfigurationItem>>(jsonString);
+                _items = JsonSerializer.Deserialize<List<NamedKeyValuePair<string>>>(jsonString);
 
                 _logger.LogInformation("Configuration items ({Count}) loaded!", _items.Count);
             }

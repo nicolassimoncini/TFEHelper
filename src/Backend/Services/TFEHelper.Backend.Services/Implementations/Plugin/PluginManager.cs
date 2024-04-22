@@ -3,6 +3,7 @@ using System.Reflection;
 using TFEHelper.Backend.Plugins.PluginBase.Common.Classes;
 using TFEHelper.Backend.Plugins.PluginBase.Interfaces;
 using TFEHelper.Backend.Tools.Assembly;
+using TFEHelper.Backend.Tools.Object;
 
 namespace TFEHelper.Backend.Services.Implementations.Plugin
 {
@@ -42,8 +43,9 @@ namespace TFEHelper.Backend.Services.Implementations.Plugin
                             Type = plugin.Type,
                             Name = plugin.Name,
                             Version = plugin.Version,
-                            Description = plugin.Description
-                        }
+                            Description = plugin.Description,
+                            Parameters = plugin.Implements(typeof(IParametersTypesExposser)) ? ((IParametersTypesExposser)plugin).GetParametersTypes() : null
+                }
                         , plugin));
                     i++;
                 }

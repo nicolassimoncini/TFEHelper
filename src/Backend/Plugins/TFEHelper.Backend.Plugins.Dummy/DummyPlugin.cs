@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using TFEHelper.Backend.Plugins.PluginBase.Common.Classes;
 using TFEHelper.Backend.Plugins.PluginBase.Common.Enums;
 using TFEHelper.Backend.Plugins.PluginBase.Interfaces;
 using TFEHelper.Backend.Plugins.PluginBase.Specifications.PublicationsCollector.Classes;
@@ -11,7 +12,7 @@ using TFEHelper.Backend.Plugins.PluginBase.Tools;
 
 namespace TFEHelper.Backend.Plugins.Dummy
 {
-    public class DummyPlugin : IPublicationsCollectorPlugin
+    public class DummyPlugin : IPublicationsCollectorPlugin, IParametersTypesExposser
     {
         public string Name => "Dummy plugin"; 
         public Version Version => new Version(1,0,0);
@@ -27,6 +28,15 @@ namespace TFEHelper.Backend.Plugins.Dummy
             _config = new PluginConfigurationController(_logger);
 
             return true;
+        }
+
+        public GlobalParametersContainer GetParametersTypes()
+        {
+            var container = new GlobalParametersContainer();
+            container.CollectionValued.Add("Subjects", "Medicine", "MEDI");
+            container.CollectionValued.Add("Subjects", "Engineering", "ENGI");
+
+            return container;
         }
 
         public Task<IEnumerable<PublicationPLG>> GetPublicationsAsync(PublicationsCollectorParametersPLG searchParameters, CancellationToken cancellationToken = default)

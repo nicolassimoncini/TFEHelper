@@ -65,3 +65,4 @@ namespace TFEHelper.Backend.Plugins.Scopus.Enums
         MULT
     }
 }
+#warning traer estos valores dinámicamente desde https://api.elsevier.com/content/subject/scopus?httpAccept=application/json
