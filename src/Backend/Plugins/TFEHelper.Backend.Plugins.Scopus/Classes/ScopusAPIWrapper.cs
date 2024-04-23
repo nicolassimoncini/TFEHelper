@@ -53,6 +53,7 @@ namespace TFEHelper.Backend.Plugins.Scopus.Classes
             _request.AddQueryParameter("start", 0);
             _request.AddQueryParameter("query", string.Format(queryTAKFormat, searchParameters.Query));
             _request.AddQueryParameter("date", string.Format("{0}-{1}", searchParameters.DateFrom.Year, searchParameters.DateTo.Year));
+            if (!string.IsNullOrEmpty(searchParameters.Subject)) _request.AddQueryParameter("subj", searchParameters.Subject);
         }
 
         public async Task<List<ScopusEntryDTO>> GetAllRecordsAsync(CancellationToken cancellationToken = default)
@@ -68,6 +69,9 @@ namespace TFEHelper.Backend.Plugins.Scopus.Classes
             do
             {
                 response = await _client.GetAsync<ScopusRootDTO>(_request, cancellationToken) ?? new ScopusRootDTO();
+
+                if (response.Result.TotalResults == 0) break;
+
                 records.AddRange(response.Result.Entries);
                 result = response.Result;
 
@@ -91,6 +95,12 @@ namespace TFEHelper.Backend.Plugins.Scopus.Classes
             } while (!maxReached && (Math.Round((decimal)(result.TotalResults / result.ItemsPerPage)) >= result.StartIndex +1));
 
             return records;
+        }
+
+        public async Task<ScopusSubjectRootDTO> GetAllSubjectsAsync(CancellationToken cancellationToken = default)
+        {
+            _request.AddQueryParameter("httpAccept", "application/json");
+            return await _client.GetAsync<ScopusSubjectRootDTO>(_request, cancellationToken) ?? default;
         }
     }
 }

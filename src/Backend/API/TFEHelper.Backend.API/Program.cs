@@ -24,9 +24,11 @@ namespace TFEHelper.Backend.API
             {
                 Log.Information("Starting web application for TFEHelper.");
 
-                var webApp = await CreateWebApplication(args);
-                webApp.Run();
-
+                using (var cts = new CancellationTokenSource())
+                {
+                    var webApp = await CreateWebApplication(args, cts.Token);
+                    await webApp.RunAsync(cts.Token);
+                }
                 return 0;
             }
             catch (Exception ex)
@@ -57,7 +59,7 @@ namespace TFEHelper.Backend.API
                 .CreateLogger();
         }
 
-        private static async Task<WebApplication> CreateWebApplication(string[] args)
+        private static async Task<WebApplication> CreateWebApplication(string[] args, CancellationToken cancellationToken = default)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -112,7 +114,7 @@ namespace TFEHelper.Backend.API
 
             app.MapHealthChecks("/healthcheck");
             var pluginManager = app.Services.GetService<IPluginManager>();
-            if (pluginManager != null) await pluginManager.ScanAsync();
+            if (pluginManager != null) await pluginManager.ScanAsync(cancellationToken);
 
             app.UseExceptionHandler(opt => { });
             app.UseCors();

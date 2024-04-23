@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using TFEHelper.Backend.Plugins.PluginBase.Common.Classes;
 using TFEHelper.Backend.Plugins.PluginBase.Common.Enums;
 using TFEHelper.Backend.Plugins.PluginBase.Interfaces;
 using TFEHelper.Backend.Plugins.PluginBase.Specifications.PublicationsCollector.Classes;
@@ -14,7 +15,7 @@ using TFEHelper.Backend.Plugins.Scopus.Extensions;
 
 namespace TFEHelper.Backend.Plugins.Scopus
 {
-    public class ScopusPlugin : IPublicationsCollectorPlugin
+    public class ScopusPlugin : IPublicationsCollectorPlugin, IParametersTypesExposser
     {
     
         public string Name => "Scopus plugin";
@@ -40,7 +41,7 @@ namespace TFEHelper.Backend.Plugins.Scopus
 
         public async Task<IEnumerable<PublicationPLG>> GetPublicationsAsync(PublicationsCollectorParametersPLG searchParameters, CancellationToken cancellationToken = default)
         {
-            string uri = _config.Get<string>("URI");
+            string uri = _config.Get<string>("SearchURI");
             string APIKey = _config.Get<string>("APIKey");
             int defaultPageSize = _config.Get<int>("DefaultPageSize");
 
@@ -73,6 +74,25 @@ namespace TFEHelper.Backend.Plugins.Scopus
 
                 return publications;
             };
+        }
+
+        public async Task<GlobalParametersContainer> GetParametersTypesAsync(CancellationToken cancellationToken = default)
+        {
+            string uri = _config.Get<string>("SubjectsURI");
+            string APIKey = _config.Get<string>("APIKey");
+            var parameters = new GlobalParametersContainer();
+
+            using (var api = new ScopusAPIWrapper(uri, APIKey, _logger))
+            {
+                ScopusSubjectRootDTO root = await api.GetAllSubjectsAsync(cancellationToken);
+
+                foreach (var subject in root.Info.Subjects)
+                {
+                    parameters.CollectionValued.Add("Subjects", subject.Detail, subject.Abbreviature);
+                }
+            }
+
+            return parameters;
         }
     }
 }

@@ -9,6 +9,6 @@ namespace TFEHelper.Backend.Plugins.PluginBase.Interfaces
 {
     public interface IParametersTypesExposser
     {
-        public GlobalParametersContainer GetParametersTypes();
+        public Task<GlobalParametersContainer> GetParametersTypesAsync(CancellationToken cancellationToken = default);
     }
 }

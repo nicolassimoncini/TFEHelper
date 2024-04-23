@@ -20,9 +20,9 @@ namespace TFEHelper.Backend.Services.Implementations.Plugin
             _loggerFactory = loggerFactory;
         }
 
-        public async Task ScanAsync()
+        public async Task ScanAsync(CancellationToken cancellationToken) 
         {
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 _logger.LogInformation("Scanning for plugins...");
                 var files = Directory.GetFiles(Path.GetDirectoryName(GetType().Assembly.Location)!, "*.dll").ToList();
@@ -48,14 +48,14 @@ namespace TFEHelper.Backend.Services.Implementations.Plugin
                             Name = plugin.Name,
                             Version = plugin.Version,
                             Description = plugin.Description,
-                            Parameters = plugin.Implements(typeof(IParametersTypesExposser)) ? ((IParametersTypesExposser)plugin).GetParametersTypes() : null
+                            Parameters = plugin.Implements(typeof(IParametersTypesExposser)) ? await ((IParametersTypesExposser)plugin).GetParametersTypesAsync(cancellationToken) : null
                         }
                         , plugin));
                     i++;
                 }
 
                 if (!_plugins.Any()) _logger.LogInformation("No plugins detected.");
-            });
+            }, cancellationToken);
         }
 
         private Assembly LoadAssembly(string assemblyPath)
