@@ -47,9 +47,7 @@ namespace TFEHelper.Backend.Plugins.Scopus
 
             using (var api = new ScopusAPIWrapper(uri, APIKey, _logger))
             {
-                api.Setup(searchParameters, defaultPageSize);
-
-                List<ScopusEntryDTO> result = await api.GetAllRecordsAsync(cancellationToken);
+                List<ScopusEntryDTO> result = await api.GetAllRecordsAsync(searchParameters, defaultPageSize, cancellationToken);
                 List<PublicationPLG> publications = new List<PublicationPLG>();
 
                 foreach (var record in result)
@@ -96,3 +94,4 @@ namespace TFEHelper.Backend.Plugins.Scopus
         }
     }
 }
+#warning poner todo lo que tenga que ser internal...

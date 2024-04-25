@@ -27,7 +27,8 @@ namespace TFEHelper.Backend.Plugins.Scopus.Classes
             _client = new RestClient(URI);
             _request = new RestRequest();
  
-            _client.AddDefaultQueryParameter("apiKey", APIKey);      
+            _client.AddDefaultQueryParameter("apiKey", APIKey);
+            _client.AddDefaultQueryParameter("httpAccept", "application/json");
         }
 
         /// <inheritdoc/>
@@ -37,9 +38,9 @@ namespace TFEHelper.Backend.Plugins.Scopus.Classes
             _client?.Dispose();
         }
 
-        public void Setup(PublicationsCollectorParametersPLG searchParameters, int pageSize = 25)
+        public async Task<List<ScopusEntryDTO>> GetAllRecordsAsync(PublicationsCollectorParametersPLG searchParameters, int pageSize = 25, CancellationToken cancellationToken = default)
         {
-            const string queryTAKFormat = "TITLE-ABS-KEY({0})"; // TAK - búsqueda en titulo, abstract y keywords
+            const string queryTAKFormat = "TITLE-ABS-KEY({0})"; 
             _returnQuantityLimit = (searchParameters.ReturnQuantityLimit > 0) ? searchParameters.ReturnQuantityLimit : 0;
 
             if (pageSize < 0) pageSize = 10;
@@ -48,16 +49,12 @@ namespace TFEHelper.Backend.Plugins.Scopus.Classes
             if (_returnQuantityLimit != 0 && pageSize > _returnQuantityLimit)
                 pageSize = _returnQuantityLimit;
 
-            _request.AddQueryParameter("httpAccept", "application/json");
             _request.AddQueryParameter("count", pageSize);
             _request.AddQueryParameter("start", 0);
             _request.AddQueryParameter("query", string.Format(queryTAKFormat, searchParameters.Query));
             _request.AddQueryParameter("date", string.Format("{0}-{1}", searchParameters.DateFrom.Year, searchParameters.DateTo.Year));
             if (!string.IsNullOrEmpty(searchParameters.Subject)) _request.AddQueryParameter("subj", searchParameters.Subject);
-        }
 
-        public async Task<List<ScopusEntryDTO>> GetAllRecordsAsync(CancellationToken cancellationToken = default)
-        {
             List<ScopusEntryDTO> records = new List<ScopusEntryDTO>();
             ScopusRootDTO response;
             ScopusSearchResultsDTO result;
@@ -99,7 +96,6 @@ namespace TFEHelper.Backend.Plugins.Scopus.Classes
 
         public async Task<ScopusSubjectRootDTO> GetAllSubjectsAsync(CancellationToken cancellationToken = default)
         {
-            _request.AddQueryParameter("httpAccept", "application/json");
             return await _client.GetAsync<ScopusSubjectRootDTO>(_request, cancellationToken) ?? default;
         }
     }
