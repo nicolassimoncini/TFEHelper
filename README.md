@@ -12,7 +12,7 @@ With TFEHelper, users can:
 </p>
 
 Currently, TFEHelper access to the following academic datasources through their public API for meta-data collection:
-- [Springer Link database](https://link.springer.com/)
+- [Springer Link](https://link.springer.com/)
 - [Scopus](https://www.scopus.com)
 - [arXiv](https://arxiv.org/)
 
