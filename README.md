@@ -12,13 +12,13 @@ With TFEHelper, users can:
 </p>
 
 Currently, TFEHelper access to the following academic datasources through their public API for meta-data collection:
-- [Springer Link](https://link.springer.com/)
-- [Scopus](https://www.scopus.com)
 - [arXiv](https://arxiv.org/)
+- [Pubmed](https://pubmed.ncbi.nlm.nih.gov/)
+- [Scopus](https://www.scopus.com)
+- [Springer Link](https://link.springer.com/)
 
 And it's planned to also enable access to:
 - IEEE Xplore
-- Pubmed
 - Eric
 - Doaj
 
