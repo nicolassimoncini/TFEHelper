@@ -51,7 +51,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFEHelper.Backend.Plugins.P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFEHelper.Backend.Plugins.arXiv", "Plugins\TFEHelper.Backend.Plugins.arXiv\TFEHelper.Backend.Plugins.arXiv.csproj", "{BD2DB2EC-F2A8-4904-B430-C901594E5391}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFEHelper.Backend.Plugins.Eric", "Plugins\TFEHelper.Backend.Plugins.Eric\TFEHelper.Backend.Plugins.Eric.csproj", "{19F2F264-75FD-4420-8C17-F368127445E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFEHelper.Backend.Plugins.Eric", "Plugins\TFEHelper.Backend.Plugins.Eric\TFEHelper.Backend.Plugins.Eric.csproj", "{19F2F264-75FD-4420-8C17-F368127445E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFEHelper.Backend.Plugins.Doaj", "Plugins\TFEHelper.Backend.Plugins.Doaj\TFEHelper.Backend.Plugins.Doaj.csproj", "{E39173BD-5BA0-4E58-9542-31555486CD85}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,6 +137,10 @@ Global
 		{19F2F264-75FD-4420-8C17-F368127445E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19F2F264-75FD-4420-8C17-F368127445E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19F2F264-75FD-4420-8C17-F368127445E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E39173BD-5BA0-4E58-9542-31555486CD85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E39173BD-5BA0-4E58-9542-31555486CD85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E39173BD-5BA0-4E58-9542-31555486CD85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E39173BD-5BA0-4E58-9542-31555486CD85}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -159,6 +165,7 @@ Global
 		{7EBC25AD-DBBC-47A8-8633-B33B719A3573} = {1127FEB1-5E77-4242-93F2-9ABA2290B273}
 		{BD2DB2EC-F2A8-4904-B430-C901594E5391} = {1127FEB1-5E77-4242-93F2-9ABA2290B273}
 		{19F2F264-75FD-4420-8C17-F368127445E4} = {1127FEB1-5E77-4242-93F2-9ABA2290B273}
+		{E39173BD-5BA0-4E58-9542-31555486CD85} = {1127FEB1-5E77-4242-93F2-9ABA2290B273}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C0B3D73E-CF42-498C-97C5-06A8F7372B49}
