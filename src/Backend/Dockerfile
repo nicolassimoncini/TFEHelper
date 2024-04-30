@@ -27,6 +27,7 @@ COPY ./Plugins/TFEHelper.Backend.Plugins.SpringerLink/TFEHelper.Backend.Plugins.
 COPY ./Plugins/TFEHelper.Backend.Plugins.Scopus/TFEHelper.Backend.Plugins.Scopus.csproj ./Plugins/TFEHelper.Backend.Plugins.Scopus/
 COPY ./Plugins/TFEHelper.Backend.Plugins.arXiv/TFEHelper.Backend.Plugins.arXiv.csproj ./Plugins/TFEHelper.Backend.Plugins.arXiv/
 COPY ./Plugins/TFEHelper.Backend.Plugins.Pubmed/TFEHelper.Backend.Plugins.Pubmed.csproj ./Plugins/TFEHelper.Backend.Plugins.Pubmed/
+COPY ./Plugins/TFEHelper.Backend.Plugins.Eric/TFEHelper.Backend.Plugins.Eric.csproj ./Plugins/TFEHelper.Backend.Plugins.Eric/
 
 # Services projects
 COPY ./Services/TFEHelper.Backend.Services/TFEHelper.Backend.Services.csproj ./Services/TFEHelper.Backend.Services/
@@ -56,6 +57,7 @@ RUN dotnet publish ./Plugins/TFEHelper.Backend.Plugins.SpringerLink/TFEHelper.Ba
 RUN dotnet publish ./Plugins/TFEHelper.Backend.Plugins.Scopus/TFEHelper.Backend.Plugins.Scopus.csproj -o /publish/
 RUN dotnet publish ./Plugins/TFEHelper.Backend.Plugins.arXiv/TFEHelper.Backend.Plugins.arXiv.csproj -o /publish/
 RUN dotnet publish ./Plugins/TFEHelper.Backend.Plugins.Pubmed/TFEHelper.Backend.Plugins.Pubmed.csproj -o /publish/
+RUN dotnet publish ./Plugins/TFEHelper.Backend.Plugins.Eric/TFEHelper.Backend.Plugins.Eric.csproj -o /publish/
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app 
