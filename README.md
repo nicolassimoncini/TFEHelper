@@ -13,6 +13,7 @@ With TFEHelper, users can:
 
 Currently, TFEHelper access to the following academic datasources through their public API for meta-data collection:
 - [arXiv](https://arxiv.org/)
+- [Doaj](https://doaj.org/)
 - [Eric](https://eric.ed.gov/?)
 - [Pubmed](https://pubmed.ncbi.nlm.nih.gov/)
 - [Scopus](https://www.scopus.com)
@@ -20,7 +21,6 @@ Currently, TFEHelper access to the following academic datasources through their 
 
 And it's planned to also enable access to:
 - IEEE Xplore
-- Doaj
 
 ## Details
 
