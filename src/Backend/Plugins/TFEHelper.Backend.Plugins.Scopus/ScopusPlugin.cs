@@ -94,4 +94,3 @@ namespace TFEHelper.Backend.Plugins.Scopus
         }
     }
 }
-#warning poner todo lo que tenga que ser internal...
