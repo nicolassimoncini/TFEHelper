@@ -111,10 +111,10 @@ namespace TFEHelper.Backend.Plugins.Eric.Classes
                         pageSize = (remaining > pageSize) ? pageSize : remaining;
                         _request.Parameters.RemoveParameter("rows");
                         _request.AddQueryParameter("rows", pageSize);
-                    }
-                } while (!maxReached);
 
-                await Task.Delay(pollingDelayInMs, cancellationToken);
+                        await Task.Delay(pollingDelayInMs, cancellationToken);
+                    }
+                } while (!maxReached);                
             }
 
             return records;
