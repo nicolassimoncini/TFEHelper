@@ -102,6 +102,3 @@ namespace TFEHelper.Backend.Plugins.Doaj.Classes
         }
     }
 }
-
-// Documentation: https://doaj.org/api/docs#!/Search/get_api_search_articles_search_query
-// Ejemplo: https://doaj.org/api/v3/search/articles/software%20development?page=1&pageSize=10
