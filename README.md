@@ -13,6 +13,7 @@ With TFEHelper, users can:
 
 Currently, TFEHelper access to the following academic datasources through their public API for meta-data collection:
 - [arXiv](https://arxiv.org/)
+- [CrossRef](https://www.crossref.org/)
 - [Doaj](https://doaj.org/)
 - [Eric](https://eric.ed.gov/?)
 - [Pubmed](https://pubmed.ncbi.nlm.nih.gov/)
