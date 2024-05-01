@@ -19,6 +19,7 @@ namespace TFEHelper.Backend.Plugins.PluginBase.Specifications.PublicationsCollec
         Scopus = 7,
         Eric = 8,
         Doaj = 9,
-        arXiv = 10
+        arXiv = 10,
+        CrossRef = 11,
     }
 }

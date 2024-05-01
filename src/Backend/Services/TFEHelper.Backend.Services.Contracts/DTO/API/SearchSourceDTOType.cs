@@ -31,5 +31,7 @@ namespace TFEHelper.Backend.Services.Contracts.DTO.API
         Doaj = 9,
         [Display(Name = "arXiv")]
         arXiv = 10,
+        [Display(Name = "CrossRef")]
+        CrossRef = 11,
     }
 }

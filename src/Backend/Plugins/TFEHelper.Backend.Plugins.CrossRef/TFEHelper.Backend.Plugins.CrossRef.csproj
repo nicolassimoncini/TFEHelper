@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<!--<ImplicitUsings>enable</ImplicitUsings>-->
+		<!--<Nullable>enable</Nullable>-->
+		<EnableDynamicLoading>true</EnableDynamicLoading>
+		<BaseOutputPath>..\..\API\TFEHelper.Backend.API\bin</BaseOutputPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\TFEHelper.Backend.Plugins.PluginBase\TFEHelper.Backend.Plugins.PluginBase.csproj">
+			<Private>false</Private>
+			<ExcludeAssets>runtime</ExcludeAssets>
+		</ProjectReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="TFEHelper.Backend.Plugins.CrossRef.cfg">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="RestSharp" Version="110.2.0" />
+	</ItemGroup>
+</Project>

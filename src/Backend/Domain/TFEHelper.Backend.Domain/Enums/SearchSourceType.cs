@@ -30,6 +30,8 @@ namespace TFEHelper.Backend.Domain.Enums
         [Display(Name = "Doaj")]
         Doaj = 9,
         [Display(Name = "arXiv")]
-        arXiv = 10
+        arXiv = 10,
+        [Display(Name = "CrossRef")]
+        CrossRef = 11
     }
 }
