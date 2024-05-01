@@ -103,5 +103,3 @@ namespace TFEHelper.Backend.Plugins.CrossRef.Classes
         }
     }
 }
-// Documentation: https://api.crossref.org/swagger-ui/index.html#/Works/get_works
-// Ejemplo: https://api.crossref.org/works?rows=100&offset=0&mailto=nico10k%40hotmail.com&query=software%20development&select=DOI,ISSN,ISBN,URL,abstract,author,page,published,title,type&filter=from-pub-date:2010-10-02,until-pub-date:2020-01-01
