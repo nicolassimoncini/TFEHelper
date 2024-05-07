@@ -19,9 +19,7 @@ Currently, TFEHelper access to the following academic datasources through their 
 - [Pubmed](https://pubmed.ncbi.nlm.nih.gov/)
 - [Scopus](https://www.scopus.com)
 - [Springer Link](https://link.springer.com/)
-
-And it's planned to also enable access to:
-- IEEE Xplore
+<br/>
 
 ## Details
 
