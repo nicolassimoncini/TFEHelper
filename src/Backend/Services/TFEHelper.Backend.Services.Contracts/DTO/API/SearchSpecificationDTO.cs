@@ -12,5 +12,6 @@ namespace TFEHelper.Backend.Services.Contracts.DTO.API
         [Required(AllowEmptyStrings = false)]
         public string Query { get; set; }
         public IEnumerable<SearchParameterDTO> Parameters { get; set; } = new List<SearchParameterDTO>();
+        public IEnumerable<NarrowingExpressionDTO> Narrowings { get; set; } = new List<NarrowingExpressionDTO>();
     }
 }

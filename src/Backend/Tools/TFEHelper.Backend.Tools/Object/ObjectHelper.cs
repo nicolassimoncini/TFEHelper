@@ -21,5 +21,10 @@ namespace TFEHelper.Backend.Tools.Object
             }
             else return to.IsAssignableTo(tt);
         }
+
+        public static object? GetPropertyValue(this object source, string name)
+        {
+            return source.GetType()?.GetProperty(name)?.GetValue(source, null);
+        }
     }
 }

@@ -170,11 +170,21 @@ namespace TFEHelper.Backend.API.Controllers
         /// <ul>
         ///     <li>Query: ANSI SQL string omitting the entity, where parameters should be prefixed with "@". eg: Title = @Title AND Abstract LIKE @Abstract</li>
         ///     <li>Parameters: A list of key-value pair where Key corresponds to the name of the "field" referenced in the query and value to the desired search value.  eg: { Name = "Title", Value = "%text%" }.</li>
+        ///     <li>Narrowings: A list of objects containing the "NEAR" commands for extra filtering the results. A Narrowing object is defined as:
+        ///         <ul>
+        ///             <li>FieldName: The name of the field in which the narrow search will be applied.</li>
+        ///             <li>FirstSentence: The first sentence.</li>
+        ///             <li>SecondSentence: The second sentence.</li>
+        ///             <li>MinimumDistance: The minimum distance (in words) accepted between FirstSentence and SecondSentence.</li>
+        ///         </ul>
+        ///         This feature can be interpreted as "return publications for wich the field FieldName contains the sentence FirstSentence and the sentence SecondSentence and the distance between them is lower o equals to MinimumDistance".
+        ///     </li>
         /// </ul>
         /// <br/>Notes: 
         /// <ul>
         ///     <li>Any SQL boolean expression can be used.  eg: "(FieldA = @FieldA OR FieldB LIKE @FieldB) AND (FieldC >= @FieldC)".</li>
-        ///     <li>Although ordering and grouping is not mandatory in the Query field, it can be included.</li>     
+        ///     <li>Although ordering and grouping is not mandatory in the Query field, it can be included.</li>
+        ///     <li>If Narrowing object is not populated, the narrowing process is ignored.</li>
         /// </ul>
         /// </param>
         /// <param name="cancellationToken"></param>

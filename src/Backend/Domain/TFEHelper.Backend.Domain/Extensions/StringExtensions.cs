@@ -76,6 +76,11 @@ namespace TFEHelper.Backend.Domain.Extensions
             return res < int.MaxValue ? res : -1;
         }
 
+        public static bool MinDistanceBetweenWords(string source, string word1, string word2, int narrowValue)
+        {
+            return source.MinDistanceBetweenWords(word1, word2).IsInRange(0, narrowValue);
+        }
+
         /// <summary>
         /// Convierte el valor <see cref="string"/> a una lista de elementos de tipo <typeparamref name="T"/> separando cada uno por <paramref name="token"/> y convitiendo cada elemento utilizando la función <paramref name="converter"/> pasada por parámetro.
         /// </summary>

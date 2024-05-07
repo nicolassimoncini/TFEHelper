@@ -14,6 +14,16 @@ namespace TFEHelper.Backend.API.Examples.Publications
                 { 
                     new SearchParameterDTO(){ Name = "Title", Value = "%title%" },
                     new SearchParameterDTO(){ Name = "Year", Value = 2021 }
+                },
+                Narrowings = new List<NarrowingExpressionDTO>()
+                {
+                    new NarrowingExpressionDTO()
+                    {
+                        FieldName = "Abstract",
+                        FirstSentence = "software",
+                        SecondSentence = "development",
+                        MinimumDistance = 5
+                    }
                 }
             };
         }

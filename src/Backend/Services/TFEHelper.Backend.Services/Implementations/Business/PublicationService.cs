@@ -6,6 +6,7 @@ using TFEHelper.Backend.Domain.Classes.API;
 using TFEHelper.Backend.Domain.Classes.Database;
 using TFEHelper.Backend.Domain.Enums;
 using TFEHelper.Backend.Domain.Exceptions;
+using TFEHelper.Backend.Domain.Extensions;
 using TFEHelper.Backend.Domain.Repositories;
 using TFEHelper.Backend.Services.Abstractions.Interfaces;
 using TFEHelper.Backend.Services.Common;
@@ -14,6 +15,7 @@ using TFEHelper.Backend.Services.Processors.BibTeX;
 using TFEHelper.Backend.Services.Processors.CSV;
 using TFEHelper.Backend.Tools.ComponentModel;
 using TFEHelper.Backend.Tools.Files;
+using TFEHelper.Backend.Tools.Object;
 using Publication = TFEHelper.Backend.Domain.Classes.Models.Publication;
 
 namespace TFEHelper.Backend.Services.Implementations.Business
@@ -69,6 +71,21 @@ namespace TFEHelper.Backend.Services.Implementations.Business
             return _mapper.Map<IEnumerable<PublicationDTO>>(publications);
         }
 
+        private bool FulFillNarrowing(Publication publication, IEnumerable<NarrowingExpressionDTO> narrowings)
+        {
+            bool result = true;
+            foreach (var narrowing in narrowings)
+            {
+                result = result && StringExtensions.MinDistanceBetweenWords(
+                    Convert.ToString(publication.GetPropertyValue(narrowing.FieldName))!,
+                    narrowing.FirstSentence,
+                    narrowing.SecondSentence
+                    ).IsInRange(0, narrowing.MinimumDistance);
+            }
+
+            return result;
+        }
+
         public async Task<IEnumerable<PublicationDTO>> GetListAsync(SearchSpecificationDTO searchSpecification, bool tracked = true, bool raiseErrorWhenNoResult = false, CancellationToken cancellationToken = default, params Expression<Func<PublicationDTO, object>>[] navigationProperties)
         {
             var publications = await _repository.Publications.RunDatabaseQueryAsync(
@@ -77,9 +94,17 @@ namespace TFEHelper.Backend.Services.Implementations.Business
                 cancellationToken,
                 _mapper.Map<IEnumerable<Expression<Func<Publication, object>>>>(navigationProperties).ToArray());
 
-            if (raiseErrorWhenNoResult && !publications.Any()) throw new EntityNotFoundException<Publication>();
+            var result = publications.ToList();
 
-            return _mapper.Map<IEnumerable<PublicationDTO>>(publications);
+            if (publications.Any())
+            {
+                if (searchSpecification.Narrowings.Any())
+                {
+                    result.RemoveAll(x => !FulFillNarrowing(x, searchSpecification.Narrowings));                    
+                }
+            } else if (raiseErrorWhenNoResult) throw new EntityNotFoundException<Publication>();
+
+            return _mapper.Map<IEnumerable<PublicationDTO>>(result);
         }
 
         public async Task<IEnumerable<IEnumerable<PublicationDTO>>> GetListRepeatedAsync(CancellationToken cancellationToken = default)
