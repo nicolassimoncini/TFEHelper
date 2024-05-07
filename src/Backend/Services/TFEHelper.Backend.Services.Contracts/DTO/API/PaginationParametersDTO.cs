@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,10 @@ namespace TFEHelper.Backend.Services.Contracts.DTO.API
 {
     public class PaginationParametersDTO
     {
-        public int PageNumber { get; set; }  // Numero de Pagina
-        public int PageSize { get; set; }   // Cuantos registros por pagina
+        [Range(1, int.MaxValue)]
+        public int PageNumber { get; set; }
+
+        [Range(1, int.MaxValue)]
+        public int PageSize { get; set; }
     }
 }

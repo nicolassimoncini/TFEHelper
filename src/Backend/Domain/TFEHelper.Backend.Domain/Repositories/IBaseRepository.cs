@@ -19,7 +19,7 @@ namespace TFEHelper.Backend.Domain.Repositories
 
         Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>>? filter = null, bool tracked = true, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] navigationProperties);
 
-        PaginatedList<T> GetPaginated(PaginationParameters parameters, Expression<Func<T, bool>>? filter = null, params Expression<Func<T, object>>[] navigationProperties);
+        Task<PaginatedList<T>> GetPaginatedAsync(PaginationParameters parameters, Expression<Func<T, bool>>? filter = null, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] navigationProperties);
 
         T Update(T publication);
 

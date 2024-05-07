@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -45,7 +46,7 @@ namespace TFEHelper.Backend.Infrastructure.Database.Implementations
             return await result.ToListAsync(cancellationToken);
         }
 
-        public PaginatedList<T> GetPaginated(PaginationParameters parameters, Expression<Func<T, bool>>? filter = null, params Expression<Func<T, object>>[] navigationProperties)
+        public async Task<PaginatedList<T>> GetPaginatedAsync(PaginationParameters parameters, Expression<Func<T, bool>>? filter = null, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] navigationProperties)
         {
             IQueryable<T> result = _dbContext.Set<T>();
 
@@ -54,7 +55,7 @@ namespace TFEHelper.Backend.Infrastructure.Database.Implementations
             foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
                 result = result.Include(navigationProperty);
 
-            return PaginatedList<T>.ToPagedList(result, parameters.PageNumber, parameters.PageSize);
+            return PaginatedList<T>.ToPagedList(await result.ToListAsync(cancellationToken), parameters.PageNumber, parameters.PageSize);
         }
 
         public T Update(T entity)
@@ -70,15 +71,18 @@ namespace TFEHelper.Backend.Infrastructure.Database.Implementations
 
         public async Task<IEnumerable<T>> RunDatabaseQueryAsync(string query, IEnumerable<IDatabaseParameter>? parameters, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] navigationProperties)
         {
+            const string FMT_QUERY = "SELECT * FROM {0} WHERE {1}";
+            var fmtQuery = string.Format(FMT_QUERY, _dbContext.Model.FindEntityType(typeof(T))!.GetSchemaQualifiedTableName(), query);
+
             List<DbParameter> _parameters = new();
             parameters?.ToList().ForEach(p => _parameters.Add(_dbContext.CreateDbParameter(p)));
 
-            IQueryable<T> result = _dbContext.Set<T>().FromSqlRaw(query, _parameters.ToArray());
+            IQueryable<T> result = _dbContext.Set<T>().FromSqlRaw(fmtQuery, _parameters.ToArray());
 
             foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
                 result = result.Include(navigationProperty);
 
-            return await result.ToListAsync();
+            return await result.ToListAsync(cancellationToken);
         }
     }
 }

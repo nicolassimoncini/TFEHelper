@@ -9,6 +9,6 @@ namespace TFEHelper.Backend.Services.Contracts.DTO.API
     public class SearchParameterDTO
     {
         public string Name { get; set; }
-        public string Value { get; set; }
+        public object Value { get; set; }
     }
 }

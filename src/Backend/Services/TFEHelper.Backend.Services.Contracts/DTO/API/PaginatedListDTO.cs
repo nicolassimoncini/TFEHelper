@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace TFEHelper.Backend.Services.Contracts.DTO.API
 {
-    public class PaginatedListDTO<T> : List<T>
+    public class PaginatedListDTO<T>
     {
+        public MetadataDTO Metadata { get; set; } = new MetadataDTO();
+        public List<T> Items { get; set; } = new List<T>();
 
-        public MetadataDTO Metadata { get; set; }
+        public PaginatedListDTO() { }
 
         public PaginatedListDTO(List<T> items, int count, int pageNumber, int pageSize)
         {
@@ -17,9 +19,10 @@ namespace TFEHelper.Backend.Services.Contracts.DTO.API
             {
                 TotalCount = count,
                 PageSize = pageSize,
+                PageId = pageNumber,
                 TotalPages = (int)Math.Ceiling(count / (double)pageSize)  // Por ejemplo 1.5 lo transforma en 2
             };
-            AddRange(items);
+            Items.AddRange(items);
         }
 
         public static PaginatedListDTO<T> ToPagedList(IEnumerable<T> entity, int pageNumber, int pageSize)

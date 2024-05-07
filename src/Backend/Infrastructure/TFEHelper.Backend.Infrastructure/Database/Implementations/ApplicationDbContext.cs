@@ -38,12 +38,7 @@ namespace TFEHelper.Backend.Infrastructure.Database.Implementations
             if (parameter.Direction != ParameterDirection.Input)
                 throw new ArgumentException($"Invalid parameter direction type for {parameter.Name}.  SQLite provider only supports input parameter type.");
 
-            var param = new SqliteParameter(parameter.Name, parameter.Value)
-            {
-                SqliteType = parameter.Type.GetValueOrDefault().ToSqliteType()
-            };
-            if (parameter.Size != null) param.Size = parameter.Size.GetValueOrDefault();
-            return param;
+            return new SqliteParameter(parameter.Name, parameter.Value);
         }
     }
 }

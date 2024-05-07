@@ -28,6 +28,8 @@ namespace TFEHelper.Backend.Services.Common
 
             CreateMap<PaginationParameters, PaginationParametersDTO>().ReverseMap();
 
+            CreateMap<Metadata, MetadataDTO>().ReverseMap();
+
             CreateMap(typeof(PaginatedList<>), typeof(PaginatedListDTO<>)).ReverseMap();
 
             CreateMap<FileFormatType, FileFormatDTOType>()
@@ -65,11 +67,9 @@ namespace TFEHelper.Backend.Services.Common
             CreateMap<SearchParameter, SearchParameterDTO>().ReverseMap();
 
             CreateMap<SearchParameter, DatabaseParameter>()
-                .ForMember(dest => dest.Type, opt => opt.MapFrom(o => DatabaseParameterType.String))
                 .ForMember(dest => dest.Direction, opt => opt.MapFrom(o => ParameterDirection.Input));
 
             CreateMap<SearchParameterDTO, DatabaseParameter>()
-                .ForMember(dest => dest.Type, opt => opt.MapFrom(o => DatabaseParameterType.String))
                 .ForMember(dest => dest.Direction, opt => opt.MapFrom(o => ParameterDirection.Input));
         }
     }

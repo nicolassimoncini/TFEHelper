@@ -27,7 +27,7 @@ namespace TFEHelper.Backend.Domain.Classes.Database
         public int? Size { get; set; }
 
         /// <inheritdoc/>
-        public ParameterDirection Direction { get; set; }
+        public ParameterDirection Direction { get; set; } 
 
 
         /// <summary>Creates an instance of <see cref="DatabaseParameter"/>.<br>Note: <see cref="Direction"/> is set to <see cref="ParameterDirection.Input"/> by default.</br></summary>

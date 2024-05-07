@@ -82,14 +82,15 @@ namespace TFEHelper.Backend.Services.Implementations.Business
             return _mapper.Map<IEnumerable<PublicationDTO>>(publications);
         }
 
-        public PaginatedListDTO<PublicationDTO> GetListPaginated(PaginationParametersDTO parameters, Expression<Func<PublicationDTO, bool>>? filter = null, bool raiseErrorWhenNoResult = false, params Expression<Func<PublicationDTO, object>>[] navigationProperties)
+        public async Task<PaginatedListDTO<PublicationDTO>> GetListPaginatedAsync(PaginationParametersDTO parameters, Expression<Func<PublicationDTO, bool>>? filter = null, bool raiseErrorWhenNoResult = false, CancellationToken cancellationToken = default, params Expression<Func<PublicationDTO, object>>[] navigationProperties)
         {
-            var publications = _repository.Publications.GetPaginated(
+            var publications = await _repository.Publications.GetPaginatedAsync(
                 _mapper.Map<PaginationParameters>(parameters),
                 _mapper.Map<Expression<Func<Publication, bool>>>(filter),
+                cancellationToken,
                 _mapper.Map<IEnumerable<Expression<Func<Publication, object>>>>(navigationProperties).ToArray());
 
-            if (raiseErrorWhenNoResult && !publications.Any()) throw new EntityNotFoundException<Publication>();
+            if (raiseErrorWhenNoResult && publications.Items.Count == 0) throw new EntityNotFoundException<Publication>();
 
             return _mapper.Map<PaginatedListDTO<PublicationDTO>>(publications);
         }

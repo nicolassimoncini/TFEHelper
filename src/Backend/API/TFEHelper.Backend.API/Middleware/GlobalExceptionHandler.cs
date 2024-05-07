@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using System.Net;
 using TFEHelper.Backend.Domain.Exceptions;
+using TFEHelper.Backend.Services.Contracts.DTO.API;
 
 namespace TFEHelper.Backend.API.Middleware
 {
@@ -29,10 +30,12 @@ namespace TFEHelper.Backend.API.Middleware
 
                 _logger.LogError(exception, "Exception occurred: {Message}", exception.Message);
 
-                await httpContext.Response.WriteAsync(new ErrorDetails()
+                await httpContext.Response.WriteAsync(new APIResponseDTO()
                 {
-                    StatusCode = httpContext.Response.StatusCode,
-                    Message = contextFeature.Error.Message,
+                    StatusCode = (HttpStatusCode)httpContext.Response.StatusCode,
+                    ErrorMessages = new List<string>() { contextFeature.Error.Message },
+                    IsSuccessful = false,
+                    Payload = null
                 }.ToString(),
                 cancellationToken);
             }
