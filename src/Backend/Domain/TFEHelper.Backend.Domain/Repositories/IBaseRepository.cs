@@ -21,6 +21,8 @@ namespace TFEHelper.Backend.Domain.Repositories
 
         Task<PaginatedList<T>> GetPaginatedAsync(PaginationParameters parameters, Expression<Func<T, bool>>? filter = null, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] navigationProperties);
 
+        Task<IEnumerable<IEnumerable<T>>> GetRepeatedAsync(Func<T, IComparable> filterProperty, CancellationToken cancellationToken = default);
+
         T Update(T publication);
 
         void Remove(T entity);

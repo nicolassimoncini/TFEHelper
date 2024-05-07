@@ -58,6 +58,20 @@ namespace TFEHelper.Backend.Infrastructure.Database.Implementations
             return PaginatedList<T>.ToPagedList(await result.ToListAsync(cancellationToken), parameters.PageNumber, parameters.PageSize);
         }
 
+        public async Task<IEnumerable<IEnumerable<T>>> GetRepeatedAsync(Func<T, IComparable> filterProperty, CancellationToken cancellationToken = default)
+        {
+            return await Task.Run(() =>
+            {
+                IQueryable<T> result = _dbContext.Set<T>();
+
+                return result
+                    .GroupBy(filterProperty)
+                    .Where(x => x.Count() > 1)
+                    .ToList();
+
+            }, cancellationToken);
+        }
+
         public T Update(T entity)
         {
             _dbContext.Set<T>().Update(entity);

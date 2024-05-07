@@ -68,6 +68,30 @@ namespace TFEHelper.Backend.API.Controllers
         }
 
         /// <summary>
+        /// Gets a list of list of repeated publications based on its titles.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        /// <response code="200">Returns a list of list of repeated publications.</response>
+        /// <response code="500">Returns single error object.</response>
+        [HttpGet("Repeated")]
+        [ResponseCache(CacheProfileName = "Default30")]
+        [SwaggerResponse(StatusCodes.Status200OK, type: typeof(APIResponseDTO))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, type: typeof(APIResponseDTO))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(GetPublicationsRepeatedResponseExample))]
+        [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(HTTP500ServerErrorExample))]
+        public async Task<ActionResult<APIResponseDTO>> GetPublicationsRepeated(CancellationToken cancellationToken = default)
+        {
+            IEnumerable<IEnumerable<PublicationDTO>> publications = await _services.Publications.GetListRepeatedAsync(cancellationToken: cancellationToken);
+
+            _response.IsSuccessful = publications.Any();
+            _response.Payload = publications;
+            _response.StatusCode = HttpStatusCode.OK;
+
+            return Ok(_response);
+        }
+
+        /// <summary>
         /// Gets all publications from database under pagination schema.
         /// </summary>
         /// <remarks>

@@ -20,6 +20,8 @@ namespace TFEHelper.Backend.Services.Abstractions.Interfaces
 
         Task<IEnumerable<PublicationDTO>> GetListAsync(SearchSpecificationDTO searchSpecification, bool tracked = true, bool raiseErrorWhenNoResult = false,CancellationToken cancellationToken = default, params Expression<Func<PublicationDTO, object>>[] navigationProperties);
 
+        Task<IEnumerable<IEnumerable<PublicationDTO>>> GetListRepeatedAsync(CancellationToken cancellationToken = default);
+
         Task<PaginatedListDTO<PublicationDTO>> GetListPaginatedAsync(PaginationParametersDTO parameters, Expression<Func<PublicationDTO, bool>>? filter = null, bool raiseErrorWhenNoResult = false, CancellationToken cancellationToken = default, params Expression<Func<PublicationDTO, object>>[] navigationProperties);
 
         Task<PublicationDTO> UpdateAsync(PublicationDTO publication, CancellationToken cancellationToken = default);

@@ -82,6 +82,13 @@ namespace TFEHelper.Backend.Services.Implementations.Business
             return _mapper.Map<IEnumerable<PublicationDTO>>(publications);
         }
 
+        public async Task<IEnumerable<IEnumerable<PublicationDTO>>> GetListRepeatedAsync(CancellationToken cancellationToken = default)
+        {
+            var repeated = await _repository.Publications.GetRepeatedAsync(x => x.Title, cancellationToken);
+
+            return _mapper.Map<IEnumerable<IEnumerable<PublicationDTO>>>(repeated);
+        }
+
         public async Task<PaginatedListDTO<PublicationDTO>> GetListPaginatedAsync(PaginationParametersDTO parameters, Expression<Func<PublicationDTO, bool>>? filter = null, bool raiseErrorWhenNoResult = false, CancellationToken cancellationToken = default, params Expression<Func<PublicationDTO, object>>[] navigationProperties)
         {
             var publications = await _repository.Publications.GetPaginatedAsync(
