@@ -54,8 +54,7 @@ This will return a data structure as follows:
       "version": "1.0.0",
       "description": "Test plugin for IPublicationsCollector"
     }
-  ],
-  "totalPages": 1
+  ]
 }
 
 ```
@@ -106,8 +105,7 @@ After running the enpoint, the backend will asynchronously run the plugin's `IPu
       "URL": "URL value",
       "Year": 1995
     }
-  ],
-  "totalPages": 1
+  ]
 }
 
 ```
