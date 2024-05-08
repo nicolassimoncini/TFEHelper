@@ -50,9 +50,27 @@ This will return a data structure as follows:
     {
       "id": 1,
       "type": 0,
-      "name": "Dummy plugin",
+      "name": "Plugin name",
       "version": "1.0.0",
-      "description": "Test plugin for IPublicationsCollector"
+      "description": "Plugin description",
+      "parameters": {
+        "singleValued": [],
+        "collectionValued": [
+          {
+            "name": "Subjects",
+            "value": [
+              {
+                "name": "Subject description 1",
+                "value": "Subject code 1"
+              },
+              {
+                "name": "Subject description 2",
+                "value": "Subject code 2"
+              }
+            ]
+          }
+        ]
+      }
     }
   ]
 }
