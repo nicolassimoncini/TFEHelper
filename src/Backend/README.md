@@ -179,6 +179,18 @@ namespace TFEHelper.Backend.Plugins.Dummy
             return true;
         }
 
+        public async Task<GlobalParametersContainer> GetParametersTypesAsync(CancellationToken cancellationToken = default)
+        {
+            return await Task.Run(() =>
+            {
+                var container = new GlobalParametersContainer();
+                container.CollectionValued.Add("Subjects", "Medicine", "MEDI");
+                container.CollectionValued.Add("Subjects", "Engineering", "ENGI");
+
+                return container;
+            }, cancellationToken);
+        }
+
         public Task<IEnumerable<PublicationPLG>> GetPublicationsAsync(PublicationsCollectorParametersPLG searchParameters, CancellationToken cancellationToken = default)
         {
 
