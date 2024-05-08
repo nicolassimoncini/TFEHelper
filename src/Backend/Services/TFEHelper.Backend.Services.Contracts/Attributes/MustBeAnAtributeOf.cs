@@ -31,7 +31,7 @@ namespace TFEHelper.Backend.Services.Contracts.Attributes
                 PropertyInfo property = _classType.GetProperties().FirstOrDefault(p => p.Name == Convert.ToString(value));
                 result = property != null && property.PropertyType == _attributeType;
             } catch { }            
-            return (result) ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+            return (result) ? ValidationResult.Success : new ValidationResult(FormatErrorMessage(value.ToString()));
         }
     }
 }
