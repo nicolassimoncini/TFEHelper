@@ -76,8 +76,24 @@ This will return a data structure as follows:
 }
 
 ```
+Where Payload contains the plugin configuration as follows:
+- Id: the key that univocally identifies the plugin.
+- Type: The Type of the plugin.
+- Name: The name of the plugin.
+- Version: The [semanting versioning](https://semver.org/) type of the plugin.
+- Descrition: The short plugin description.
+- Parameters: The optional feedback parameters that in some cases the plugin needs to work
+  - SingleValued: a collection of key-value pair of
+    - Name: The name of the parameter.
+    - Value: The value of the parameter.
+  - CollectionValued: a collection of collection of SingleValued instances of
+    - Name: The name of the collection.
+    - Value: The collection of SingleValued instances.
+
+>Parameters are usefull when a plugin needs specific information to work.  In case of `IPublicationsCollector` specializations, the plugin could need a "subject" code in order to narrow the search.<br/>
 >Note that `"type": 0` corresponds to `SearchSourcePLGType.Manual` enum value.  There are several options to choose according the use case.
-   
+<br/>
+
 2. Run TFEHelper.Backend.API `/api/Plugins/Collectors/{id}/Run` endpoint where {id} is the identity retrieved from previous step and populate the following strcture which will be internally mapped to `PublicationsCollectorParametersPLG`:<br>
 
 ```json
