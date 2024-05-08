@@ -91,7 +91,7 @@ Where Payload contains the plugin configuration as follows:
     - Value: The collection of SingleValued instances.
 
 >Parameters are usefull when a plugin needs specific information to work.  In case of `IPublicationsCollector` specializations, the plugin could need a "subject" code in its parameters in order to narrow the search.<br/>
->Note that `"type": 0` corresponds to `SearchSourcePLGType.Manual` enum value.  There are several options to choose according the use case.
+>Note that `"type": 0` corresponds to `SearchSourcePLGType.Manual` enum value.  There are several options to choose from the API `/api/Configurations/Enumerations` according the use case.
 <br/>
 
 2. Run TFEHelper.Backend.API `/api/Plugins/Collectors/{id}/Run` endpoint where {id} is the identity retrieved from previous step and populate the following strcture which will be internally mapped to `PublicationsCollectorParametersPLG`:<br>
