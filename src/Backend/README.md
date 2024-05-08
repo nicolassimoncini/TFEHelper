@@ -231,6 +231,8 @@ namespace TFEHelper.Backend.Plugins.Dummy
 ```
 This example returns one `PublicationPLG` hardcoded instance to TFEHelper.Backend.
 
+>Note that the `ILogger` implementation is automatically injected by the backend on global startup and configuration stage by calling Configure method dinamically.
+
 In case the plugin needs to load some configuration on runtime, TFEHelper.Backend.Plugins.PluginBase library offers to dinamically load `PluginConfigurationItem` instances by using `PluginConfigurationController` as shown in the previous example.  In order to achieve this, an ASCII configuration file containing the following Json specification must be provided:
 
 ```json
