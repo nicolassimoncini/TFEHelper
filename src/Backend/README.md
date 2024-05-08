@@ -90,7 +90,7 @@ Where Payload contains the plugin configuration as follows:
     - Name: The name of the collection.
     - Value: The collection of SingleValued instances.
 
->Parameters are usefull when a plugin needs specific information to work.  In case of `IPublicationsCollector` specializations, the plugin could need a "subject" code in order to narrow the search.<br/>
+>Parameters are usefull when a plugin needs specific information to work.  In case of `IPublicationsCollector` specializations, the plugin could need a "subject" code in its parameters in order to narrow the search.<br/>
 >Note that `"type": 0` corresponds to `SearchSourcePLGType.Manual` enum value.  There are several options to choose according the use case.
 <br/>
 
