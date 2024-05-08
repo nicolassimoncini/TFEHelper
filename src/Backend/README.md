@@ -153,6 +153,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using TFEHelper.Backend.Plugins.PluginBase.Common.Classes;
 using TFEHelper.Backend.Plugins.PluginBase.Common.Enums;
 using TFEHelper.Backend.Plugins.PluginBase.Interfaces;
 using TFEHelper.Backend.Plugins.PluginBase.Specifications.PublicationsCollector.Classes;
