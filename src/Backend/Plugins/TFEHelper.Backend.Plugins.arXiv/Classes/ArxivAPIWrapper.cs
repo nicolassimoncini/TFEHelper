@@ -40,7 +40,9 @@ namespace TFEHelper.Backend.Plugins.arXiv.Classes
             var query = searchParameters.Query;
 
             query += string.Format(FMT_DATE, searchParameters.DateFrom, searchParameters.DateTo);
-            query += " AND (cat:" + Regex.Replace(searchParameters.Subject, @"\s+", "").Split(",").ToString(" OR cat:", x => { return x; }) + ")";
+
+            if (searchParameters.Subject.Trim().Length > 0) 
+                query += " AND (cat:" + Regex.Replace(searchParameters.Subject, @"\s+", "").Split(",").ToString(" OR cat:", x => { return x; }) + ")";
 
             query = Regex.Replace(query, @"\s+", FMT_SPACE);
             query = query.Replace("\"", FMT_QUOTE);
