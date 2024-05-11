@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 
-const baseURL: string = process.env.REACT_APP_API_URL as string || 'http://localhost:4000/api';
+const baseURL: string = process.env.REACT_APP_API_URL as string || 'http://localhost:5000/api';
 
 
 interface restApiResponse extends AxiosResponse {

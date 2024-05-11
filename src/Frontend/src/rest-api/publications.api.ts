@@ -7,7 +7,13 @@ const restApiAdapter = new RestApiAdapter()
 
 // Get publications
 export const getPublications = async (): Promise<Publication[]> => { 
-    return (await restApiAdapter.get(`Publications`)).data.payload;
+    const response = await restApiAdapter.get(`Publications`);
+    
+    if (response.status !== 200) {
+        throw new Error('Error fetching publications');
+    }
+
+    return response.data.payload
 }
 
 export const postPublications = async (publications: Publication[]) => {

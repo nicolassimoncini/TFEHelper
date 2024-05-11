@@ -1,23 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Alert } from 'antd';
 import { ErrorContainer } from './styles';
 
 interface Props {
   message: string;
-  children: JSX.Element;
-  isError: boolean;
 }
 
-const ErrorComponent: React.FC<Props> = ({ message, children, isError }) => {
-  if (isError) {
-    return (
-      <ErrorContainer>
-        <Alert message="Error" description={message} type="error" showIcon />
-      </ErrorContainer>
-    );
-  }
-
-  return <>{children}</>;
+const ErrorComponent: React.FC<Props> = ({ message }) => {
+  return (
+    <ErrorContainer>
+      <Alert message="Error" description={message} type="error" showIcon />
+    </ErrorContainer>
+  );
 };
 
 export default ErrorComponent;

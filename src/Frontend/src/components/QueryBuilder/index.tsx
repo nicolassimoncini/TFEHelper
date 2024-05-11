@@ -3,8 +3,6 @@ import QueryBuilder, { Field } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 import { Container, QueryContainer } from './style';
 
-interface Props {}
-
 const fields: Field[] = [
   {
     name: 'title',
@@ -23,7 +21,7 @@ const fields: Field[] = [
   },
 ];
 
-export const QueryBuilderComponent: React.FC<Props> = ({}) => {
+export const QueryBuilderComponent: React.FC<any> = () => {
   return (
     <Container>
       <QueryContainer>
