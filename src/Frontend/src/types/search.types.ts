@@ -1,8 +1,14 @@
 export interface ISearchType{
-    query:string;
+    query: string;
     parameters: {
         name: string;
-        value:string;
+        value: string | number;
+    }[];
+    narrowings: {
+        fieldName: string;
+        fieldSentence: string;
+        secondSentence: string;
+        minimumDistance: number;
     }[]
 }
 

@@ -2,7 +2,13 @@ import { Checkbox, CheckboxOptionType, Divider, Table, TableColumnsType } from '
 import React, { useEffect, useState } from 'react';
 import { Publication } from '../../types/publications.types';
 import { TableRowSelection } from 'antd/es/table/interface';
-import { RowABstractContent, RowAbstract, RowAbstractTitle, TableContainer } from './style';
+import {
+  RowABstractContent,
+  RowAbstract,
+  RowAbstractTitle,
+  TableContainer,
+  TableLayout,
+} from './style';
 import { getPublications } from '../../rest-api/publications.api';
 import ErrorComponent from '../Error';
 import Loader from '../Loader';
@@ -151,7 +157,7 @@ export const TableComponent: React.FC = () => {
   };
 
   return (
-    <>
+    <TableLayout>
       <Divider>Columns Displayed</Divider>
       <Checkbox.Group
         value={checkedList}
@@ -193,6 +199,6 @@ export const TableComponent: React.FC = () => {
           ></Table>
         )}
       </TableContainer>
-    </>
+    </TableLayout>
   );
 };

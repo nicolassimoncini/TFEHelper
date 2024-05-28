@@ -1,4 +1,13 @@
 import styled from 'styled-components';
+export const TableLayout = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
+`;
 
 export const Table = styled.table`
   border-collapse: collapse;
@@ -9,7 +18,7 @@ export const Table = styled.table`
 `;
 
 export const TableContainer = styled.div`
-  max-height: calc(100vh - 300px);
+  max-height: calc(100vh - 100px);
   width: 100%;
   height: 100%;
 `;
