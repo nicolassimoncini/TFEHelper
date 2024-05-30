@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import QueryBuilder, { Field, RuleGroupType, formatQuery } from 'react-querybuilder';
+import QueryBuilder, { Field, RuleGroupType } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 import { ButtonsContainer, Container, QueryContainer } from './style';
 import { Button } from 'antd';
-import { convertToSqliteParameterizedQuery, parseQuery } from './utils/query-parser';
+import { convertToSqliteParameterizedQuery, validateGroupNotEmpty } from './utils/query-parser';
 import { searchPublications } from '../../rest-api/publications.api';
-// import { useDispatch } from 'react-redux';
 import { DataType } from '../../types/table.types';
 import { mapPublications } from '../../utils/persistence/publications.helper';
+import Swal from 'sweetalert2';
 
 interface Props {
   setPublications: React.Dispatch<React.SetStateAction<DataType[]>>;
@@ -29,9 +29,9 @@ const fields: Field[] = [
     label: 'Year',
     type: 'year',
     operators: [
-      { name: '=', label: 'Is' },
-      { name: '>', label: 'Greater than' },
-      { name: '<', label: 'Less than' },
+      { name: '=', label: '=' },
+      { name: '>', label: '>' },
+      { name: '<', label: '<' },
     ],
   },
   {
@@ -87,6 +87,38 @@ export const QueryBuilderComponent: React.FC<Props> = ({
   // const dispath = useDispatch();
 
   const handleOnClickConfirm = async () => {
+    setIsLoading(true);
+    if (!validateGroupNotEmpty(query)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'Groups cannot be empty',
+        position: 'top',
+        toast: true,
+        timer: 3000, // Duration in milliseconds
+        timerProgressBar: true,
+        showConfirmButton: false,
+        showCloseButton: true,
+      });
+      setIsLoading(false);
+    } else {
+      const parsedQuery = convertToSqliteParameterizedQuery(query);
+
+      // Send request to backend
+      searchPublications(parsedQuery)
+        .then(data => {
+          setIsLoading(false);
+          setPublications(mapPublications(data));
+        })
+        .catch(e => {
+          console.error(e);
+          setIsLoading(false);
+          setIsError(true);
+        });
+    }
+  };
+
+  const handleOnClickClear = () => {
     // Set loader in true
     setIsLoading(true);
 
@@ -100,22 +132,8 @@ export const QueryBuilderComponent: React.FC<Props> = ({
         setPublications(mapPublications(data));
       })
       .catch(e => {
-        setIsError(true);
-      });
-  };
-
-  const handleOnClickClear = () => {
-    setQuery(initialQuery);
-
-    const parsedQuery = convertToSqliteParameterizedQuery(query);
-
-    // Send request to backend
-    searchPublications(parsedQuery)
-      .then(data => {
+        console.error(e);
         setIsLoading(false);
-        setPublications(mapPublications(data));
-      })
-      .catch(e => {
         setIsError(true);
       });
   };

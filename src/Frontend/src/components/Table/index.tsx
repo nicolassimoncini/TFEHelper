@@ -9,9 +9,13 @@ import {
   TableLayout,
 } from './style';
 import { DataType } from '../../types/table.types';
+import Loader from '../Loader';
+import ErrorComponent from '../Error';
 
 interface Props {
   publications: DataType[];
+  isLoading: boolean;
+  isError: boolean;
 }
 
 const columns: TableColumnsType<DataType> = [
@@ -80,7 +84,7 @@ const columns: TableColumnsType<DataType> = [
 
 const defaultCheckedList = columns.map(item => item.key as string);
 
-export const TableComponent: React.FC<Props> = ({ publications }) => {
+export const TableComponent: React.FC<Props> = ({ publications, isLoading, isError }) => {
   const [expandedRowKeys, setExpandedRowKeys] = useState<React.Key[]>([]);
 
   // Hide/Show columns in table
@@ -127,31 +131,38 @@ export const TableComponent: React.FC<Props> = ({ publications }) => {
         }}
       />
       <TableContainer>
-        <Table
-          rowSelection={rowSelection}
-          dataSource={publications}
-          style={{ maxWidth: '95vw', padding: '5px', overflow: 'hidden' }}
-          columns={newColumns}
-          expandable={{
-            expandedRowKeys: expandedRowKeys,
-            onExpand: (expanded, record) => {
-              toggleExpandedRow(record.key);
-            },
-            expandedRowRender: (record: DataType) => (
-              <div style={{ whiteSpace: 'pre-line' }}>
-                <RowAbstract>
-                  <RowAbstractTitle>Abstract:</RowAbstractTitle>
-                  <RowABstractContent>{record.abstract}</RowABstractContent>
-                </RowAbstract>
-              </div>
-            ),
-            rowExpandable: record => true,
-          }}
-          scroll={{ x: 'true', y: '50vh' }}
-          showSorterTooltip={{
-            target: 'sorter-icon',
-          }}
-        ></Table>
+        {isLoading ? (
+          <Loader />
+        ) : isError ? (
+          //TODO: Improve the error component to receive a status and render differents visuals
+          <ErrorComponent message="Error. Please contact an administrator" />
+        ) : (
+          <Table
+            rowSelection={rowSelection}
+            dataSource={publications}
+            style={{ maxWidth: '95vw', padding: '5px', overflow: 'hidden' }}
+            columns={newColumns}
+            expandable={{
+              expandedRowKeys: expandedRowKeys,
+              onExpand: (expanded, record) => {
+                toggleExpandedRow(record.key);
+              },
+              expandedRowRender: (record: DataType) => (
+                <div style={{ whiteSpace: 'pre-line' }}>
+                  <RowAbstract>
+                    <RowAbstractTitle>Abstract:</RowAbstractTitle>
+                    <RowABstractContent>{record.abstract}</RowABstractContent>
+                  </RowAbstract>
+                </div>
+              ),
+              rowExpandable: record => true,
+            }}
+            scroll={{ x: 'true', y: '50vh' }}
+            showSorterTooltip={{
+              target: 'sorter-icon',
+            }}
+          ></Table>
+        )}
       </TableContainer>
     </TableLayout>
   );

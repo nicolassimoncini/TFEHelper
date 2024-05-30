@@ -46,21 +46,19 @@ export const HomePage = () => {
 
   return (
     <HomeLayout>
-      {isLoading ? (
-        <Loader />
-      ) : isError ? (
-        <ErrorComponent message="Couldn't connect with the server. Please contact an administrator" />
-      ) : (
-        <>
-          <h1>SRL Helper Tool</h1>
-          <QueryBuilderComponent
-            setPublications={setPublications}
-            setIsError={setIsError}
-            setIsLoading={setIsLoading}
-          />
-          <TableComponent publications={publications}></TableComponent>
-        </>
-      )}
+      <>
+        <h1>SRL Helper Tool</h1>
+        <QueryBuilderComponent
+          setPublications={setPublications}
+          setIsError={setIsError}
+          setIsLoading={setIsLoading}
+        />
+        <TableComponent
+          publications={publications}
+          isError={isError}
+          isLoading={isLoading}
+        ></TableComponent>
+      </>
     </HomeLayout>
   );
 };
