@@ -1,6 +1,5 @@
 import { Checkbox, CheckboxOptionType, Divider, Table, TableColumnsType } from 'antd';
-import React, { useEffect, useState } from 'react';
-import { Publication } from '../../types/publications.types';
+import React, { useState } from 'react';
 import { TableRowSelection } from 'antd/es/table/interface';
 import {
   RowABstractContent,
@@ -9,22 +8,10 @@ import {
   TableContainer,
   TableLayout,
 } from './style';
-import { getPublications } from '../../rest-api/publications.api';
-import ErrorComponent from '../Error';
-import Loader from '../Loader';
+import { DataType } from '../../types/table.types';
 
-interface DataType {
-  key: string | number;
-  title: string;
-  authors: string;
-  abstract: string;
-  year: number | string;
-  source: string;
-  keywords: string;
-  doi: string;
-  isbn: string;
-  issn: string;
-  pages: string;
+interface Props {
+  publications: DataType[];
 }
 
 const columns: TableColumnsType<DataType> = [
@@ -93,40 +80,13 @@ const columns: TableColumnsType<DataType> = [
 
 const defaultCheckedList = columns.map(item => item.key as string);
 
-const mapPublications = (publications: Publication[]): DataType[] => {
-  return publications.map(publication => ({
-    key: publication.id,
-    title: publication.title || '-',
-    abstract: publication.abstract || '-',
-    authors: publication.authors || '-',
-    year: publication.year || '-',
-    source: publication.source.name || '-',
-    keywords: publication.keywords || '-',
-    doi: publication.doi || '-',
-    isbn: publication.isbn || '-',
-    issn: publication.issn || '-',
-    pages: publication.pages || '-',
-  }));
-};
-
-export const TableComponent: React.FC = () => {
-  const [publications, setPublications] = useState<DataType[]>([]);
-  const [isError, setIsError] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+export const TableComponent: React.FC<Props> = ({ publications }) => {
   const [expandedRowKeys, setExpandedRowKeys] = useState<React.Key[]>([]);
 
   // Hide/Show columns in table
   const [checkedList, setCheckedList] = useState<string[]>(defaultCheckedList);
   // Rows selected
   const [selectedRow, setSelectedRow] = useState<React.Key[]>([]);
-
-  useEffect(() => {
-    getPublications()
-      .then(response => setPublications(mapPublications(response)))
-      .catch(() => setIsError(true))
-      .finally(() => setIsLoading(false));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const options = columns.map(({ key, title }) => ({
     label: title,
@@ -167,37 +127,31 @@ export const TableComponent: React.FC = () => {
         }}
       />
       <TableContainer>
-        {isLoading ? (
-          <Loader />
-        ) : isError ? (
-          <ErrorComponent message="Couldn't connect with the server. Please contact an administrator" />
-        ) : (
-          <Table
-            rowSelection={rowSelection}
-            dataSource={publications}
-            style={{ width: '100%', padding: '1rem' }}
-            columns={newColumns}
-            expandable={{
-              expandedRowKeys: expandedRowKeys,
-              onExpand: (expanded, record) => {
-                toggleExpandedRow(record.key);
-              },
-              expandedRowRender: (record: DataType) => (
-                <div style={{ whiteSpace: 'pre-line' }}>
-                  <RowAbstract>
-                    <RowAbstractTitle>Abstract:</RowAbstractTitle>
-                    <RowABstractContent>{record.abstract}</RowABstractContent>
-                  </RowAbstract>
-                </div>
-              ),
-              rowExpandable: record => true,
-            }}
-            scroll={{ x: 'max-content', y: 'calc(100vh - 300px)' }}
-            showSorterTooltip={{
-              target: 'sorter-icon',
-            }}
-          ></Table>
-        )}
+        <Table
+          rowSelection={rowSelection}
+          dataSource={publications}
+          style={{ maxWidth: '95vw', padding: '5px', overflow: 'hidden' }}
+          columns={newColumns}
+          expandable={{
+            expandedRowKeys: expandedRowKeys,
+            onExpand: (expanded, record) => {
+              toggleExpandedRow(record.key);
+            },
+            expandedRowRender: (record: DataType) => (
+              <div style={{ whiteSpace: 'pre-line' }}>
+                <RowAbstract>
+                  <RowAbstractTitle>Abstract:</RowAbstractTitle>
+                  <RowABstractContent>{record.abstract}</RowABstractContent>
+                </RowAbstract>
+              </div>
+            ),
+            rowExpandable: record => true,
+          }}
+          scroll={{ x: 'true', y: '50vh' }}
+          showSorterTooltip={{
+            target: 'sorter-icon',
+          }}
+        ></Table>
       </TableContainer>
     </TableLayout>
   );

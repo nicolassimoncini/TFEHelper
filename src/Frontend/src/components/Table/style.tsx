@@ -4,24 +4,16 @@ export const TableLayout = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
   width: 100%;
-  overflow: scroll;
 `;
 
 export const Table = styled.table`
   border-collapse: collapse;
   max-width: 100%;
-  overflow: hidden;
-  width: 100%;
   scroll-behavior: auto;
 `;
 
-export const TableContainer = styled.div`
-  max-height: calc(100vh - 100px);
-  width: 100%;
-  height: 100%;
-`;
+export const TableContainer = styled.div``;
 
 export const RowAbstract = styled.div`
   display: flex;

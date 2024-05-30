@@ -5,6 +5,12 @@ import { ButtonsContainer, Container, QueryContainer } from './style';
 import { Button } from 'antd';
 import { parseQuery } from './utils/query-parser';
 import { searchPublications } from '../../rest-api/publications.api';
+// import { useDispatch } from 'react-redux';
+import { DataType } from '../../types/table.types';
+
+interface Props {
+  setPublications: React.Dispatch<React.SetStateAction<DataType[]>>;
+}
 
 const fields: Field[] = [
   {
@@ -69,8 +75,9 @@ const initialQuery: RuleGroupType = {
     },
   ],
 };
-export const QueryBuilderComponent: React.FC<any> = () => {
+export const QueryBuilderComponent: React.FC<Props> = ({ setPublications }) => {
   const [query, setQuery] = useState<RuleGroupType>(initialQuery);
+  // const dispath = useDispatch();
 
   const handleOnClickConfirm = () => {
     // Send the query to the backend

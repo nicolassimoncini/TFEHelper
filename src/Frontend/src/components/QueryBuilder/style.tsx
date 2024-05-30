@@ -3,11 +3,10 @@ import styled from 'styled-components';
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  /* overflow: hidden; */
+  overflow: visible;
   width: 100%;
+  height: fit-content;
   min-height: 10vh;
-  max-height: 50vh;
-  height: auto; /* Automatically adjust height according to the content */
   min-width: 30vw;
   max-width: 50vw;
   ::-webkit-scrollbar {
@@ -15,10 +14,9 @@ export const Container = styled.div`
   }
 `;
 export const QueryContainer = styled.div`
-  overflow-y: scroll;
   overflow-x: scroll;
+  height: fit-content;
   width: 100%;
-  height: auto;
 `;
 
 export const ButtonsContainer = styled.div`

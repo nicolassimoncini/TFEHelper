@@ -11,7 +11,6 @@ export const Container = styled.div<{ backgroundColor: string }>`
 export const Column = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
   width: calc(100% - 68px);
   flex: 1;
   margin-left: 68px;
