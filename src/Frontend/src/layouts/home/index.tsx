@@ -7,8 +7,6 @@ import { QueryBuilderComponent } from '../../components/QueryBuilder';
 import { getPublications } from '../../rest-api/publications.api';
 import { Publication } from '../../types/publications.types';
 import { DataType } from '../../types/table.types';
-import Loader from '../../components/Loader';
-import ErrorComponent from '../../components/Error';
 
 const mapPublications = (publications: Publication[]): DataType[] => {
   return publications.map(publication => ({

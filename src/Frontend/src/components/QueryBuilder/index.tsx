@@ -39,15 +39,15 @@ const fields: Field[] = [
     label: 'Source',
     operators: [
       { name: '=', label: 'Is' },
-      { name: 'contain', label: 'Contains' },
+      { name: 'contains', label: 'Contains' },
     ],
   },
   {
     name: 'authors',
     label: 'Authors',
     operators: [
+      { name: 'contains', label: 'Contains' },
       { name: '=', label: 'Is' },
-      { name: 'contain', label: 'Contains' },
     ],
   },
   {
@@ -55,15 +55,15 @@ const fields: Field[] = [
     label: 'Keywords',
     operators: [
       { name: '=', label: 'Is' },
-      { name: 'contain', label: 'Contains' },
+      { name: 'contains', label: 'Contains' },
     ],
   },
   {
     name: 'abstract',
     label: 'Abstract',
     operators: [
+      { name: 'contains', label: 'Contains' },
       { name: '=', label: 'Is' },
-      { name: 'contain', label: 'Contains' },
     ],
   },
 ];
