@@ -28,8 +28,16 @@ export const patchPublication = async(publication: Publication) => {
     return (await restApiAdapter.patch(`Publications/${publication.id}`, publication)).data.payload;
 }
 
-export const searchPublications = async(searchObj: ISearchType) => {
-    return (await restApiAdapter.post(`Publications/Search`, searchObj)).data.payload;
+export const searchPublications = async(searchObj: ISearchType): Promise<Publication[]> => {
+    const response = await restApiAdapter.post(`Publications/Search`, searchObj)
+
+    if (response.status !== 200 ) {
+        console.error(response.data.errorMessage)
+        throw new Error('Error fetching filtered publications');
+    }
+
+
+    return response.data.payload as Publication[];
 }
 
 export const importPublications = async(file: ImportFileType) => {

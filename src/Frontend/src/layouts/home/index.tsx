@@ -53,7 +53,11 @@ export const HomePage = () => {
       ) : (
         <>
           <h1>SRL Helper Tool</h1>
-          <QueryBuilderComponent setPublications={setPublications} />
+          <QueryBuilderComponent
+            setPublications={setPublications}
+            setIsError={setIsError}
+            setIsLoading={setIsLoading}
+          />
           <TableComponent publications={publications}></TableComponent>
         </>
       )}

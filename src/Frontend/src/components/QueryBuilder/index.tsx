@@ -3,13 +3,16 @@ import QueryBuilder, { Field, RuleGroupType, formatQuery } from 'react-querybuil
 import 'react-querybuilder/dist/query-builder.css';
 import { ButtonsContainer, Container, QueryContainer } from './style';
 import { Button } from 'antd';
-import { parseQuery } from './utils/query-parser';
+import { convertToSqliteParameterizedQuery, parseQuery } from './utils/query-parser';
 import { searchPublications } from '../../rest-api/publications.api';
 // import { useDispatch } from 'react-redux';
 import { DataType } from '../../types/table.types';
+import { mapPublications } from '../../utils/persistence/publications.helper';
 
 interface Props {
   setPublications: React.Dispatch<React.SetStateAction<DataType[]>>;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsError: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const fields: Field[] = [
@@ -18,7 +21,7 @@ const fields: Field[] = [
     label: 'Title',
     operators: [
       { name: '=', label: 'Is' },
-      { name: 'contain', label: 'Contains' },
+      { name: 'contains', label: 'Contains' },
     ],
   },
   {
@@ -71,30 +74,50 @@ const initialQuery: RuleGroupType = {
     {
       field: 'title',
       value: '',
-      operator: 'contain',
+      operator: 'contains',
     },
   ],
 };
-export const QueryBuilderComponent: React.FC<Props> = ({ setPublications }) => {
+export const QueryBuilderComponent: React.FC<Props> = ({
+  setPublications,
+  setIsLoading,
+  setIsError,
+}) => {
   const [query, setQuery] = useState<RuleGroupType>(initialQuery);
   // const dispath = useDispatch();
 
-  const handleOnClickConfirm = () => {
-    // Send the query to the backend
-    const reactBuilderQuery = formatQuery(query, {
-      format: 'parameterized_named',
-      paramPrefix: '@',
-    });
+  const handleOnClickConfirm = async () => {
+    // Set loader in true
+    setIsLoading(true);
 
     // Parse the query to a format that the backend can understand
-    const parsedQuery = parseQuery(reactBuilderQuery);
+    const parsedQuery = convertToSqliteParameterizedQuery(query);
 
     // Send request to backend
-    searchPublications(parsedQuery);
+    searchPublications(parsedQuery)
+      .then(data => {
+        setIsLoading(false);
+        setPublications(mapPublications(data));
+      })
+      .catch(e => {
+        setIsError(true);
+      });
   };
 
   const handleOnClickClear = () => {
     setQuery(initialQuery);
+
+    const parsedQuery = convertToSqliteParameterizedQuery(query);
+
+    // Send request to backend
+    searchPublications(parsedQuery)
+      .then(data => {
+        setIsLoading(false);
+        setPublications(mapPublications(data));
+      })
+      .catch(e => {
+        setIsError(true);
+      });
   };
 
   return (
@@ -105,8 +128,8 @@ export const QueryBuilderComponent: React.FC<Props> = ({ setPublications }) => {
         </QueryContainer>
       </Container>
       <ButtonsContainer>
-        <Button onClick={handleOnClickConfirm}>Filter</Button>
-        <Button onClick={handleOnClickClear}>Clear</Button>
+        <Button onClick={handleOnClickConfirm}>Search</Button>
+        <Button onClick={handleOnClickClear}>Reset</Button>
       </ButtonsContainer>
     </>
   );
