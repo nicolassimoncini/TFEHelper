@@ -50,7 +50,7 @@ export const uploadFileRequest = async (data: IFileUploadData) => {
 
     try {
         const response = await restApiAdapter.post(
-            `Publications/ImportAsStrem?formatType=${data.formatType}&source=${data.source}&discardInvalidRecords=${data.discardInvalidRecords}`,
+            `Publications/ImportAsStream?formatType=${data.formatType}&source=${data.source}&discardInvalidRecords=${data.discardInvalidRecords}`,
             formData
         );
         return response
@@ -62,6 +62,22 @@ export const uploadFileRequest = async (data: IFileUploadData) => {
 
 export const exportPublications = async(file: ImportFileType) => { 
     return (await restApiAdapter.post(`Publications/Export`, file)).data.payload
+}
+
+export const exportPublicationsAsStream = async(fileFormat: number) => {
+    try {
+        const response = await restApiAdapter.post(
+            `Publications/ExportAsStream`,{
+                formatType: fileFormat
+            }
+        )
+
+        return response
+
+    } catch (error) {
+        throw error
+    }
+
 }
 
 

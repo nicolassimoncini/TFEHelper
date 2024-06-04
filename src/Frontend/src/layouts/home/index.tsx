@@ -45,7 +45,7 @@ export const HomePage = () => {
   return (
     <HomeLayout>
       <>
-        <h1>SRL Helper Tool</h1>
+        <h1>TFE HELPER</h1>
         <QueryBuilderComponent
           setPublications={setPublications}
           setIsError={setIsError}
