@@ -1,5 +1,5 @@
 import { Pallet } from '../../Main';
-import { HomeOutlined, UploadOutlined } from '@ant-design/icons';
+import { HomeOutlined, SearchOutlined, UploadOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { Button } from '../Button';
 import { ButtonsContainer, Container } from './style';
@@ -37,6 +37,17 @@ export const Bar: React.FC<Props> = ({ pallet }) => {
         />
       ),
       route: '/import',
+    },
+    {
+      label: 'Plugins',
+      Icon: (
+        <SearchOutlined
+          style={{
+            fontSize: '30px',
+          }}
+        />
+      ),
+      route: '/plugins',
     },
   ];
 
