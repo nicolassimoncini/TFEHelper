@@ -5,15 +5,20 @@ import { Container, PluginSelector } from './style';
 import { DropdownComponent, MenuItem } from '../../components/Dropdown';
 import { WrapComponent } from '../../components/WrapComponent';
 import { PluginForm } from './Form';
+import { TableComponent } from '../../components/Table';
+import { DataType } from '../../types/table.types';
 
 interface Props {}
 
 export const PluginsLayout: React.FC<Props> = () => {
+  const [publications, setPublications] = useState<DataType[]>([]);
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const [activePlugin, setActivePlugin] = useState<IPlugin | null>(null);
   const [plugins, setPlugins] = useState<IPlugin[]>([]);
   const [isError, setIsError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [publicationLoader, setPublicationLoader] = useState<boolean>(false);
+  const [publicationError, setPublicationError] = useState<boolean>(false);
 
   // Get plugins
   useEffect(() => {
@@ -55,8 +60,17 @@ export const PluginsLayout: React.FC<Props> = () => {
             selectedOption={selectedItem}
             setSelectedOption={setSelectedItem}
           />
-          {!!activePlugin ? <PluginForm plugin={activePlugin}></PluginForm> : <></>}
         </PluginSelector>
+        {!!activePlugin ? (
+          <PluginForm plugin={activePlugin} setPublications={setPublications}></PluginForm>
+        ) : (
+          <></>
+        )}
+        <TableComponent
+          publications={publications}
+          isLoading={publicationLoader}
+          isError={publicationError}
+        ></TableComponent>
       </Container>
     </WrapComponent>
   );

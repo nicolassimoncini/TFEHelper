@@ -1,5 +1,6 @@
 import ErrorComponent from '../Error';
 import Loader from '../Loader';
+import { Container } from './style';
 
 interface Props {
   children: JSX.Element;
@@ -8,7 +9,7 @@ interface Props {
 }
 export const WrapComponent: React.FC<Props> = ({ children, isLoading, isError }) => {
   return (
-    <>
+    <Container>
       {isLoading ? (
         <Loader />
       ) : isError ? (
@@ -16,6 +17,6 @@ export const WrapComponent: React.FC<Props> = ({ children, isLoading, isError })
       ) : (
         <>{children}</>
       )}
-    </>
+    </Container>
   );
 };
