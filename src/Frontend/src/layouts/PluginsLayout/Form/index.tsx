@@ -13,18 +13,29 @@ import {
 import { Button, DatePicker } from 'antd';
 import Input from 'antd/es/input/Input';
 import { DataType } from '../../../types/table.types';
+import { PluginCollectorQuery } from '../../../types/search.types';
+import { searchInPlugins } from '../../../rest-api/plugins.api';
+import { mapPublications } from '../../../utils/persistence/publications.helper';
+import Swal from 'sweetalert2';
 
 interface Props {
-  plugin: IPlugin | undefined;
+  plugin: IPlugin | null;
   setPublications: React.Dispatch<React.SetStateAction<DataType[]>>;
 }
 
+const errorsInit = {
+  searchString: false,
+  searchDate: false,
+  pNumber: false,
+};
+
 export const PluginForm: React.FC<Props> = ({ plugin, setPublications }) => {
   const [searchString, setSearchString] = useState<string>('');
-  const [searchDate, setSearchDate] = useState<(string | null)[]>([]);
+  const [searchDate, setSearchDate] = useState<string[]>([]);
   const [pNumber, setPNumber] = useState<number>(10);
   const [selectedSubject, setSelectedSubject] = useState<MenuItem | null>(null);
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const [errors, setErrors] = useState(errorsInit);
 
   useEffect(() => {
     if (!!plugin?.parameters?.collectionValued[0].value) {
@@ -43,9 +54,35 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications }) => {
     }
   }, [plugin]);
 
-  const handleOnSubmit = () => {
-    // TODO: Handle request
-    // TODO: Add field validations
+  const handleOnSubmit = async () => {
+    setErrors(errorsInit);
+
+    // Validate fields
+    if (searchString === '') {
+      setErrors({ ...errors, searchString: true });
+      return;
+    }
+
+    const queryParams: PluginCollectorQuery = {
+      query: searchString,
+      searchIn: '',
+      subject: selectedSubject?.label || '',
+      dateFrom: `${searchDate[0]}-01-01`,
+      dateTo: `${searchDate[1]}-12-31`,
+      returnQuantityLimit: pNumber,
+    };
+    console.log(queryParams);
+
+    searchInPlugins(plugin!.id.toString(), queryParams)
+      .then(res => setPublications(mapPublications(res)))
+      .catch(err => {
+        console.error(err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oopss...',
+          text: 'Errro while fetching publications',
+        });
+      });
   };
 
   return (
@@ -55,6 +92,7 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications }) => {
         <DropdownComponent
           options={menuItems}
           name="Subject"
+          disabled={!plugin}
           isLoading={false}
           selectedOption={selectedSubject}
           setSelectedOption={setSelectedSubject}
@@ -62,16 +100,29 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications }) => {
       </SubjectSelectorContainer>
       <QueryFieldContainer>
         <p>Search string</p>
-        <TextArea rows={4} value={searchString} onChange={e => setSearchString(e.target.value)} />
+        <TextArea
+          rows={4}
+          value={searchString}
+          disabled={!plugin}
+          onChange={e => setSearchString(e.target.value)}
+        />
       </QueryFieldContainer>
       <DateSelectorContainter>
         <p>Date selector</p>
-        <DatePicker.RangePicker picker="year" onChange={(_, e) => setSearchDate(e)} />
+        <DatePicker.RangePicker
+          picker="year"
+          allowEmpty={[true, true]}
+          disabled={!plugin}
+          status={errors.searchDate ? 'error' : ''}
+          // value={[dayjs(searchDate[0] || null), dayjs(searchDate[1] || null)]}
+          onChange={(_, datestring) => setSearchDate(datestring)}
+        />
       </DateSelectorContainter>
       <QuantitySelectorContainer>
         <p>Number of articles</p>
         <Input
           type="number"
+          disabled={!plugin}
           min={10}
           max={1000}
           defaultValue={10}

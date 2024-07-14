@@ -24,10 +24,7 @@ export const PluginsLayout: React.FC<Props> = () => {
   useEffect(() => {
     getPlugins()
       .then(res => {
-        // For now, filter only the plugins with subjects
-        const filteredPlugins = res.filter(p => p.parameters !== null);
-
-        setPlugins(filteredPlugins);
+        setPlugins(res);
         setIsLoading(false);
       })
       .catch(e => setIsError(true));
@@ -57,15 +54,12 @@ export const PluginsLayout: React.FC<Props> = () => {
             })}
             name="Plugin"
             isLoading={isLoading}
+            disabled={false}
             selectedOption={selectedItem}
             setSelectedOption={setSelectedItem}
           />
         </PluginSelector>
-        {!!activePlugin ? (
-          <PluginForm plugin={activePlugin} setPublications={setPublications}></PluginForm>
-        ) : (
-          <></>
-        )}
+        <PluginForm plugin={activePlugin} setPublications={setPublications}></PluginForm>
         <TableComponent
           publications={publications}
           isLoading={publicationLoader}

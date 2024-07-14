@@ -93,6 +93,7 @@ export const ImportFileLayout: React.FC = () => {
                 )}
                 name={'File Format'}
                 isLoading={configSelector.isLoading}
+                disabled={false}
                 selectedOption={selectedFileFormat}
                 setSelectedOption={setSelectedFileFormat}
               />
@@ -109,6 +110,7 @@ export const ImportFileLayout: React.FC = () => {
                 )}
                 name={' Source'}
                 isLoading={configSelector.isLoading}
+                disabled={false}
                 selectedOption={selectedSource}
                 setSelectedOption={setSelectedSource}
               />

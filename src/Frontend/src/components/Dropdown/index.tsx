@@ -16,6 +16,7 @@ interface DropdownProps {
   options: MenuItem[];
   name: string;
   isLoading: boolean;
+  disabled: boolean;
   selectedOption: MenuItem | null;
   setSelectedOption: React.Dispatch<React.SetStateAction<MenuItem | null>>;
 }
@@ -24,6 +25,7 @@ export const DropdownComponent: React.FC<DropdownProps> = ({
   options,
   name,
   isLoading,
+  disabled,
   selectedOption,
   setSelectedOption,
 }) => {
@@ -54,6 +56,7 @@ export const DropdownComponent: React.FC<DropdownProps> = ({
           })),
           onClick: handleMenuClick,
         }}
+        disabled={disabled}
       >
         {isLoading ? (
           <Spin size="small" />
