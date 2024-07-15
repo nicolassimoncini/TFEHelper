@@ -1,7 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { getPlugins } from '../../rest-api/plugins.api';
 import { IPlugin } from '../../types/plugin.type';
-import { Container, PluginSelector } from './style';
+import {
+  Container,
+  FormSection,
+  PluginContainer,
+  PluginSelector,
+  SelectorContainer,
+} from './style';
 import { DropdownComponent, MenuItem } from '../../components/Dropdown';
 import { WrapComponent } from '../../components/WrapComponent';
 import { PluginForm } from './Form';
@@ -43,23 +49,33 @@ export const PluginsLayout: React.FC<Props> = () => {
     <WrapComponent isLoading={isLoading} isError={isError}>
       <Container>
         <h1> Plugins </h1>
-        <PluginSelector>
-          <p>Plugin</p>
-          <DropdownComponent
-            options={plugins.map(p => {
-              return {
-                key: `${p.id}`,
-                label: p.name,
-              } as MenuItem;
-            })}
-            name="Plugin"
-            isLoading={isLoading}
-            disabled={false}
-            selectedOption={selectedItem}
-            setSelectedOption={setSelectedItem}
-          />
-        </PluginSelector>
-        <PluginForm plugin={activePlugin} setPublications={setPublications}></PluginForm>
+        <SelectorContainer>
+          <PluginContainer>
+            <PluginSelector>
+              <p>Plugin</p>
+              <DropdownComponent
+                options={plugins.map(p => {
+                  return {
+                    key: `${p.id}`,
+                    label: p.name,
+                  } as MenuItem;
+                })}
+                name="Plugin"
+                isLoading={isLoading}
+                disabled={false}
+                selectedOption={selectedItem}
+                setSelectedOption={setSelectedItem}
+              />
+            </PluginSelector>
+            <FormSection>
+              <PluginForm
+                plugin={activePlugin}
+                setPublications={setPublications}
+                setPublicationLoader={setPublicationLoader}
+              ></PluginForm>
+            </FormSection>
+          </PluginContainer>
+        </SelectorContainer>
         <TableComponent
           publications={publications}
           isLoading={publicationLoader}

@@ -5,7 +5,7 @@ import { DropdownComponent, MenuItem } from '../../../components/Dropdown';
 import {
   ButtonsContainer,
   Container,
-  DateSelectorContainter,
+  DateSelectorContainer,
   QuantitySelectorContainer,
   QueryFieldContainer,
   SubjectSelectorContainer,
@@ -21,6 +21,7 @@ import Swal from 'sweetalert2';
 interface Props {
   plugin: IPlugin | null;
   setPublications: React.Dispatch<React.SetStateAction<DataType[]>>;
+  setPublicationLoader: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const errorsInit = {
@@ -29,7 +30,7 @@ const errorsInit = {
   pNumber: false,
 };
 
-export const PluginForm: React.FC<Props> = ({ plugin, setPublications }) => {
+export const PluginForm: React.FC<Props> = ({ plugin, setPublications, setPublicationLoader }) => {
   const [searchString, setSearchString] = useState<string>('');
   const [searchDate, setSearchDate] = useState<string[]>([]);
   const [pNumber, setPNumber] = useState<number>(10);
@@ -73,6 +74,7 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications }) => {
     };
     console.log(queryParams);
 
+    setPublicationLoader(true);
     searchInPlugins(plugin!.id.toString(), queryParams)
       .then(res => setPublications(mapPublications(res)))
       .catch(err => {
@@ -82,7 +84,8 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications }) => {
           title: 'Oopss...',
           text: 'Errro while fetching publications',
         });
-      });
+      })
+      .finally(() => setPublicationLoader(false));
   };
 
   return (
@@ -107,7 +110,7 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications }) => {
           onChange={e => setSearchString(e.target.value)}
         />
       </QueryFieldContainer>
-      <DateSelectorContainter>
+      <DateSelectorContainer>
         <p>Date selector</p>
         <DatePicker.RangePicker
           picker="year"
@@ -117,7 +120,7 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications }) => {
           // value={[dayjs(searchDate[0] || null), dayjs(searchDate[1] || null)]}
           onChange={(_, datestring) => setSearchDate(datestring)}
         />
-      </DateSelectorContainter>
+      </DateSelectorContainer>
       <QuantitySelectorContainer>
         <p>Number of articles</p>
         <Input
