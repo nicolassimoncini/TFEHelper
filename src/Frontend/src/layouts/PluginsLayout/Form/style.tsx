@@ -38,6 +38,10 @@ export const DateSelectorContainer = styled.div`
   ${sharedStyles}
 `;
 
+export const NarrowingSelectorContainer = styled.div`
+  ${sharedStyles}
+`;
+
 export const QuantitySelectorContainer = styled.div`
   ${sharedStyles}
 `;

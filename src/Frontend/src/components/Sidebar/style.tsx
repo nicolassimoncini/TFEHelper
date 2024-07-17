@@ -7,5 +7,5 @@ export const Container = styled.div`
   backdrop-filter: blur(5px);
   height: 100vh;
   z-index: 5;
-  position: absolute;
+  position: fixed;
 `;

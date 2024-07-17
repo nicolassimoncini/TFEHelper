@@ -6,6 +6,7 @@ import {
   ButtonsContainer,
   Container,
   DateSelectorContainer,
+  NarrowingSelectorContainer,
   QuantitySelectorContainer,
   QueryFieldContainer,
   SubjectSelectorContainer,
@@ -33,6 +34,7 @@ const errorsInit = {
 export const PluginForm: React.FC<Props> = ({ plugin, setPublications, setPublicationLoader }) => {
   const [searchString, setSearchString] = useState<string>('');
   const [searchDate, setSearchDate] = useState<string[]>([]);
+  const [narrowing, setNarrowing] = useState<string>('');
   const [pNumber, setPNumber] = useState<number>(10);
   const [selectedSubject, setSelectedSubject] = useState<MenuItem | null>(null);
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
@@ -66,7 +68,7 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications, setPublic
 
     const queryParams: PluginCollectorQuery = {
       query: searchString,
-      searchIn: '',
+      searchIn: narrowing,
       subject: selectedSubject?.label || '',
       dateFrom: `${searchDate[0]}-01-01`,
       dateTo: `${searchDate[1]}-12-31`,
@@ -110,6 +112,10 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications, setPublic
           onChange={e => setSearchString(e.target.value)}
         />
       </QueryFieldContainer>
+      <NarrowingSelectorContainer>
+        <p>Search in</p>
+        <Input type="text" disabled={!plugin} onChange={e => setNarrowing(e.target.value)} />
+      </NarrowingSelectorContainer>
       <DateSelectorContainer>
         <p>Date selector</p>
         <DatePicker.RangePicker

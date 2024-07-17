@@ -5,11 +5,12 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
-  min-height: 100vh;
+  height: 100%;
   height: fit-content;
   padding: 20px;
   box-sizing: border-box;
   background-color: #f5f5f5;
+  overflow-y: auto;
 `;
 
 export const SelectorContainer = styled.div`
