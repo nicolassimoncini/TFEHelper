@@ -57,12 +57,23 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications, setPublic
     }
   }, [plugin]);
 
+  const handleOnClear = () => {
+    setSearchString('');
+    setSearchDate([]);
+    setNarrowing('');
+    setPNumber(10);
+  };
+
   const handleOnSubmit = async () => {
     setErrors(errorsInit);
 
     // Validate fields
     if (searchString === '') {
       setErrors({ ...errors, searchString: true });
+      return;
+    }
+    if (!searchDate[0] || !searchDate[1]) {
+      setErrors({ ...errors, searchDate: true });
       return;
     }
 
@@ -142,7 +153,7 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications, setPublic
         <Button type="primary" onClick={handleOnSubmit}>
           Search
         </Button>
-        <Button> Clear </Button>
+        <Button onClick={handleOnClear}> Clear </Button>
       </ButtonsContainer>
     </Container>
   );
