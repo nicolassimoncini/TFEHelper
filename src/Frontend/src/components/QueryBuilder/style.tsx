@@ -1,3 +1,4 @@
+import { Form } from 'antd';
 import styled from 'styled-components';
 
 export const Container = styled.div`
@@ -22,4 +23,12 @@ export const QueryContainer = styled.div`
 export const ButtonsContainer = styled.div`
   display: flex;
   justify-content: flex-end;
+`;
+
+export const NarrowingComponent = styled(Form)`
+  max-width: 600px;
+  margin: 0 auto;
+  border: 1px solid #d9d9d9;
+  padding: 16px;
+  border-radius: 8px;
 `;

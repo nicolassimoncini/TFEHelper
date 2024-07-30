@@ -5,24 +5,8 @@ import { useDispatch } from 'react-redux';
 import { fetchConfiguration } from '../../redux/configurations/configuration.slice';
 import { QueryBuilderComponent } from '../../components/QueryBuilder';
 import { getPublications } from '../../rest-api/publications.api';
-import { Publication } from '../../types/publications.types';
 import { DataType } from '../../types/table.types';
-
-const mapPublications = (publications: Publication[]): DataType[] => {
-  return publications.map(publication => ({
-    key: publication.id,
-    title: publication.title || '-',
-    abstract: publication.abstract || '-',
-    authors: publication.authors || '-',
-    year: publication.year || '-',
-    source: publication.source.name || '-',
-    keywords: publication.keywords || '-',
-    doi: publication.doi || '-',
-    isbn: publication.isbn || '-',
-    issn: publication.issn || '-',
-    pages: publication.pages || '-',
-  }));
-};
+import { mapPublications } from '../../utils/persistence/publications.helper';
 
 export const HomePage = () => {
   const [publications, setPublications] = useState<DataType[]>([]);

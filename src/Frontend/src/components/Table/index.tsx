@@ -16,6 +16,7 @@ interface Props {
   publications: DataType[];
   isLoading: boolean;
   isError: boolean;
+  onChange?: React.Dispatch<React.SetStateAction<DataType[]>>;
 }
 
 const columns: TableColumnsType<DataType> = [
@@ -84,13 +85,13 @@ const columns: TableColumnsType<DataType> = [
 
 const defaultCheckedList = columns.map(item => item.key as string);
 
-export const TableComponent: React.FC<Props> = ({ publications, isLoading, isError }) => {
+export const TableComponent: React.FC<Props> = ({ publications, isLoading, isError, onChange }) => {
   const [expandedRowKeys, setExpandedRowKeys] = useState<React.Key[]>([]);
 
   // Hide/Show columns in table
   const [checkedList, setCheckedList] = useState<string[]>(defaultCheckedList);
   // Rows selected
-  const [selectedRow, setSelectedRow] = useState<React.Key[]>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
   const options = columns.map(({ key, title }) => ({
     label: title,
@@ -100,12 +101,15 @@ export const TableComponent: React.FC<Props> = ({ publications, isLoading, isErr
   // Filter new columns to display
   const newColumns = columns.filter(({ key }) => checkedList.includes(key as string));
 
-  const onSelectChange = (selectedRowKeys: React.Key[]) => {
-    setSelectedRow(selectedRowKeys);
+  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
+    if (!!onChange) {
+      onChange(publications.filter(p => p.key in newSelectedRowKeys));
+    }
+    setSelectedRowKeys(newSelectedRowKeys);
   };
 
   const rowSelection: TableRowSelection<DataType> = {
-    selectedRowKeys: selectedRow,
+    selectedRowKeys,
     onChange: onSelectChange,
     selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT, Table.SELECTION_NONE],
   };

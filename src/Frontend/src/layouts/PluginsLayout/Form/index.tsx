@@ -85,7 +85,6 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications, setPublic
       dateTo: `${searchDate[1]}-12-31`,
       returnQuantityLimit: pNumber,
     };
-    console.log(queryParams);
 
     setPublicationLoader(true);
     searchInPlugins(plugin!.id.toString(), queryParams)

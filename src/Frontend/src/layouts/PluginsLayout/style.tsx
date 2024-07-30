@@ -63,28 +63,10 @@ export const FormSection = styled.div`
   }
 `;
 
-export const ButtonsContainer = styled.div`
+export const ButtonRow = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+  margin-top: 5px;
   width: 100%;
-
-  button {
-    padding: 10px 20px;
-    margin-left: 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  .search {
-    background-color: #007bff;
-    color: white;
-  }
-
-  .clear {
-    background-color: #f8f9fa;
-    color: black;
-    border: 1px solid #ccc;
-  }
 `;
