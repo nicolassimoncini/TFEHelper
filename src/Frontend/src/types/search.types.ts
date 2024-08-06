@@ -1,3 +1,11 @@
+export interface INarrowings {
+  id: number;
+  searchIn: string;
+  firstInput: string;
+  secondInput: string;
+  distance: number;
+}
+
 export interface ISearchType{
     query: string;
     parameters: {
@@ -6,7 +14,7 @@ export interface ISearchType{
     }[];
     narrowings: {
         fieldName: string;
-        fieldSentence: string;
+        firstSentence: string;
         secondSentence: string;
         minimumDistance: number;
     }[]

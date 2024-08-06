@@ -1,5 +1,5 @@
 import { RuleGroupType,  } from "react-querybuilder";
-import { ISearchType } from "../../../types/search.types";
+import { INarrowings, ISearchType } from "../../../types/search.types";
 
 // Validation function to check if a rule group is empty
 export const validateGroupNotEmpty = (query: RuleGroupType): boolean => {
@@ -20,12 +20,7 @@ export const validateGroupNotEmpty = (query: RuleGroupType): boolean => {
     return validate(query);
 };
 
-export const convertToSqliteParameterizedQuery = (query: RuleGroupType, narrowings: {
-    fieldName: string,
-    firstSentence: string,
-    secondSentence: string,
-    mininmumDistance: string
-}[] | null= null): ISearchType => {
+export const convertToSqliteParameterizedQuery = (query: RuleGroupType, narrowings: INarrowings[]): ISearchType => {
     // Validate the rule group before processing
     if (!validateGroupNotEmpty(query)) {
         throw new Error("Validation failed: Rule group cannot be empty.");
@@ -89,13 +84,14 @@ export const convertToSqliteParameterizedQuery = (query: RuleGroupType, narrowin
 
     whereClauses.push(...traverseRules(query.rules, query.combinator));
 
-    if(!!narrowings){
-        const narrowingParameters = narrowings
-    }
-
     return {
         query: whereClauses.join(` ${query.combinator.toUpperCase()} `),
         parameters,
-        narrowings: []
+        narrowings: narrowings.map(n => ({
+            fieldName: n.searchIn,
+            firstSentence: n.firstInput,
+            secondSentence: n.secondInput,
+            minimumDistance: n.distance
+        }))
     };
 };
