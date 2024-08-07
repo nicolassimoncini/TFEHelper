@@ -1,6 +1,8 @@
 import React from 'react';
 import { Column, Container } from './style';
 import { Sidebar } from '../Sidebar';
+import { Layout } from 'antd';
+import { Content } from 'antd/es/layout/layout';
 
 interface Props {
   children: JSX.Element;
@@ -18,17 +20,16 @@ export interface Pallet {
 }
 
 export const MainContainer: React.FC<Props> = ({ children }) => {
-  const pallet: Pallet = {
-    backgroundColor: '#F5F6FB',
-    primaryColor: '#000000',
-    secondaryColor: '#FFFFFF',
-  };
   const backgroundColor = '#F5F6FB';
 
   return (
-    <Container backgroundColor={backgroundColor}>
-      <Sidebar pallet={pallet} />
-      <Column>{React.cloneElement(children)}</Column>
-    </Container>
+    <Layout style={{ minHeight: '100vh' }}>
+      <Sidebar />
+      <Content>
+        <Container backgroundColor={backgroundColor}>
+          <Column>{React.cloneElement(children)}</Column>
+        </Container>
+      </Content>
+    </Layout>
   );
 };

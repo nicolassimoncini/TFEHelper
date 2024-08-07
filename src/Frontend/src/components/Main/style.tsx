@@ -13,6 +13,5 @@ export const Column = styled.div`
   flex-direction: column;
   width: calc(100% - 68px);
   flex: 1;
-  margin-left: 68px;
   overflow-y: auto;
 `;

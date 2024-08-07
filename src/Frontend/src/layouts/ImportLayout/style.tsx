@@ -5,8 +5,6 @@ export const ImportLayout = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  margin-left: 20px;
-  margin-right: 20px;
 `;
 
 export const ImportLayoutDragger = styled.div`
