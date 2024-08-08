@@ -54,7 +54,7 @@ export const FilterComponent: React.FC<Props> = ({ setPublications, open, setOpe
       title={'Filter Publications'}
       size="large"
       open={open}
-      placement="top"
+      placement="right"
       onClose={() => setOpen(false)}
     >
       <MainContainer>

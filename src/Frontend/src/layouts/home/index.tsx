@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { TableComponent } from '../../components/Table';
-import { ButtonContainer, HomeLayout } from './style';
+import { ButtonContainer, HomeLayout, SearchContainer } from './style';
 import { useDispatch } from 'react-redux';
 import { fetchConfiguration } from '../../redux/configurations/configuration.slice';
 import { getPublications } from '../../rest-api/publications.api';
@@ -8,6 +8,7 @@ import { DataType } from '../../types/table.types';
 import { mapPublications } from '../../utils/persistence/publications.helper';
 import { FilterComponent } from '../filterLayout';
 import { Button } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 
 export const HomePage = () => {
   const [publications, setPublications] = useState<DataType[]>([]);
@@ -33,7 +34,11 @@ export const HomePage = () => {
   return (
     <HomeLayout>
       <>
-        <Button onClick={() => setOpenFilter(true)}>Search</Button>
+        <SearchContainer>
+          <Button type="primary" icon={<SearchOutlined />} onClick={() => setOpenFilter(true)}>
+            Search
+          </Button>
+        </SearchContainer>
         <FilterComponent
           open={openFilter}
           setPublications={setPublications}

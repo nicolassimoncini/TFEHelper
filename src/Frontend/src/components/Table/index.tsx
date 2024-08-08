@@ -83,13 +83,18 @@ const columns: TableColumnsType<DataType> = [
   },
 ];
 
-const defaultCheckedList = columns.map(item => item.key as string);
-
 export const TableComponent: React.FC<Props> = ({ publications, isLoading, isError, onChange }) => {
   const [expandedRowKeys, setExpandedRowKeys] = useState<React.Key[]>([]);
 
   // Hide/Show columns in table
-  const [checkedList, setCheckedList] = useState<string[]>(defaultCheckedList);
+  const [checkedList, setCheckedList] = useState<string[]>([
+    'title',
+    'authors',
+    'year',
+    'source',
+    'keywords',
+    'pages',
+  ]);
   // Rows selected
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
@@ -126,7 +131,6 @@ export const TableComponent: React.FC<Props> = ({ publications, isLoading, isErr
 
   return (
     <TableLayout>
-      <Divider>Columns Displayed</Divider>
       <Checkbox.Group
         value={checkedList}
         options={options as CheckboxOptionType[]}
