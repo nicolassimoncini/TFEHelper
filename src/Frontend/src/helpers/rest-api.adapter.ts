@@ -25,7 +25,11 @@ interface restApiAdapterInterface {
 export class RestApiAdapter implements restApiAdapterInterface {
     
     async get(url: string): Promise<restApiResponse> {
-        return await axios.get(`${baseURL}/${url}`) as restApiResponse;
+        return await axios.get(`${baseURL}/${url}`, {headers: {
+            'Cache-control': 'no-cache',
+            'Pragma': 'no-cache',
+            'Expires': '0',
+        }}) as restApiResponse;
     }
     async post(url: string, data: any): Promise<restApiResponse> {
         if (data instanceof FormData) {

@@ -38,14 +38,15 @@ export const HomePage = () => {
 
     try {
       setIsLoading(true);
-      await Promise.all(promises);
-      requestPublications();
+      await Promise.all(promises)
+        .then(() => requestPublications)
+        .finally(() => setIsLoading(false));
     } catch (error) {
       setIsLoading(false);
       setIsError(true);
     }
 
-    setIsLoading(false);
+    window.location.reload();
   };
 
   return (

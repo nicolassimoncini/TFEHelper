@@ -36,9 +36,6 @@ export const NarrowingComponent: React.FC<Props> = ({ onChange }) => {
   const handleAddNarrowing = () => {
     // Validation
     if (textInput1 === '' || textInput2 === '') {
-      console.log(textInput1 === '');
-      console.log(textInput2 === '');
-      //   if (textInput1 !== '' || textInput2 !== '') {
       setValidationArray({ ...validationArray, textInput1: true, textInput2: true });
 
       Swal.fire({
@@ -49,9 +46,7 @@ export const NarrowingComponent: React.FC<Props> = ({ onChange }) => {
 
       return;
     }
-
-    // Add the narrowing item to array
-    setNarrowingsArray([
+    const arr: INarrowings[] = [
       ...narrowingsArray,
       {
         id: Date.now(),
@@ -60,10 +55,13 @@ export const NarrowingComponent: React.FC<Props> = ({ onChange }) => {
         secondInput: textInput2,
         distance: numberDistance,
       },
-    ]);
+    ];
+    // Add the narrowing item to array
+    setNarrowingsArray(arr);
 
     // Return to parent component, narrowings array
-    onChange(narrowingsArray);
+    console.log(arr);
+    onChange(arr);
   };
 
   const handleOnFormChange = () => {

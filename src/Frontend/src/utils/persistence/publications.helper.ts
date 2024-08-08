@@ -3,8 +3,9 @@ import { Publication } from "../../types/publications.types";
 import { DataType } from "../../types/table.types";
 
 export const mapPluginPublication = (publications: Publication[]): DataType[] => {
+    let counter = 0;
     return publications.map(publication => ({
-    id: publication.key,
+    id: publication.key || counter++,
     key: publication.key,
     title: publication.title || '-',
     abstract: publication.abstract || '-',
