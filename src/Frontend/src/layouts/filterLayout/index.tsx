@@ -41,6 +41,8 @@ export const FilterComponent: React.FC<Props> = ({ setPublications, open, setOpe
   const handleOnSubmit = async () => {
     // Parse query string data
     const body = convertToSqliteParameterizedQuery(queryString, narrowings);
+    console.log(narrowings);
+    console.log(body);
 
     await searchPublications(body)
       .then(p => setPublications(mapPublications(p)))
@@ -60,7 +62,7 @@ export const FilterComponent: React.FC<Props> = ({ setPublications, open, setOpe
           queyString={queryString}
           onChange={setQueryString}
         ></QueryBuilderComponent>
-        <NarrowingComponent onChange={setNarrowings}></NarrowingComponent>
+        <NarrowingComponent onChange={value => setNarrowings(value)}></NarrowingComponent>
         <ButtonsContainer>
           <Button type="primary" onClick={handleOnSubmit}>
             Search

@@ -8,10 +8,4 @@ export const Container = styled.div<{ backgroundColor: string }>`
   width: 100%;
 `;
 
-export const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: calc(100% - 68px);
-  flex: 1;
-  overflow-y: auto;
-`;
+export const HeaderContainer = styled;

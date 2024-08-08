@@ -60,7 +60,7 @@ export const PluginsLayout: React.FC<Props> = () => {
         parseInt(selectedItem?.key as string),
         parseInt(activePlugin?.id as unknown as string),
       ),
-    );
+    ).catch(e => setPublicationError(true));
   };
 
   return (
@@ -98,7 +98,7 @@ export const PluginsLayout: React.FC<Props> = () => {
           publications={publications}
           isLoading={publicationLoader}
           isError={publicationError}
-          onChange={setSelectedPubs}
+          onChange={pubs => setSelectedPubs(pubs)}
         ></TableComponent>
         <ButtonRow>
           <Button type="primary" onClick={handleOnSubmit}>

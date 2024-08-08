@@ -3,10 +3,9 @@ import { Publication } from "../../types/publications.types";
 import { DataType } from "../../types/table.types";
 
 export const mapPublications = (publications: Publication[]): DataType[] => {
-  let counter = 0
   return publications.map(publication => ({
-    key: counter++,
-    id: publication.key,
+    key: publication.key,
+    id: publication.id,
     title: publication.title || '-',
     abstract: publication.abstract || '-',
     authors: publication.authors || '-',
@@ -24,8 +23,8 @@ export const mapPublications = (publications: Publication[]): DataType[] => {
 export const dataType2Publication = (data: DataType[], type: number, source: number): Publication[] => {
 
   return data.map( d => ({
-    id: d.key || 0,
-    key: d.id || 0,
+    id: d.id || 0,
+    key: d.key || 0,
     title: d.title,
     abstract: d.abstract, 
     authors: d.authors,

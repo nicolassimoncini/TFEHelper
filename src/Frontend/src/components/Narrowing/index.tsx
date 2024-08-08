@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import { INarrowings } from '../../types/search.types';
 
 interface Props {
-  onChange: React.Dispatch<React.SetStateAction<INarrowings[]>>;
+  onChange: React.Dispatch<INarrowings[]>;
 }
 
 interface IValidationErrorArray {

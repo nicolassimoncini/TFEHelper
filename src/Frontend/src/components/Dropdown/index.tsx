@@ -63,7 +63,11 @@ export const DropdownComponent: React.FC<DropdownProps> = ({
         ) : (
           <Button>
             <Space>
-              {!!selectedOption ? selectedOption.label : `Select ${name}`}
+              {!options.length
+                ? '--------'
+                : !!selectedOption
+                  ? selectedOption.label
+                  : `Select ${name}`}
               <DownOutlined />
             </Space>
           </Button>

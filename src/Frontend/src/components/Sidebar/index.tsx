@@ -1,8 +1,8 @@
 import { MenuProps } from 'rc-menu';
 import { HomeOutlined, SearchOutlined, UploadOutlined } from '@ant-design/icons';
-import { useState } from 'react';
+
 import Sider from 'antd/es/layout/Sider';
-import { Menu, theme } from 'antd';
+import { Menu } from 'antd';
 import { Link } from 'react-router-dom';
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -28,21 +28,23 @@ const items: MenuItem[] = [
   getItem('Plugins', '3', <SearchOutlined />, '/plugins'),
 ];
 
+const siderStyle: React.CSSProperties = {
+  overflow: '',
+  height: '100vh',
+  insetInlineStart: 0,
+  top: 0,
+  bottom: 0,
+  position: 'fixed',
+  scrollbarWidth: 'thin',
+  scrollbarColor: 'unset',
+  zIndex: 100,
+  marginTop: 64,
+  boxShadow: '2px 0 8px rgba(0, 0, 0, 0.1)',
+};
+
 export const Sidebar: React.FC = () => {
-  const [collapsed, setCollapsed] = useState<boolean>(true);
-
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
-
   return (
-    <Sider
-      collapsible={true}
-      collapsed={collapsed}
-      onCollapse={value => setCollapsed(value)}
-      style={{ background: colorBgContainer }}
-    >
-      <div className="demo-logo-vertical" />
+    <Sider collapsed={true} theme="light" style={siderStyle}>
       <Menu theme="light" defaultSelectedKeys={['1']} mode="inline" items={items} />
     </Sider>
   );

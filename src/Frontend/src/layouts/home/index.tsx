@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { TableComponent } from '../../components/Table';
-import { HomeLayout } from './style';
+import { ButtonContainer, HomeLayout } from './style';
 import { useDispatch } from 'react-redux';
 import { fetchConfiguration } from '../../redux/configurations/configuration.slice';
 import { getPublications } from '../../rest-api/publications.api';
@@ -28,10 +28,11 @@ export const HomePage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleOnDelete = () => {};
+
   return (
     <HomeLayout>
       <>
-        <h1>TFE HELPER</h1>
         <Button onClick={() => setOpenFilter(true)}>Search</Button>
         <FilterComponent
           open={openFilter}
@@ -42,7 +43,14 @@ export const HomePage = () => {
           publications={publications}
           isError={isError}
           isLoading={isLoading}
+          onChange={pubs => setPublications(pubs)}
         ></TableComponent>
+        <ButtonContainer>
+          <Button danger={true} onClick={handleOnDelete}>
+            {' '}
+            Delete{' '}
+          </Button>
+        </ButtonContainer>
       </>
     </HomeLayout>
   );
