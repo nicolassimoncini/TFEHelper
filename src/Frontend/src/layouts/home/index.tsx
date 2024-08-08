@@ -3,7 +3,7 @@ import { TableComponent } from '../../components/Table';
 import { ButtonContainer, HomeLayout, SearchContainer } from './style';
 import { useDispatch } from 'react-redux';
 import { fetchConfiguration } from '../../redux/configurations/configuration.slice';
-import { getPublications } from '../../rest-api/publications.api';
+import { deletePublication, getPublications } from '../../rest-api/publications.api';
 import { DataType } from '../../types/table.types';
 import { mapPublications } from '../../utils/persistence/publications.helper';
 import { FilterComponent } from '../filterLayout';
@@ -12,24 +12,41 @@ import { SearchOutlined } from '@ant-design/icons';
 
 export const HomePage = () => {
   const [publications, setPublications] = useState<DataType[]>([]);
+  const [selectedPublicationIds, setSelectedPublicationIds] = useState<string[]>([]);
   const [isError, setIsError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [openFilter, setOpenFilter] = useState<boolean>(false);
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fetchConfiguration());
-
+  const requestPublications = (): void => {
     getPublications()
       .then(response => setPublications(mapPublications(response)))
       .catch(() => setIsError(true))
       .finally(() => setIsLoading(false));
+  };
+
+  useEffect(() => {
+    dispatch(fetchConfiguration());
+    requestPublications();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleOnDelete = () => {};
+  const handleOnDelete = async () => {
+    const promises = selectedPublicationIds.map(id => deletePublication(id as string));
+
+    try {
+      setIsLoading(true);
+      await Promise.all(promises);
+      requestPublications();
+    } catch (error) {
+      setIsLoading(false);
+      setIsError(true);
+    }
+
+    setIsLoading(false);
+  };
 
   return (
     <HomeLayout>
@@ -48,13 +65,17 @@ export const HomePage = () => {
           publications={publications}
           isError={isError}
           isLoading={isLoading}
-          onChange={pubs => setPublications(pubs)}
+          onSelect={pubs => setSelectedPublicationIds(pubs)}
         ></TableComponent>
         <ButtonContainer>
-          <Button danger={true} onClick={handleOnDelete}>
-            {' '}
-            Delete{' '}
-          </Button>
+          {selectedPublicationIds.length > 0 ? (
+            <Button danger={true} onClick={handleOnDelete}>
+              {' '}
+              Delete{' '}
+            </Button>
+          ) : (
+            <></>
+          )}
         </ButtonContainer>
       </>
     </HomeLayout>

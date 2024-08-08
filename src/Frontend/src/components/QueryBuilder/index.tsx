@@ -25,6 +25,8 @@ const fields: Field[] = [
       { name: '=', label: '=' },
       { name: '>', label: '>' },
       { name: '<', label: '<' },
+      { name: '<=', label: '<=' },
+      { name: '>=', label: '>=' },
     ],
   },
   {

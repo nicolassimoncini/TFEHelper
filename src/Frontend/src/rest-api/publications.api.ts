@@ -16,7 +16,7 @@ export const getPublications = async (): Promise<Publication[]> => {
     return response.data.payload
 }
 
-export const postPublications = async (publications: Publication[]) => {
+export const postPublications = async (publications: Partial<Publication>[]) => {
     return (await restApiAdapter.post(`Publications`, publications)).data.payload;
 }
 
@@ -26,6 +26,10 @@ export const putPublication = async(publication:Publication) => {
 
 export const patchPublication = async(publication: Publication) => {
     return (await restApiAdapter.patch(`Publications/${publication.id}`, publication)).data.payload;
+}
+
+export const deletePublication = async(id: string) => { 
+    return (await restApiAdapter.delete(`Publications/${id}`)).data.payload
 }
 
 export const searchPublications = async(searchObj: ISearchType): Promise<Publication[]> => {

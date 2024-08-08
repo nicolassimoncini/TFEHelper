@@ -16,7 +16,7 @@ import Input from 'antd/es/input/Input';
 import { DataType } from '../../../types/table.types';
 import { PluginCollectorQuery } from '../../../types/search.types';
 import { searchInPlugins } from '../../../rest-api/plugins.api';
-import { mapPublications } from '../../../utils/persistence/publications.helper';
+import { mapPluginPublication } from '../../../utils/persistence/publications.helper';
 import Swal from 'sweetalert2';
 
 interface Props {
@@ -88,7 +88,7 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications, setPublic
 
     setPublicationLoader(true);
     searchInPlugins(plugin!.id.toString(), queryParams)
-      .then(res => setPublications(mapPublications(res)))
+      .then(res => setPublications(mapPluginPublication(res)))
       .catch(err => {
         console.error(err);
         Swal.fire({

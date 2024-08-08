@@ -1,4 +1,4 @@
-import { Checkbox, CheckboxOptionType, Divider, Table, TableColumnsType } from 'antd';
+import { Checkbox, CheckboxOptionType, Table, TableColumnsType } from 'antd';
 import React, { useState } from 'react';
 import { TableRowSelection } from 'antd/es/table/interface';
 import {
@@ -16,7 +16,7 @@ interface Props {
   publications: DataType[];
   isLoading: boolean;
   isError: boolean;
-  onChange?: React.Dispatch<React.SetStateAction<DataType[]>>;
+  onSelect?: React.Dispatch<string[]>;
 }
 
 const columns: TableColumnsType<DataType> = [
@@ -83,7 +83,7 @@ const columns: TableColumnsType<DataType> = [
   },
 ];
 
-export const TableComponent: React.FC<Props> = ({ publications, isLoading, isError, onChange }) => {
+export const TableComponent: React.FC<Props> = ({ publications, isLoading, isError, onSelect }) => {
   const [expandedRowKeys, setExpandedRowKeys] = useState<React.Key[]>([]);
 
   // Hide/Show columns in table
@@ -107,10 +107,11 @@ export const TableComponent: React.FC<Props> = ({ publications, isLoading, isErr
   const newColumns = columns.filter(({ key }) => checkedList.includes(key as string));
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    if (!!onChange) {
-      onChange(publications.filter(p => p.key in newSelectedRowKeys));
-    }
     setSelectedRowKeys(newSelectedRowKeys);
+
+    if (!!onSelect) {
+      onSelect(newSelectedRowKeys as string[]);
+    }
   };
 
   const rowSelection: TableRowSelection<DataType> = {
@@ -150,6 +151,7 @@ export const TableComponent: React.FC<Props> = ({ publications, isLoading, isErr
             dataSource={publications}
             style={{ maxWidth: '95vw', padding: '5px', overflow: 'hidden' }}
             columns={newColumns}
+            rowKey={'id'}
             expandable={{
               expandedRowKeys: expandedRowKeys,
               onExpand: (expanded, record) => {

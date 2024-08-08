@@ -16,7 +16,8 @@ import { TableComponent } from '../../components/Table';
 import { DataType } from '../../types/table.types';
 import { Button } from 'antd';
 import { postPublications } from '../../rest-api/publications.api';
-import { dataType2Publication } from '../../utils/persistence/publications.helper';
+import { dataTypePlugin2Publication } from '../../utils/persistence/publications.helper';
+import { successAlert } from '../../components/Notifications';
 
 interface Props {}
 
@@ -30,7 +31,7 @@ export const PluginsLayout: React.FC<Props> = () => {
   const [publicationLoader, setPublicationLoader] = useState<boolean>(false);
   const [publicationError, setPublicationError] = useState<boolean>(false);
 
-  const [selectedPubs, setSelectedPubs] = useState<DataType[]>([]);
+  const [selectedPubs, setSelectedPubs] = useState<string[]>([]);
 
   // Get plugins
   useEffect(() => {
@@ -54,13 +55,18 @@ export const PluginsLayout: React.FC<Props> = () => {
   const handleOnSubmit = () => {
     if (!activePlugin?.id) return;
 
+    setIsLoading(true);
+
     postPublications(
-      dataType2Publication(
-        selectedPubs,
+      dataTypePlugin2Publication(
+        publications.filter(p => selectedPubs.includes(p.id as string)),
         parseInt(selectedItem?.key as string),
         parseInt(activePlugin?.id as unknown as string),
       ),
-    ).catch(e => setPublicationError(true));
+    )
+      .then(() => setIsLoading(false))
+      .then(() => successAlert('Publications saved correctly!.'))
+      .catch(e => setPublicationError(true));
   };
 
   return (
@@ -98,7 +104,7 @@ export const PluginsLayout: React.FC<Props> = () => {
           publications={publications}
           isLoading={publicationLoader}
           isError={publicationError}
-          onChange={pubs => setSelectedPubs(pubs)}
+          onSelect={pubs => setSelectedPubs(pubs)}
         ></TableComponent>
         <ButtonRow>
           <Button type="primary" onClick={handleOnSubmit}>

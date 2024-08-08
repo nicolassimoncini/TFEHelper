@@ -5,6 +5,7 @@ export const TableLayout = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
+  height: 100%;
   scroll-behavior: auto;
 `;
 

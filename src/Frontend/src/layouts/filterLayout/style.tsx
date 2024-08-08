@@ -10,5 +10,6 @@ export const ButtonsContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  margin-top: 5px;
+  padding: 10px;
+  gap: 10px;
 `;
