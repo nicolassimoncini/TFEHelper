@@ -49,12 +49,16 @@ export const HomePage = () => {
     window.location.reload();
   };
 
+  const handleOnExport = async () => {
+    console.log(publications);
+  };
+
   return (
     <HomeLayout>
       <>
         <SearchContainer>
           <Button type="primary" icon={<SearchOutlined />} onClick={() => setOpenFilter(true)}>
-            Search
+            Filter
           </Button>
         </SearchContainer>
         <FilterComponent
@@ -70,10 +74,17 @@ export const HomePage = () => {
         ></TableComponent>
         <ButtonContainer>
           {selectedPublicationIds.length > 0 ? (
-            <Button danger={true} onClick={handleOnDelete}>
-              {' '}
-              Delete{' '}
-            </Button>
+            <>
+              <Button type="primary" onClick={handleOnExport}>
+                {' '}
+                Export{' '}
+              </Button>
+
+              <Button danger={true} onClick={handleOnDelete}>
+                {' '}
+                Delete{' '}
+              </Button>
+            </>
           ) : (
             <></>
           )}

@@ -155,7 +155,7 @@ export const TableComponent: React.FC<Props> = ({ publications, isLoading, isErr
             expandable={{
               expandedRowKeys: expandedRowKeys,
               onExpand: (expanded, record) => {
-                toggleExpandedRow(record.key);
+                toggleExpandedRow(record.id);
               },
               expandedRowRender: (record: DataType) => (
                 <div style={{ whiteSpace: 'pre-line' }}>
