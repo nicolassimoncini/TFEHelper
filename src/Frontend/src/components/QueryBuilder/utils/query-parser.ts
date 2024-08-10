@@ -28,6 +28,8 @@ export const convertToSqliteParameterizedQuery = (query: RuleGroupType, narrowin
 
     const whereClauses: string[] = [];
     const parameters: { name: string; value: any }[] = [];
+    const paramCounter: { [key: string]: number } = {};  // Counter object to track parameter names
+
 
     const traverseRules = (rules: RuleGroupType['rules'], combinator: string): string[] => {
         return rules.map((rule) => {
@@ -36,43 +38,51 @@ export const convertToSqliteParameterizedQuery = (query: RuleGroupType, narrowin
             } else {
                 const { field, operator, value } = rule;
                 let clause = '';
-                let paramName = `@${field}`;
+                // Increment the counter for the field
+                if (!paramCounter[field]) {
+                    paramCounter[field] = 1;
+                } else {
+                    paramCounter[field]++;
+                }
+
+                // Generate the parameter name with the counter
+                const paramName = `@${field}${paramCounter[field]}`;
                 switch (operator) {
                     case '=':
                         clause = `${field} = ${paramName}`;
-                        parameters.push({ name: field, value });
+                        parameters.push({ name: paramName, value });
                         break;
                     case '!=':
                         clause = `${field} != ${paramName}`;
-                        parameters.push({ name: field, value });
+                        parameters.push({ name: paramName, value });
                         break;
                     case '<':
                         clause = `${field} < ${paramName}`;
-                        parameters.push({ name: field, value });
+                        parameters.push({ name: paramName, value });
                         break;
                     case '<=':
                         clause = `${field} <= ${paramName}`;
-                        parameters.push({ name: field, value });
+                        parameters.push({ name: paramName, value });
                         break;
                     case '>':
                         clause = `${field} > ${paramName}`;
-                        parameters.push({ name: field, value });
+                        parameters.push({ name: paramName, value });
                         break;
                     case '>=':
                         clause = `${field} >= ${paramName}`;
-                        parameters.push({ name: field, value });
+                        parameters.push({ name: paramName, value });
                         break;
                     case 'contains':
                         clause = `${field} LIKE ${paramName}`;
-                        parameters.push({ name: field, value: `%${value}%` });
+                        parameters.push({ name: paramName, value: `%${value}%` });
                         break;
                     case 'beginsWith':
                         clause = `${field} LIKE ${paramName}`;
-                        parameters.push({ name: field, value: `${value}%` });
+                        parameters.push({ name: paramName, value: `${value}%` });
                         break;
                     case 'endsWith':
                         clause = `${field} LIKE ${paramName}`;
-                        parameters.push({ name: field, value: `%${value}` });
+                        parameters.push({ name: paramName, value: `%${value}` });
                         break;
                     default:
                         break;
