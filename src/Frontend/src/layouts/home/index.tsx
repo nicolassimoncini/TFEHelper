@@ -5,10 +5,11 @@ import { useDispatch } from 'react-redux';
 import { fetchConfiguration } from '../../redux/configurations/configuration.slice';
 import { deletePublication, getPublications } from '../../rest-api/publications.api';
 import { DataType } from '../../types/table.types';
-import { mapPublications } from '../../utils/persistence/publications.helper';
+import { dataType2Publication, mapPublications } from '../../utils/persistence/publications.helper';
 import { FilterComponent } from '../filterLayout';
 import { Button } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
+import { ModalExportPubs } from '../../components/Modal/ExportPubs/index';
 
 export const HomePage = () => {
   const [publications, setPublications] = useState<DataType[]>([]);
@@ -16,6 +17,7 @@ export const HomePage = () => {
   const [isError, setIsError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [openFilter, setOpenFilter] = useState<boolean>(false);
+  const [openExportModal, setOpenExportModal] = useState<boolean>(false);
 
   const dispatch = useDispatch();
 
@@ -50,7 +52,7 @@ export const HomePage = () => {
   };
 
   const handleOnExport = async () => {
-    console.log(publications);
+    setOpenExportModal(true);
   };
 
   return (
@@ -90,6 +92,13 @@ export const HomePage = () => {
           )}
         </ButtonContainer>
       </>
+      <ModalExportPubs
+        isOpen={openExportModal}
+        setIsOpen={value => setOpenExportModal(value)}
+        pubs={dataType2Publication(
+          publications.filter(p => selectedPublicationIds.includes(p.id as string)),
+        )}
+      ></ModalExportPubs>
     </HomeLayout>
   );
 };

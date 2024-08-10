@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { RestApiAdapter } from '../helpers/rest-api.adapter';
 import { Publication } from '../types/publications.types';
 import { IFileUploadData, ISearchType, ImportFileType } from '../types/search.types';
@@ -68,13 +69,38 @@ export const exportPublications = async(file: ImportFileType) => {
     return (await restApiAdapter.post(`Publications/Export`, file)).data.payload
 }
 
-export const exportPublicationsAsStream = async(fileFormat: number) => {
+export const exportPublicationsAsStream = async(fileFormat: number, pubs: Publication[]) => {
     try {
-        const response = await restApiAdapter.post(
-            `Publications/ExportAsStream`,{
-                formatType: fileFormat
-            }
+        const response = await axios.post(
+            `Publications/ExportAsStream?formatType=${fileFormat}`,
+            pubs,
+            { responseType: 'blob' }
         )
+
+        // Determine file type and extension based on the format type
+        let fileExtension = fileFormat === 1 ? 'csv' : 'bib';
+        let mimeType = fileFormat === 1 ? 'text/csv' : 'text/x-bibtex';
+
+        // Create a Blob from the response data
+        const blob = new Blob([response.data], { type: mimeType });
+        
+        // Create a link element
+        const link = document.createElement('a');
+        
+        // Create a URL for the Blob and set it as the href attribute
+        link.href = window.URL.createObjectURL(blob);
+        
+        // Set the download attribute with a filename
+        link.download = `publications.${fileExtension}`;
+        
+        // Append the link to the body (required for Firefox)
+        document.body.appendChild(link);
+        
+        // Trigger the download by simulating a click
+        link.click();
+        
+        // Clean up by removing the link
+        document.body.removeChild(link);
 
         return response
 

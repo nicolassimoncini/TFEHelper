@@ -2,9 +2,9 @@ import { ConfigurationItem } from "./configurations.types";
 
 export interface Publication {
     id: string | number;
-    type: ConfigurationItem | number;
+    type?: ConfigurationItem | number;
     key: string | number;
-    source: ConfigurationItem | number;
+    source?: ConfigurationItem | number;
     url: string| null;
     title: string| null;
     authors: string| null;

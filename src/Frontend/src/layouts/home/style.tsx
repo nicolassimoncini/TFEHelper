@@ -16,7 +16,8 @@ export const SearchContainer = styled.div`
 `;
 
 export const ButtonContainer = styled.div`
-  display: flex;
   align-self: flex-end;
+  display: flex;
+  gap: 5px;
   justify-content: flex-end;
 `;

@@ -58,7 +58,7 @@ export const mapPublications = (publications: Publication[]): DataType[] => {
   }));
 };
 
-export const dataType2Publication = (data: DataType[], type: number, source: number): Publication[] => {
+export const dataType2Publication = (data: DataType[], type?: number, source?: number): Publication[] => {
 
   return data.map( d => ({
     id: d.id,
@@ -67,13 +67,13 @@ export const dataType2Publication = (data: DataType[], type: number, source: num
     abstract: d.abstract, 
     authors: d.authors,
     year: d.year || null,
-    source: source,
+    source,
     keywords: d.keywords,
     doi: d.doi, 
     isbn: d.isbn, 
     issn: d.issn,
     pages: d.pages,
-    type: type,
+    type,
     url: d.url || ''
   }))
 }
