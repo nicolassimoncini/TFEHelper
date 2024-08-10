@@ -14,7 +14,7 @@ interface Props {
 
 export const ModalExportPubs: React.FC<Props> = ({ isOpen, pubs, setIsOpen }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [value, setValue] = useState<number>(1);
+  const [value, setValue] = useState<number>(0);
 
   // Configuration list
   const fileFormats = useSelector((state: Store) => state.configuration.FileFormatTypeConfig);
