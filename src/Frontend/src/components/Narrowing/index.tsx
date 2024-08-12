@@ -60,7 +60,6 @@ export const NarrowingComponent: React.FC<Props> = ({ onChange }) => {
     setNarrowingsArray(arr);
 
     // Return to parent component, narrowings array
-    console.log(arr);
     onChange(arr);
   };
 

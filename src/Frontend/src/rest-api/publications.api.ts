@@ -37,7 +37,6 @@ export const searchPublications = async(searchObj: ISearchType): Promise<Publica
     const response = await restApiAdapter.post(`Publications/Search`, searchObj)
 
     if (response.status !== 200 ) {
-        console.error(response.data.errorMessage)
         throw new Error('Error fetching filtered publications');
     }
 

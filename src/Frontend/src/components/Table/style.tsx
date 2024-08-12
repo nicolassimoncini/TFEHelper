@@ -15,7 +15,9 @@ export const Table = styled.table`
   scroll-behavior: auto;
 `;
 
-export const TableContainer = styled.div``;
+export const TableContainer = styled.div`
+  height: 100%;
+`;
 
 export const RowAbstract = styled.div`
   display: flex;

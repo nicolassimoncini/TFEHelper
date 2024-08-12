@@ -45,8 +45,6 @@ export const ImportFileLayout: React.FC = () => {
         title: 'Oops...',
         text: 'Please select a file format, source, and a file to import.',
       });
-
-      console.log(file, selectedFileFormat, selectedSource);
     } else {
       const response = await uploadFileRequest({
         file: file,
@@ -69,8 +67,6 @@ export const ImportFileLayout: React.FC = () => {
         });
       }
     }
-
-    console.log('Importing file...');
   };
 
   return (

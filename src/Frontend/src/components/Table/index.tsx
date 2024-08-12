@@ -149,7 +149,7 @@ export const TableComponent: React.FC<Props> = ({ publications, isLoading, isErr
           <Table
             rowSelection={rowSelection}
             dataSource={publications}
-            style={{ maxWidth: '95vw', padding: '5px', overflow: 'hidden' }}
+            style={{ maxWidth: '95vw', padding: '5px', overflow: 'hidden', height: '100%' }}
             columns={newColumns}
             rowKey={'id'}
             expandable={{
@@ -167,7 +167,7 @@ export const TableComponent: React.FC<Props> = ({ publications, isLoading, isErr
               ),
               rowExpandable: record => true,
             }}
-            scroll={{ x: 'true', y: '50vh' }}
+            scroll={{ x: 'true', y: '60vh' }}
             showSorterTooltip={{
               target: 'sorter-icon',
             }}

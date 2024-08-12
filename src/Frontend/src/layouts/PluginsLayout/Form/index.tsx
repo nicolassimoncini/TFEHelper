@@ -90,7 +90,6 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications, setPublic
     searchInPlugins(plugin!.id.toString(), queryParams)
       .then(res => setPublications(mapPluginPublication(res)))
       .catch(err => {
-        console.error(err);
         Swal.fire({
           icon: 'error',
           title: 'Oopss...',

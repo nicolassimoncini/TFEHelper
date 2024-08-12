@@ -13,7 +13,7 @@ import { mapPublications } from '../../utils/persistence/publications.helper';
 interface Props {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setPublications: React.Dispatch<React.SetStateAction<DataType[]>>;
+  setPublications: React.Dispatch<DataType[]>;
 }
 
 const initialQueryString = {
@@ -41,8 +41,6 @@ export const FilterComponent: React.FC<Props> = ({ setPublications, open, setOpe
   const handleOnSubmit = async () => {
     // Parse query string data
     const body = convertToSqliteParameterizedQuery(queryString, narrowings);
-    console.log(narrowings);
-    console.log(body);
 
     await searchPublications(body)
       .then(p => setPublications(mapPublications(p)))

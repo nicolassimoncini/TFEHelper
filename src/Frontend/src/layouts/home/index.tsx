@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { TableComponent } from '../../components/Table';
-import { ButtonContainer, HomeLayout, SearchContainer } from './style';
+import { ButtonContainer, HomeLayout, SearchContainer, TableContainer } from './style';
 import { useDispatch } from 'react-redux';
 import { fetchConfiguration } from '../../redux/configurations/configuration.slice';
 import { deletePublication, getPublications } from '../../rest-api/publications.api';
@@ -18,12 +18,17 @@ export const HomePage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [openFilter, setOpenFilter] = useState<boolean>(false);
   const [openExportModal, setOpenExportModal] = useState<boolean>(false);
+  const [shownNumber, setShownNumber] = useState<number>(0);
+  const [total, setTotal] = useState<number>(parseInt(localStorage.getItem('total') || '0'));
 
   const dispatch = useDispatch();
 
-  const requestPublications = (): void => {
-    getPublications()
-      .then(response => setPublications(mapPublications(response)))
+  const requestPublications = async (): Promise<void> => {
+    await getPublications()
+      .then(response => {
+        setTotal(response.length);
+        setPublications(mapPublications(response));
+      })
       .catch(() => setIsError(true))
       .finally(() => setIsLoading(false));
   };
@@ -31,9 +36,12 @@ export const HomePage = () => {
   useEffect(() => {
     dispatch(fetchConfiguration());
     requestPublications();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    setShownNumber(publications.length);
+  }, [publications]);
 
   const handleOnDelete = async () => {
     const promises = selectedPublicationIds.map(id => deletePublication(id as string));
@@ -62,19 +70,32 @@ export const HomePage = () => {
           <Button type="primary" icon={<SearchOutlined />} onClick={() => setOpenFilter(true)}>
             Filter
           </Button>
+          <p>Result: {`${shownNumber}/${total}`}</p>
         </SearchContainer>
         <FilterComponent
           open={openFilter}
-          setPublications={setPublications}
+          setPublications={value => {
+            setPublications(value);
+            setShownNumber(value.length);
+          }}
           setOpen={setOpenFilter}
         ></FilterComponent>
-        <TableComponent
-          publications={publications}
-          isError={isError}
-          isLoading={isLoading}
-          onSelect={pubs => setSelectedPublicationIds(pubs)}
-        ></TableComponent>
+        <TableContainer>
+          <TableComponent
+            publications={publications}
+            isError={isError}
+            isLoading={isLoading}
+            onSelect={pubs => setSelectedPublicationIds(pubs)}
+          ></TableComponent>
+        </TableContainer>
         <ButtonContainer>
+          {shownNumber !== total ? (
+            <Button type="primary" onClick={() => requestPublications()}>
+              Clear
+            </Button>
+          ) : (
+            <></>
+          )}
           {selectedPublicationIds.length > 0 ? (
             <>
               <Button type="primary" onClick={handleOnExport}>

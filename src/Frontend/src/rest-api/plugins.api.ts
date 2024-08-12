@@ -22,7 +22,6 @@ export const searchInPlugins = async(id: string, searchObj: PluginCollectorQuery
         
         return res.data.payload as Publication[]
     } catch (error) {
-        console.error()
         throw new Error('Error while fetching publications');
     }
 }
