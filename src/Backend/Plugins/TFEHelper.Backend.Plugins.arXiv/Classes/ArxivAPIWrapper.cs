@@ -17,13 +17,15 @@ namespace TFEHelper.Backend.Plugins.arXiv.Classes
 {
     internal class ArxivAPIWrapper
     {
+        private readonly PluginConfigurationController _config;
         private readonly ILogger _logger;
         private QueryStringBuilder _queryBuilder;
 
-        public ArxivAPIWrapper(ILogger logger)
+        public ArxivAPIWrapper(ILogger logger, PluginConfigurationController config)
         {
             _queryBuilder = new QueryStringBuilder();
             _logger = logger;
+            _config = config;
         }
 
         private string BuildSearchQuery(PublicationsCollectorParametersPLG searchParameters, PluginConfigurationController config)
@@ -179,8 +181,17 @@ namespace TFEHelper.Backend.Plugins.arXiv.Classes
             List<XElement> entries;
             ArxivFeedDTO feed = null;
             bool maxReached = false;
-            int remaining = searchParameters.ReturnQuantityLimit;
+            int remaining;
+            var maxQuantitySupported = _config.Get<int>("MaxQuantityResult");
             var searchQuery = BuildSearchQuery(searchParameters, config);
+
+            if (searchParameters.ReturnQuantityLimit > maxQuantitySupported)
+            {
+                _logger.LogInformation("Too many records for the request.  Capping to {maxQuantityResult}...", maxQuantitySupported);
+                remaining = maxQuantitySupported;
+                searchParameters.ReturnQuantityLimit = maxQuantitySupported;
+            }
+            else remaining = searchParameters.ReturnQuantityLimit;
 
             _logger.LogInformation("Requesting {ReturnQuantityLimit} publications...", searchParameters.ReturnQuantityLimit);
 
