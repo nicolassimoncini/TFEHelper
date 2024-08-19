@@ -25,7 +25,7 @@ namespace TFEHelper.Backend.Services.Contracts.DTO.Plugin
         public DateOnly DateTo { get; set; }
 
         [Required(AllowEmptyStrings = false)]
-        [Range(0, 2000)]
+        [Range(0, int.MaxValue)]
         public int ReturnQuantityLimit { get; set; } = 0;
     }
 }
