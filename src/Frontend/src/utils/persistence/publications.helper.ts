@@ -4,21 +4,30 @@ import { DataType } from "../../types/table.types";
 
 export const mapPluginPublication = (publications: Publication[]): DataType[] => {
     let counter = 0;
-    return publications.map(publication => ({
-    id: publication.key || counter++,
-    key: publication.key,
-    title: publication.title || '-',
-    abstract: publication.abstract || '-',
-    authors: publication.authors || '-',
-    year: publication.year || null,
-    source: (publication.source as ConfigurationItem).name || '-',
-    keywords: publication.keywords || '-',
-    doi: publication.doi || '-',
-    isbn: publication.isbn || '-',
-    issn: publication.issn || '-',
-    pages: publication.pages || '-',
-    url: publication.url || '-'
-  }));
+
+    // Check if every publciation has the same key
+    const checkSame = Array.from(new Set(publications.map(p => p.key)))
+
+    return publications.map(publication => { 
+      const id = (checkSame.length > 1)? publication.key : counter ++
+
+      return {
+        id: id ,
+        key: publication.key,
+        title: publication.title || '-',
+        abstract: publication.abstract || '-',
+        authors: publication.authors || '-',
+        year: publication.year || null,
+        source: (publication.source as ConfigurationItem).name || '-',
+        keywords: publication.keywords || '-',
+        doi: publication.doi || '-',
+        isbn: publication.isbn || '-',
+        issn: publication.issn || '-',
+        pages: publication.pages || '-',
+        url: publication.url || '-'
+      }
+    }
+  );
 }
 
 export const dataTypePlugin2Publication = (data: DataType[], type: number, source: number): Partial<Publication>[] => {
