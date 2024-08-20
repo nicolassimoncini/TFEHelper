@@ -93,7 +93,7 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications, setPublic
         Swal.fire({
           icon: 'error',
           title: 'Oopss...',
-          text: 'Errro while fetching publications',
+          text: 'Error while fetching publications',
         });
       })
       .finally(() => setPublicationLoader(false));
