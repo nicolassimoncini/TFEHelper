@@ -38,10 +38,10 @@ namespace TFEHelper.Backend.Plugins.Scopus.DTO
 
         [JsonPropertyName("prism:publicationName")]
         public string PublicationName { get; set; }
-
+        
         [JsonPropertyName("prism:isbn")]
-        public string ISBN { get; set; }
-
+        public List<ScopusISBNDTO> ISBN { get; set; }
+        
         [JsonPropertyName("prism:issn")]
         public string ISSN { get; set; }
 

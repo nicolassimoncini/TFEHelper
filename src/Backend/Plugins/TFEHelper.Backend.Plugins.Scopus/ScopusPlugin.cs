@@ -58,7 +58,7 @@ namespace TFEHelper.Backend.Plugins.Scopus
                         Abstract = record.Abstract, 
                         Authors = record.Creator,
                         DOI = record.DOI,
-                        ISBN = record.ISBN,
+                        ISBN = record.ISBN?.ToString(", ", (x) => { return x.Value; }),
                         ISSN = record.ISSN,
                         Keywords = record.Keywords, 
                         Pages = record.PageRange,

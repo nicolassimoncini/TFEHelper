@@ -40,7 +40,7 @@ namespace TFEHelper.Backend.Plugins.arXiv
 
         public async Task<IEnumerable<PublicationPLG>> GetPublicationsAsync(PublicationsCollectorParametersPLG searchParameters, CancellationToken cancellationToken = default)
         {
-            var api = new ArxivAPIWrapper(_logger);
+            var api = new ArxivAPIWrapper(_logger, _config);
             var entries = await api.GetAllRecordsAsync(searchParameters, _config, cancellationToken);
 
             // mapear los resultados a la lista de PublicationPLG...
