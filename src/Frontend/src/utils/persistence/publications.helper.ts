@@ -1,4 +1,4 @@
-import { ConfigurationItem } from "../../types/configurations.types";
+import { ConfigurationItem, ConfigurationType } from "../../types/configurations.types";
 import { Publication } from "../../types/publications.types";
 import { DataType } from "../../types/table.types";
 
@@ -49,7 +49,7 @@ export const dataTypePlugin2Publication = (data: DataType[], type: number, sourc
   }))
 }
 
-export const mapPublications = (publications: Publication[]): DataType[] => {
+export const mapPublications = (publications: Publication[], sourceList: ConfigurationType): DataType[] => {
   return publications.map(publication => ({
     id: publication.id,
     key: publication.key,
@@ -57,7 +57,7 @@ export const mapPublications = (publications: Publication[]): DataType[] => {
     abstract: publication.abstract || '-',
     authors: publication.authors || '-',
     year: publication.year || null,
-    source: (publication.source as ConfigurationItem).name || '-',
+    source: !!publication.source ? sourceList.items.find(i => i.value === publication.source)?.name || '-' : '-',
     keywords: publication.keywords || '-',
     doi: publication.doi || '-',
     isbn: publication.isbn || '-',

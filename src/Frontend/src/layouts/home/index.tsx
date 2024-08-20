@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { TableComponent } from '../../components/Table';
 import { ButtonContainer, HomeLayout, SearchContainer, TableContainer } from './style';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchConfiguration } from '../../redux/configurations/configuration.slice';
 import { deletePublication, getPublications } from '../../rest-api/publications.api';
 import { DataType } from '../../types/table.types';
@@ -10,6 +10,7 @@ import { FilterComponent } from '../filterLayout';
 import { Button } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { ModalExportPubs } from '../../components/Modal/ExportPubs/index';
+import { Store } from '../../types/store.types';
 
 export const HomePage = () => {
   const [publications, setPublications] = useState<DataType[]>([]);
@@ -22,12 +23,13 @@ export const HomePage = () => {
   const [total, setTotal] = useState<number>(parseInt(localStorage.getItem('total') || '0'));
 
   const dispatch = useDispatch();
+  const sourceArr = useSelector((state: Store) => state.configuration.SearchSourceTypeConfig);
 
   const requestPublications = async (): Promise<void> => {
     await getPublications()
       .then(response => {
         setTotal(response.length);
-        setPublications(mapPublications(response));
+        setPublications(mapPublications(response, sourceArr));
       })
       .catch(() => setIsError(true))
       .finally(() => setIsLoading(false));

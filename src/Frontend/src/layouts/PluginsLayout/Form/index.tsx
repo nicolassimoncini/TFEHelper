@@ -11,7 +11,7 @@ import {
   QueryFieldContainer,
   SubjectSelectorContainer,
 } from './style';
-import { Button, DatePicker } from 'antd';
+import { Button, DatePicker, Tooltip } from 'antd';
 import Input from 'antd/es/input/Input';
 import { DataType } from '../../../types/table.types';
 import { PluginCollectorQuery } from '../../../types/search.types';
@@ -39,6 +39,7 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications, setPublic
   const [selectedSubject, setSelectedSubject] = useState<MenuItem | null>(null);
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [errors, setErrors] = useState(errorsInit);
+  const [disableSubmitButton, setDisableSubmitButton] = useState<boolean>(false);
 
   useEffect(() => {
     if (!!plugin?.parameters?.collectionValued[0].value) {
@@ -77,6 +78,11 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications, setPublic
       return;
     }
 
+    if (errors.pNumber) {
+      setErrors({ ...errors, pNumber: true });
+      return;
+    }
+
     const queryParams: PluginCollectorQuery = {
       query: searchString,
       searchIn: narrowing,
@@ -87,6 +93,8 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications, setPublic
     };
 
     setPublicationLoader(true);
+    setDisableSubmitButton(true);
+
     searchInPlugins(plugin!.id.toString(), queryParams)
       .then(res => setPublications(mapPluginPublication(res)))
       .catch(err => {
@@ -96,7 +104,10 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications, setPublic
           text: 'Error while fetching publications',
         });
       })
-      .finally(() => setPublicationLoader(false));
+      .finally(() => {
+        setPublicationLoader(false);
+        setDisableSubmitButton(false);
+      });
   };
 
   return (
@@ -138,17 +149,27 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications, setPublic
       </DateSelectorContainer>
       <QuantitySelectorContainer>
         <p>Number of articles</p>
-        <Input
-          type="number"
-          disabled={!plugin}
-          min={10}
-          max={1000}
-          defaultValue={10}
-          onChange={e => setPNumber(parseInt(e.target.value))}
-        />
+        <Tooltip title={errors.pNumber ? 'Value must be less than 2000' : ''}>
+          <Input
+            type="number"
+            disabled={!plugin}
+            min={10}
+            max={2000}
+            defaultValue={10}
+            status={errors.pNumber ? 'error' : ''}
+            onChange={e => {
+              setErrors({ ...errors, pNumber: false });
+              if (parseInt(e.target.value) > 2001) {
+                setErrors({ ...errors, pNumber: true });
+              } else {
+                setPNumber(parseInt(e.target.value));
+              }
+            }}
+          />
+        </Tooltip>
       </QuantitySelectorContainer>
       <ButtonsContainer>
-        <Button type="primary" onClick={handleOnSubmit}>
+        <Button type="primary" disabled={disableSubmitButton} onClick={handleOnSubmit}>
           Search
         </Button>
         <Button onClick={handleOnClear}> Clear </Button>

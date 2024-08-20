@@ -9,6 +9,8 @@ import { searchPublications } from '../../rest-api/publications.api';
 import { convertToSqliteParameterizedQuery } from '../../components/QueryBuilder/utils/query-parser';
 import { INarrowings } from '../../types/search.types';
 import { mapPublications } from '../../utils/persistence/publications.helper';
+import { useSelector } from 'react-redux';
+import { Store } from '../../types/store.types';
 
 interface Props {
   open: boolean;
@@ -30,6 +32,7 @@ const initialQueryString = {
 export const FilterComponent: React.FC<Props> = ({ setPublications, open, setOpen }) => {
   const [queryString, setQueryString] = useState<RuleGroupType>(initialQueryString);
   const [narrowings, setNarrowings] = useState<INarrowings[]>([]);
+  const sourceArr = useSelector((state: Store) => state.configuration.SearchSourceTypeConfig);
 
   const handleOnCancel = () => {
     setQueryString(initialQueryString);
@@ -43,7 +46,7 @@ export const FilterComponent: React.FC<Props> = ({ setPublications, open, setOpe
     const body = convertToSqliteParameterizedQuery(queryString, narrowings);
 
     await searchPublications(body)
-      .then(p => setPublications(mapPublications(p)))
+      .then(p => setPublications(mapPublications(p, sourceArr)))
       .then(() => setOpen(false));
   };
 

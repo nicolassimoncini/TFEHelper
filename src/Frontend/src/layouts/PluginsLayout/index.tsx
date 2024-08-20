@@ -106,11 +106,15 @@ export const PluginsLayout: React.FC<Props> = () => {
           isError={publicationError}
           onSelect={pubs => setSelectedPubs(pubs)}
         ></TableComponent>
-        <ButtonRow>
-          <Button type="primary" onClick={handleOnSubmit}>
-            Save
-          </Button>
-        </ButtonRow>
+        {selectedPubs.length !== 0 ? (
+          <ButtonRow>
+            <Button type="primary" onClick={handleOnSubmit}>
+              Save
+            </Button>
+          </ButtonRow>
+        ) : (
+          <></>
+        )}
       </Container>
     </WrapComponent>
   );
