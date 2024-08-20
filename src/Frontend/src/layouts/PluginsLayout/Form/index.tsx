@@ -18,6 +18,8 @@ import { PluginCollectorQuery } from '../../../types/search.types';
 import { searchInPlugins } from '../../../rest-api/plugins.api';
 import { mapPluginPublication } from '../../../utils/persistence/publications.helper';
 import Swal from 'sweetalert2';
+import { useSelector } from 'react-redux';
+import { Store } from '../../../types/store.types';
 
 interface Props {
   plugin: IPlugin | null;
@@ -40,6 +42,7 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications, setPublic
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [errors, setErrors] = useState(errorsInit);
   const [disableSubmitButton, setDisableSubmitButton] = useState<boolean>(false);
+  const sourceArr = useSelector((state: Store) => state.configuration.SearchSourceTypeConfig);
 
   useEffect(() => {
     if (!!plugin?.parameters?.collectionValued[0].value) {
@@ -67,6 +70,8 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications, setPublic
 
   const handleOnSubmit = async () => {
     setErrors(errorsInit);
+
+    if (!plugin) return;
 
     // Validate fields
     if (searchString === '') {
@@ -96,7 +101,7 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications, setPublic
     setDisableSubmitButton(true);
 
     searchInPlugins(plugin!.id.toString(), queryParams)
-      .then(res => setPublications(mapPluginPublication(res)))
+      .then(res => setPublications(mapPluginPublication(res, sourceArr)))
       .catch(err => {
         Swal.fire({
           icon: 'error',

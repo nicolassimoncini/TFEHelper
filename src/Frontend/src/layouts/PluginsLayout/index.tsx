@@ -18,6 +18,9 @@ import { Button } from 'antd';
 import { postPublications } from '../../rest-api/publications.api';
 import { dataTypePlugin2Publication } from '../../utils/persistence/publications.helper';
 import { successAlert } from '../../components/Notifications';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchConfiguration } from '../../redux/configurations/configuration.slice';
+import { Store } from '../../types/store.types';
 
 interface Props {}
 
@@ -32,15 +35,20 @@ export const PluginsLayout: React.FC<Props> = () => {
   const [publicationError, setPublicationError] = useState<boolean>(false);
 
   const [selectedPubs, setSelectedPubs] = useState<string[]>([]);
+  const sourceArr = useSelector((state: Store) => state.configuration.SearchSourceTypeConfig);
+
+  const dispatch = useDispatch();
 
   // Get plugins
   useEffect(() => {
+    dispatch(fetchConfiguration());
     getPlugins()
       .then(res => {
         setPlugins(res);
         setIsLoading(false);
       })
       .catch(e => setIsError(true));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Use Memo
@@ -53,15 +61,16 @@ export const PluginsLayout: React.FC<Props> = () => {
   }, [selectedItem, plugins]);
 
   const handleOnSubmit = () => {
-    if (!activePlugin?.id) return;
+    const pubs = publications.filter(p => selectedPubs.includes(p.id as string));
+    const source = sourceArr.items.find(s => s.name === pubs[0].source);
 
     setIsLoading(true);
 
     postPublications(
       dataTypePlugin2Publication(
-        publications.filter(p => selectedPubs.includes(p.id as string)),
+        pubs,
         parseInt(selectedItem?.key as string),
-        parseInt(activePlugin?.id as unknown as string),
+        parseInt(source?.value as unknown as string),
       ),
     )
       .then(() => setIsLoading(false))

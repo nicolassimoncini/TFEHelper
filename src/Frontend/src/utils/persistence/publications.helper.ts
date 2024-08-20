@@ -1,10 +1,9 @@
-import { ConfigurationItem, ConfigurationType } from "../../types/configurations.types";
+import { ConfigurationType } from "../../types/configurations.types";
 import { Publication } from "../../types/publications.types";
 import { DataType } from "../../types/table.types";
 
-export const mapPluginPublication = (publications: Publication[]): DataType[] => {
+export const mapPluginPublication = (publications: Publication[],sourceList: ConfigurationType ): DataType[] => {
     let counter = 0;
-
     // Check if every publciation has the same key
     const checkSame = Array.from(new Set(publications.map(p => p.key)))
 
@@ -18,7 +17,7 @@ export const mapPluginPublication = (publications: Publication[]): DataType[] =>
         abstract: publication.abstract || '-',
         authors: publication.authors || '-',
         year: publication.year || null,
-        source: (publication.source as ConfigurationItem).name || '-',
+        source: !!publication.source ? sourceList.items.find(i => i.value === publication.source)?.name || '-' : '-',
         keywords: publication.keywords || '-',
         doi: publication.doi || '-',
         isbn: publication.isbn || '-',
