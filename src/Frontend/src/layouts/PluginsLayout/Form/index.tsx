@@ -83,11 +83,6 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications, setPublic
       return;
     }
 
-    if (errors.pNumber) {
-      setErrors({ ...errors, pNumber: true });
-      return;
-    }
-
     const queryParams: PluginCollectorQuery = {
       query: searchString,
       searchIn: narrowing,
@@ -162,14 +157,7 @@ export const PluginForm: React.FC<Props> = ({ plugin, setPublications, setPublic
             max={2000}
             defaultValue={10}
             status={errors.pNumber ? 'error' : ''}
-            onChange={e => {
-              setErrors({ ...errors, pNumber: false });
-              if (parseInt(e.target.value) > 2001) {
-                setErrors({ ...errors, pNumber: true });
-              } else {
-                setPNumber(parseInt(e.target.value));
-              }
-            }}
+            onChange={e => setPNumber(parseInt(e.target.value))}
           />
         </Tooltip>
       </QuantitySelectorContainer>
