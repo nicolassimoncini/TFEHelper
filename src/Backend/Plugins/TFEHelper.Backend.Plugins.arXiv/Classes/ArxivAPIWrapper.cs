@@ -215,17 +215,12 @@ namespace TFEHelper.Backend.Plugins.arXiv.Classes
 
                     remaining -= entries.Count();
 
-                    if (remaining > 0)
+                    if (feed.Entries.Count() < feed.TotalResults)
                     {
                         int prevStart = Convert.ToInt32(_queryBuilder.Get("start"));
-                        _queryBuilder.Remove("start"); 
-                        _queryBuilder.Add("start", prevStart + feed.ItemsPerPage);
+                        _queryBuilder.Remove("start");
+                        _queryBuilder.Add("start", prevStart + entries.Count());
 
-                        if (remaining < feed.ItemsPerPage)
-                        {
-                            _queryBuilder.Remove("max_results");
-                            _queryBuilder.Add("max_results", remaining);
-                        }
                         await Task.Delay(config.Get<int>("PollingDelayInMs"), cancellationToken);
                     }
                     else maxReached = true;
