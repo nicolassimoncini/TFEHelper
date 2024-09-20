@@ -5,6 +5,9 @@ import { IFileUploadData, ISearchType, ImportFileType } from '../types/search.ty
 
 const restApiAdapter = new RestApiAdapter()
 
+const baseURL: string = process.env.REACT_APP_API_URL as string || 'http://localhost:5000/api';
+
+
 
 // Get publications
 export const getPublications = async (): Promise<Publication[]> => { 
@@ -70,8 +73,9 @@ export const exportPublications = async(file: ImportFileType) => {
 
 export const exportPublicationsAsStream = async(fileFormat: number, pubs: Publication[]) => {
     try {
+        // TODO: Fix this
         const response = await axios.post(
-            `Publications/ExportAsStream?formatType=${fileFormat}`,
+            `${baseURL}/Publications/ExportAsStream?formatType=${fileFormat}`,
             pubs,
             { responseType: 'blob' }
         )
